@@ -7,12 +7,39 @@ const { content } = Astro.props;
 <html lang="es">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="generator" content={Astro.generator} />
+		
+		<!-- SEO Meta Tags -->
+		<title>{content.title}</title>
+		<meta name="description" content={content.description || "Cubusfera - Servidor de Minecraft con una comunidad activa. Únete a nosotros para vivir aventuras épicas en nuestro mundo personalizado."} />
+		<meta name="keywords" content="minecraft, servidor, cubusfera, comunidad, aventuras, mundo personalizado, juegos" />
+		<meta name="author" content="Cubusfera" />
+		<meta name="robots" content="index, follow" />
+		
+		<!-- Open Graph Meta Tags -->
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={content.title} />
+		<meta property="og:description" content={content.description || "Cubusfera - Servidor de Minecraft con una comunidad activa. Únete a nosotros para vivir aventuras épicas en nuestro mundo personalizado."} />
+		<meta property="og:image" content={new URL('/og-image.png', Astro.url).href} />
+		<meta property="og:url" content={Astro.url.href} />
+		<meta property="og:site_name" content="Cubusfera" />
+		<meta property="og:locale" content="es_ES" />
+		
+		<!-- Twitter Card Meta Tags -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={content.title} />
+		<meta name="twitter:description" content={content.description || "Cubusfera - Servidor de Minecraft con una comunidad activa. Únete a nosotros para vivir aventuras épicas en nuestro mundo personalizado."} />
+		<meta name="twitter:image" content={new URL('/og-image.png', Astro.url).href} />
+		
+		<!-- Favicon and Icons -->
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="apple-touch-icon" href="/favicon.svg" />
+		
+		<!-- Fonts -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="https://fonts.googleapis.com/css2?family=Sora:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
-		<title>{content.title}</title>
 		<script is:inline>
 			// Aplicar tema inmediatamente para evitar parpadeo
 			(function() {
