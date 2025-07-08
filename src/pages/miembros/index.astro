@@ -1,26 +1,7 @@
 ---
 import Layout from '../../layouts/main.astro';
 import Navbar from '../../components/Navbar';
-
-// Obtener la URL de la API desde las variables de entorno
-const WHITELIST_API_URL = (import.meta.env as ImportMetaEnv & {
-  WHITELIST_API_URL?: string
-}).WHITELIST_API_URL || 'http://localhost:8080/whitelist';
-
-let members: string[] = [];
-let error = null;
-
-try {
-  // Obtener lista de miembros de la whitelist
-  const whitelistResponse = await fetch(WHITELIST_API_URL);
-  if (whitelistResponse.ok) {
-    members = await whitelistResponse.json();
-  } else {
-    error = `Error al obtener la lista de miembros: ${whitelistResponse.status}`;
-  }
-} catch (e) {
-  error = `Error de conexión: ${(e as Error).message}`;
-}
+import MembersList from '../../components/MembersList.astro';
 ---
 
 <Layout content={{ title: 'Miembros - Cubusfera', description: 'Conoce a todos los miembros de la comunidad Cubusfera. Descubre quiénes forman parte de nuestro servidor de Minecraft y únete a nuestra familia de jugadores.' }}>
@@ -49,66 +30,20 @@ try {
         </div>
       </div>
 
-      <!-- Members Section -->
+      <!-- Members Grid -->
       <div class="container mx-auto px-4 py-16">
-
-        {error ? (
-          <div class="flex justify-center">
-            <div class="bg-gradient-to-br from-destructive/5 to-destructive/10 border border-destructive/20 rounded-2xl p-8 max-w-lg mx-auto backdrop-blur-sm">
-              <div class="text-center space-y-4">
-                <div class="w-16 h-16 mx-auto bg-destructive/20 rounded-full flex items-center justify-center">
-                  <svg class="w-8 h-8 text-destructive" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                  </svg>
-                </div>
-                <h3 class="text-lg font-semibold text-destructive">Error de Conexión</h3>
-                <p class="text-destructive/80 font-medium">{error}</p>
-                <p class="text-muted-foreground text-sm">
-                  Verifica que la API esté funcionando en: <code class="bg-muted px-2 py-1 rounded text-xs">{WHITELIST_API_URL}</code>
-                </p>
-              </div>
+        <MembersList server:defer>
+          <div slot="fallback" class="text-center py-12">
+            <div class="inline-flex items-center px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-sm font-medium text-primary mb-4">
+              <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Cargando miembros...
             </div>
+            <p class="text-muted-foreground">Obteniendo la lista de miembros de la comunidad</p>
           </div>
-        ) : (
-          <div class="space-y-8">
-            
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-6">
-              {members.map((member: string) => (
-                <a 
-                  href={`/miembros/${member}`}
-                  class="group flex flex-col items-center space-y-4 p-6 rounded-lg bg-card border border-border hover:border-primary/50 transition-all duration-200 hover:scale-105 hover:shadow-lg"
-                >
-                  <div class="relative">
-                    <img 
-                      src={`https://mc-heads.net/avatar/${member}/80`}
-                      alt={`Avatar de ${member}`}
-                      class="w-20 h-20 rounded-lg shadow-md group-hover:shadow-lg transition-shadow duration-200"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div class="text-center space-y-1">
-                    <span class="text-sm font-semibold text-foreground group-hover:text-primary transition-colors duration-200 block">
-                      {member}
-                    </span>
-                    <span class="text-xs text-muted-foreground group-hover:text-primary/70 transition-colors duration-200">
-                      Ver estadísticas
-                    </span>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {!error && members.length === 0 && (
-          <div class="text-center">
-            <div class="bg-muted/50 rounded-lg p-8 max-w-md mx-auto">
-              <p class="text-muted-foreground">
-                No se encontraron miembros en la lista.
-              </p>
-            </div>
-          </div>
-        )}
+        </MembersList>
       </div>
     </main>
 </Layout>
