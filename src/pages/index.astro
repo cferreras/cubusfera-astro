@@ -1,157 +1,275 @@
 ---
-import Layout from '../layouts/main.astro';
+import Layout from "../layouts/main.astro";
 // Component Imports
-import Button from '../components/Button.astro';
-import Navbar from '../components/Navbar.js';
-import FAQ from '../components/FAQ.astro';
+import Navbar from "../components/Navbar.js";
+import FAQ from "../components/FAQ.astro";
 
 // Full Astro Component Syntax:
 // https://docs.astro.build/basics/astro-components/
 ---
 
-<Layout content={{ title: 'Cubusfera - Inicio', description: 'Descubre Cubusfera, el mejor servidor de Minecraft con una comunidad activa y amigable. Únete a nosotros para vivir aventuras épicas, construir increíbles estructuras y hacer nuevos amigos en nuestro mundo personalizado.' }}>
-		<Navbar client:load />
-		<main class="flex-1 bg-background">
-			<!-- Hero Section -->
-			<div class="container mx-auto px-4 py-16">
-				<div class="text-center space-y-8">
-					<h1 class="text-4xl md:text-6xl font-bold text-foreground">
-						Bienvenido a <span class="text-primary">Cubusfera</span>
-					</h1>
-					<p class="text-xl text-muted-foreground max-w-2xl mx-auto">
-						El servidor técnico de Minecraft en español donde la comunidad, la creatividad y el conocimiento se unen para crear experiencias únicas.
-					</p>
-					
-					<!-- Botones de acción -->
-					<div class="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
-						<a 
-							href="https://discord.gg/7uKEYACErc" 
-							target="_blank" 
-							rel="noopener noreferrer"
-							class="inline-flex items-center gap-2 px-6 py-3 bg-[#5865F2] hover:bg-[#4752C4] text-white rounded-lg font-medium transition-colors duration-200"
-						>
-							<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-								<path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
-							</svg>
-							Únete a Discord
-						</a>
-						
-						<a 
-							href="/miembros" 
-							class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg font-medium transition-colors duration-200"
-						>
-							<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-							</svg>
-							Ver Miembros
-						</a>
-					</div>
-				</div>
-			</div>
+<Layout
+  content={{
+    title: "Cubusfera - Inicio",
+    description:
+      "Descubre Cubusfera, el mejor servidor de Minecraft con una comunidad activa y amigable. Únete a nosotros para vivir aventuras épicas, construir increíbles estructuras y hacer nuevos amigos en nuestro mundo personalizado.",
+  }}
+>
+  <Navbar client:load />
+  <main class="flex-1 bg-background">
+    <!-- Hero Section -->
 
-			<!-- Características Section -->
-			<section class="py-16">
-				<div class="container mx-auto px-4">
-					<div class="text-center mb-12">
-						<h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">Características</h2>
-						<p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-							Descubre lo que hace especial a nuestro servidor
-						</p>
-					</div>
-					
-					<div class="grid md:grid-cols-3 gap-8">
-						<!-- Técnico -->
-						<div class="bg-card rounded-lg p-6 shadow-sm border border-border hover:shadow-md transition-shadow">
-							<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-								<svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-								</svg>
-							</div>
-							<h3 class="text-xl font-semibold text-foreground mb-2">Técnico</h3>
-							<p class="text-muted-foreground">
-								Enfocado en la construcción técnica y la optimización de granjas.
-							</p>
-						</div>
+    <div
+      class="relative bg-gradient-to-br border-b from-primary/5 via-background to-secondary/5"
+    >
+      <div class="absolute inset-0 opacity-5 bg-grid-pattern"></div>
+      <div class="container relative px-4 py-20 mx-auto">
+        <div class="space-y-8 text-center">
+          <h1 class="text-4xl font-bold md:text-6xl text-foreground">
+            Bienvenido a <span class="text-primary">Cubusfera</span>
+          </h1>
+          <p class="mx-auto max-w-2xl text-xl text-muted-foreground">
+            El servidor técnico de Minecraft en español donde la comunidad, la
+            creatividad y el conocimiento se unen para crear experiencias
+            únicas.
+          </p>
 
-						<!-- Vanilla -->
-						<div class="bg-card rounded-lg p-6 shadow-sm border border-border hover:shadow-md transition-shadow">
-							<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-								<svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-								</svg>
-							</div>
-							<h3 class="text-xl font-semibold text-foreground mb-2">Vanilla</h3>
-							<p class="text-muted-foreground">
-								Jugabilidad pura de Minecraft sin modificaciones que alteren la experiencia original.
-							</p>
-						</div>
+          <!-- Botones de acción -->
+          <div
+            class="flex flex-col gap-4 justify-center items-center mt-8 sm:flex-row"
+          >
+            <a
+              href="https://discord.gg/7uKEYACErc"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-2 px-6 py-3 bg-[#5865F2] hover:bg-[#4752C4] text-white rounded-lg font-medium transition-colors duration-200"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"
+                ></path>
+              </svg>
+              Únete a Discord
+            </a>
 
-						<!-- Seguro -->
-						<div class="bg-card rounded-lg p-6 shadow-sm border border-border hover:shadow-md transition-shadow">
-							<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-								<svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-								</svg>
-							</div>
-							<h3 class="text-xl font-semibold text-foreground mb-2">Seguro</h3>
-							<p class="text-muted-foreground">
-								Backups automáticos y logs detallados para máxima seguridad.
-							</p>
-						</div>
-					</div>
-				</div>
-			</section>
+            <a
+              href="/miembros"
+              class="inline-flex gap-2 items-center px-6 py-3 font-medium rounded-lg transition-colors duration-200 bg-primary text-primary-foreground hover:bg-primary/90"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                ></path>
+              </svg>
+              Ver Miembros
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Características Section -->
+    <section class="py-16 border-b">
+      <div class="container px-4 mx-auto">
+        <div class="mb-12 text-center">
+          <h2 class="mb-4 text-3xl font-bold md:text-4xl text-foreground">
+            Características
+          </h2>
+          <p class="mx-auto max-w-2xl text-lg text-muted-foreground">
+            Descubre lo que hace especial a nuestro servidor
+          </p>
+        </div>
 
-			<!-- Números que importan Section -->
-			<section class="py-16">
-				<div class="container mx-auto px-4">
-					<div class="text-center mb-12">
-						<h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">Números que importan</h2>
-						<p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-							Estadísticas que demuestran la calidad de nuestro servidor
-						</p>
-					</div>
-					
-					<div class="grid md:grid-cols-3 gap-8">
-						<!-- Miembros en Discord -->
-						<div class="text-center">
-							<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-								<svg class="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 24 24">
-									<path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
-								</svg>
-							</div>
-							<div class="text-4xl font-bold text-primary mb-2">100+</div>
-							<div class="text-lg font-medium text-foreground mb-1">Miembros en Discord</div>
-							<div class="text-sm text-muted-foreground">Comunidad activa y creciente</div>
-						</div>
+        <div class="grid gap-8 md:grid-cols-3">
+          <!-- Técnico -->
+          <div
+            class="p-6 rounded-lg border shadow-sm transition-shadow bg-card border-border hover:shadow-md"
+          >
+            <div
+              class="flex justify-center items-center mb-4 w-12 h-12 rounded-lg bg-primary/10"
+            >
+              <svg
+                class="w-6 h-6 text-primary"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                ></path>
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+            </div>
+            <h3 class="mb-2 text-xl font-semibold text-foreground">Técnico</h3>
+            <p class="text-muted-foreground">
+              Enfocado en la construcción técnica y la optimización de granjas.
+            </p>
+          </div>
 
-						<div class="text-center">
-							<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-								<svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-								</svg>
-							</div>
-							<div class="text-4xl font-bold text-primary mb-2">20 TPS</div>
-							<div class="text-lg font-medium text-foreground mb-1">Buen rendimiento</div>
-							<div class="text-sm text-muted-foreground">Experiencia fluida garantizada</div>
-						</div>
+          <!-- Vanilla -->
+          <div
+            class="p-6 rounded-lg border shadow-sm transition-shadow bg-card border-border hover:shadow-md"
+          >
+            <div
+              class="flex justify-center items-center mb-4 w-12 h-12 rounded-lg bg-primary/10"
+            >
+              <svg
+                class="w-6 h-6 text-primary"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="mb-2 text-xl font-semibold text-foreground">Vanilla</h3>
+            <p class="text-muted-foreground">
+              Jugabilidad pura de Minecraft sin modificaciones que alteren la
+              experiencia original.
+            </p>
+          </div>
 
-						<div class="text-center">
-							<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-								<svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-								</svg>
-							</div>
-							<div class="text-4xl font-bold text-primary mb-2">24/7</div>
-							<div class="text-lg font-medium text-foreground mb-1">Servidor disponible</div>
-							<div class="text-sm text-muted-foreground">Siempre online para ti</div>
-						</div>
-					</div>
-				</div>
-			</section>
+          <!-- Seguro -->
+          <div
+            class="p-6 rounded-lg border shadow-sm transition-shadow bg-card border-border hover:shadow-md"
+          >
+            <div
+              class="flex justify-center items-center mb-4 w-12 h-12 rounded-lg bg-primary/10"
+            >
+              <svg
+                class="w-6 h-6 text-primary"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="mb-2 text-xl font-semibold text-foreground">Seguro</h3>
+            <p class="text-muted-foreground">
+              Backups automáticos y logs detallados para máxima seguridad.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-			<!-- FAQ Section -->
-			<FAQ />
-		</main>
+    <!-- Números que importan Section -->
+    <section class="py-16 border-b">
+      <div class="container px-4 mx-auto">
+        <div class="mb-12 text-center">
+          <h2 class="mb-4 text-3xl font-bold md:text-4xl text-foreground">
+            Números que importan
+          </h2>
+          <p class="mx-auto max-w-2xl text-lg text-muted-foreground">
+            Estadísticas que demuestran la calidad de nuestro servidor
+          </p>
+        </div>
+
+        <div class="grid gap-8 md:grid-cols-3">
+          <!-- Miembros en Discord -->
+          <div class="text-center">
+            <div
+              class="flex justify-center items-center mx-auto mb-4 w-16 h-16 rounded-full bg-primary/10"
+            >
+              <svg
+                class="w-8 h-8 text-primary"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"
+                ></path>
+              </svg>
+            </div>
+            <div class="mb-2 text-4xl font-bold text-primary">100+</div>
+            <div class="mb-1 text-lg font-medium text-foreground">
+              Miembros en Discord
+            </div>
+            <div class="text-sm text-muted-foreground">
+              Comunidad activa y creciente
+            </div>
+          </div>
+
+          <div class="text-center">
+            <div
+              class="flex justify-center items-center mx-auto mb-4 w-16 h-16 rounded-full bg-primary/10"
+            >
+              <svg
+                class="w-8 h-8 text-primary"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+            <div class="mb-2 text-4xl font-bold text-primary">20 TPS</div>
+            <div class="mb-1 text-lg font-medium text-foreground">
+              Buen rendimiento
+            </div>
+            <div class="text-sm text-muted-foreground">
+              Experiencia fluida garantizada
+            </div>
+          </div>
+
+          <div class="text-center">
+            <div
+              class="flex justify-center items-center mx-auto mb-4 w-16 h-16 rounded-full bg-primary/10"
+            >
+              <svg
+                class="w-8 h-8 text-primary"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div class="mb-2 text-4xl font-bold text-primary">24/7</div>
+            <div class="mb-1 text-lg font-medium text-foreground">
+              Servidor disponible
+            </div>
+            <div class="text-sm text-muted-foreground">
+             	 Siempre online para ti
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <FAQ />
+  </main>
 </Layout>
