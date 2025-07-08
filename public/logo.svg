@@ -1,11 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" style="isolation:isolate" viewBox="0 0 680 680">
     <style>
-        @media (prefers-color-scheme: dark) {
         .theme {  fill: #ffffff; }
-        }
-        @media (prefers-color-scheme: light) {
-        .theme { fill: #000000; }
-        }
     </style>
     <g class="theme">
     <path fill-rule="evenodd"

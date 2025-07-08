@@ -47,8 +47,18 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="/" className="text-xl font-bold text-foreground hover:text-primary transition-colors">
-              Cubusfera
+            <a href="/" className="flex items-center space-x-2 text-xl font-bold text-foreground hover:text-primary transition-colors">
+              <img 
+                src="/logo-dark.svg" 
+                alt="Cubusfera Logo" 
+                className="h-8 w-8 dark:hidden block" 
+              />
+              <img 
+                src="/logo.svg" 
+                alt="Cubusfera Logo" 
+                className="h-8 w-8 hidden dark:block" 
+              />
+              <span>Cubusfera</span>
             </a>
           </div>
 
