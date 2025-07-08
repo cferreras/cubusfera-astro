@@ -1,0 +1,63 @@
+---
+import '../../styles/global.css';
+import Navbar from '../../components/Navbar';
+
+// Obtener el parámetro del miembro desde la URL
+const { member } = Astro.params;
+
+// Validar que el parámetro existe
+if (!member) {
+  return Astro.redirect('/miembros');
+}
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Cubusfera - {member}</title>
+  </head>
+
+  <body>
+    <Navbar client:load />
+    <main class="min-h-screen bg-background">
+      <div class="container mx-auto px-4 py-16">
+        <div class="text-center space-y-8">
+          <div class="flex flex-col items-center space-y-6">
+            <img 
+              src={`https://mc-heads.net/avatar/${member}/128`}
+              alt={`Avatar de ${member}`}
+              class="w-32 h-32 rounded-lg shadow-lg"
+            />
+            <h1 class="text-4xl md:text-6xl font-bold text-foreground">
+              <span class="text-primary">{member}</span>
+            </h1>
+          </div>
+          
+          <div class="bg-muted/30 rounded-lg p-8 max-w-2xl mx-auto">
+            <p class="text-xl text-muted-foreground">
+              Página en construcción...
+            </p>
+            <p class="text-muted-foreground mt-4">
+              Pronto encontrarás más información sobre este miembro.
+            </p>
+          </div>
+
+          <div class="pt-8">
+            <a 
+              href="/miembros" 
+              class="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors duration-200 font-medium"
+            >
+              ← Volver a Miembros
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

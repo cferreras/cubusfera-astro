@@ -1,0 +1,95 @@
+---
+import '../../styles/global.css';
+import Navbar from '../../components/Navbar';
+
+// Obtener la URL de la API desde las variables de entorno
+const WHITELIST_API_URL = (import.meta.env as ImportMetaEnv & {
+  WHITELIST_API_URL?: string
+}).WHITELIST_API_URL || 'http://localhost:8080/whitelist';
+
+let members = [];
+let error = null;
+
+try {
+  const response = await fetch(WHITELIST_API_URL);
+  if (response.ok) {
+    members = await response.json();
+  } else {
+    error = `Error al obtener la lista de miembros: ${response.status}`;
+  }
+} catch (e) {
+  error = `Error de conexión: ${(e as Error).message}`;
+}
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Cubusfera - Miembros</title>
+  </head>
+
+  <body>
+    <Navbar client:load />
+    <main class="min-h-screen bg-background">
+      <div class="container mx-auto px-4 py-16">
+        <div class="text-center space-y-8 mb-12">
+          <h1 class="text-4xl md:text-6xl font-bold text-foreground">
+            <span class="text-primary">Miembros</span> de Cubusfera
+          </h1>
+          <p class="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Conoce a todos los miembros de nuestra comunidad de Minecraft
+          </p>
+        </div>
+
+        {error ? (
+          <div class="text-center">
+            <div class="bg-destructive/10 border border-destructive/20 rounded-lg p-6 max-w-md mx-auto">
+              <p class="text-destructive font-medium">⚠️ {error}</p>
+              <p class="text-muted-foreground text-sm mt-2">
+                Verifica que la API esté funcionando en: {WHITELIST_API_URL}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-6">
+            {members.map((member: string) => (
+              <a 
+                href={`/miembros/${member}`}
+                class="group flex flex-col items-center space-y-3 p-4 rounded-lg bg-card hover:bg-accent transition-all duration-200 hover:scale-105 hover:shadow-lg"
+              >
+                <div class="relative">
+                  <img 
+                    src={`https://mc-heads.net/avatar/${member}/64`}
+                    alt={`Avatar de ${member}`}
+                    class="w-16 h-16 rounded-lg shadow-md group-hover:shadow-lg transition-shadow duration-200"
+                    loading="lazy"
+                  />
+                  <div class="absolute inset-0 rounded-lg bg-primary/0 group-hover:bg-primary/10 transition-colors duration-200"></div>
+                </div>
+                <span class="text-sm font-medium text-foreground group-hover:text-primary transition-colors duration-200 text-center break-words">
+                  {member}
+                </span>
+              </a>
+            ))}
+          </div>
+        )}
+
+        {!error && members.length === 0 && (
+          <div class="text-center">
+            <div class="bg-muted/50 rounded-lg p-8 max-w-md mx-auto">
+              <p class="text-muted-foreground">
+                No se encontraron miembros en la lista.
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+    </main>
+  </body>
+</html>
