@@ -1,37 +1,13 @@
 ---
-import '../styles/global.css';
+import Layout from '../layouts/main.astro';
 // Component Imports
 import Navbar from '../components/Navbar.js';
-import Footer from '../components/Footer.astro';
 
 // Full Astro Component Syntax:
 // https://docs.astro.build/basics/astro-components/
 ---
 
-<html lang="es">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Sora:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Cubusfera - Reglas</title>
-		<script is:inline>
-			// Aplicar tema inmediatamente para evitar parpadeo
-			(function() {
-				const savedTheme = localStorage.getItem('theme');
-				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-				
-				if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-					document.documentElement.classList.add('dark');
-				}
-			})();
-		</script>
-	</head>
-
-	<body class="flex flex-col min-h-screen">
+<Layout content={{ title: 'Cubusfera - Reglas' }}>
 		<Navbar client:load />
 		<main class="flex-1 bg-background">
 			<!-- Hero Section -->
@@ -202,6 +178,4 @@ import Footer from '../components/Footer.astro';
 
 
 		</main>
-		<Footer />
-	</body>
-</html>
+</Layout>
