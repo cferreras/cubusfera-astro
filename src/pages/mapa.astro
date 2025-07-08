@@ -1,0 +1,123 @@
+---
+import '../styles/global.css';
+import Navbar from '../components/Navbar';
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Cubusfera - Mapa</title>
+    <script is:inline>
+      // Aplicar tema inmediatamente para evitar parpadeo
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+    <style>
+      .loading-spinner {
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top: 3px solid #ffffff;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+      }
+      
+      .dark .loading-spinner {
+        border: 3px solid rgba(0, 0, 0, 0.3);
+        border-top: 3px solid #000000;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      .fade-out {
+        opacity: 0;
+        transition: opacity 0.5s ease-out;
+      }
+    </style>
+  </head>
+
+  <body>
+    <Navbar client:load />
+    <main class="min-h-screen bg-background">
+      <div class="container mx-auto px-4 py-8">
+        <div class="text-center space-y-6 mb-8">
+          <h1 class="text-3xl md:text-4xl font-bold text-foreground">
+            <span class="text-primary">Mapa</span> de Cubusfera
+          </h1>
+          <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Explora nuestro mundo de Minecraft en tiempo real
+          </p>
+        </div>
+        
+        <!-- Contenedor del mapa -->
+        <div class="relative w-full rounded-lg mt-4 overflow-hidden border border-border bg-card" style="height: 70vh; min-height: 600px;">
+          <!-- Loading overlay -->
+          <div id="loading-overlay" class="absolute inset-0 flex flex-col items-center justify-center bg-card z-10">
+            <div class="loading-spinner mb-4"></div>
+            <p class="text-muted-foreground font-medium">Cargando mapa...</p>
+            <p class="text-sm text-muted-foreground mt-2">Esto puede tomar unos segundos</p>
+          </div>
+          
+          <!-- Iframe del mapa -->
+          <iframe
+            id="map-iframe"
+            src="https://mapa.cubusfera.com/#world:0:0:0:1500:0:0:0:0:perspective"
+            class="border-0"
+            style="width: 100%; height: 100%;"
+            title="Mapa de Cubusfera"
+            loading="lazy"
+            onload="hideLoading()"
+          ></iframe>
+        </div>
+        
+        <!-- Enlace para ver en pantalla completa -->
+        <div class="mt-6 text-center">
+          <a 
+            href="https://mapa.cubusfera.com/#world:0:0:0:1500:0:0:0:0:perspective" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg font-medium transition-colors duration-200"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+            </svg>
+            Ver en pantalla completa
+          </a>
+        </div>
+        
+      </div>
+    </main>
+    
+    <script is:inline>
+      function hideLoading() {
+        const overlay = document.getElementById('loading-overlay');
+        if (overlay) {
+          overlay.classList.add('fade-out');
+          setTimeout(() => {
+            overlay.style.display = 'none';
+          }, 500);
+        }
+      }
+      
+      // Fallback: ocultar loading después de 10 segundos si no se carga
+      setTimeout(() => {
+        hideLoading();
+      }, 10000);
+    </script>
+  </body>
+</html>
