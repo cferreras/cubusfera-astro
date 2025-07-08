@@ -3,6 +3,7 @@ import '../styles/global.css';
 // Component Imports
 import Button from '../components/Button.astro';
 import Navbar from '../components/Navbar.js';
+import Footer from '../components/Footer.astro';
 
 // Full Astro Component Syntax:
 // https://docs.astro.build/basics/astro-components/
@@ -31,9 +32,9 @@ import Navbar from '../components/Navbar.js';
 		</script>
 	</head>
 
-	<body>
+	<body class="flex flex-col min-h-screen">
 		<Navbar client:load />
-		<main class="min-h-screen bg-background">
+		<main class="flex-1 bg-background">
 			<!-- Hero Section -->
 			<div class="container mx-auto px-4 py-16">
 				<div class="text-center space-y-8">
@@ -174,4 +175,5 @@ import Navbar from '../components/Navbar.js';
 			</section>
 		</main>
 	</body>
+	<Footer />
 </html>
