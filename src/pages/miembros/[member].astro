@@ -1,6 +1,30 @@
 ---
 import '../../styles/global.css';
 import Navbar from '../../components/Navbar';
+import { mapPlayerStats, getTopStats, type PlayerStats } from '../../lib/statsMapper';
+
+// Función requerida para rutas dinámicas en Astro
+export async function getStaticPaths() {
+  // Obtener la URL de la API desde las variables de entorno
+  const WHITELIST_API_URL = (import.meta.env as ImportMetaEnv & {
+    WHITELIST_API_URL?: string
+  }).WHITELIST_API_URL || 'http://localhost:8080/whitelist';
+
+  try {
+    const response = await fetch(WHITELIST_API_URL);
+    if (response.ok) {
+      const members = await response.json();
+      return members.map((member: string) => ({
+        params: { member }
+      }));
+    }
+  } catch (e) {
+    console.error('Error fetching members for static paths:', e);
+  }
+  
+  // Fallback: retornar array vacío si no se pueden obtener los miembros
+  return [];
+}
 
 // Obtener el parámetro del miembro desde la URL
 const { member } = Astro.params;
@@ -8,6 +32,35 @@ const { member } = Astro.params;
 // Validar que el parámetro existe
 if (!member) {
   return Astro.redirect('/miembros');
+}
+
+// Obtener la URL de la API desde las variables de entorno
+const STATS_API_URL = (import.meta.env as ImportMetaEnv & {
+  STATS_API_URL?: string
+}).STATS_API_URL || 'http://localhost:8080/stats';
+
+let rawPlayerData = null;
+let playerStats: PlayerStats | null = null;
+let topMined: { item: string; count: number; }[] = [];
+let topCrafted: { item: string; count: number; }[] = [];
+let topUsed: { item: string; count: number; }[] = [];
+let error = null;
+
+try {
+  const response = await fetch(`${STATS_API_URL}/${member}`);
+  if (response.ok) {
+    rawPlayerData = await response.json();
+    playerStats = mapPlayerStats(rawPlayerData);
+    topMined = getTopStats(rawPlayerData, 'mined', 5);
+    topCrafted = getTopStats(rawPlayerData, 'crafted', 5);
+    topUsed = getTopStats(rawPlayerData, 'used', 5);
+  } else if (response.status === 404) {
+    error = 'Jugador no encontrado';
+  } else {
+    error = `Error al obtener las estadísticas: ${response.status}`;
+  }
+} catch (e) {
+  error = `Error de conexión: No se pudo conectar con la API`;
 }
 ---
 
@@ -26,38 +79,279 @@ if (!member) {
   <body>
     <Navbar client:load />
     <main class="min-h-screen bg-background">
-      <div class="container mx-auto px-4 py-16">
-        <div class="text-center space-y-8">
-          <div class="flex flex-col items-center space-y-6">
+      <div class="container mx-auto px-4 py-8">
+        <!-- Header del jugador -->
+        <div class="text-center space-y-6 mb-12">
+          <div class="flex flex-col items-center space-y-4">
             <img 
               src={`https://mc-heads.net/avatar/${member}/128`}
               alt={`Avatar de ${member}`}
-              class="w-32 h-32 rounded-lg shadow-lg"
+              class="w-24 h-24 rounded-lg shadow-lg"
             />
-            <h1 class="text-4xl md:text-6xl font-bold text-foreground">
-              <span class="text-primary">{member}</span>
+            <h1 class="text-3xl md:text-4xl font-bold text-foreground">
+              Estadísticas de <span class="text-primary">{member}</span>
             </h1>
           </div>
           
-          <div class="bg-muted/30 rounded-lg p-8 max-w-2xl mx-auto">
-            <p class="text-xl text-muted-foreground">
-              Página en construcción...
-            </p>
-            <p class="text-muted-foreground mt-4">
-              Pronto encontrarás más información sobre este miembro.
-            </p>
-          </div>
-
-          <div class="pt-8">
+          <div class="pt-4">
             <a 
               href="/miembros" 
-              class="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors duration-200 font-medium"
+              class="inline-flex items-center px-4 py-2 text-sm bg-muted text-muted-foreground rounded-lg hover:bg-muted/80 transition-colors duration-200 font-medium"
             >
               ← Volver a Miembros
             </a>
           </div>
         </div>
+
+        {error ? (
+          <div class="max-w-2xl mx-auto">
+            <div class="bg-destructive/10 border border-destructive/20 rounded-lg p-8 text-center">
+              <div class="w-16 h-16 mx-auto mb-4 bg-destructive/20 rounded-full flex items-center justify-center">
+                <svg class="w-8 h-8 text-destructive" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                </svg>
+              </div>
+              <h2 class="text-xl font-semibold text-destructive mb-2">Error al cargar estadísticas</h2>
+              <p class="text-muted-foreground">{error}</p>
+            </div>
+          </div>
+        ) : playerStats ? (
+          <div class="max-w-6xl mx-auto space-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div class="bg-card border rounded-lg p-6">
+                <div class="flex items-center space-x-3">
+                  <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-sm text-muted-foreground">Tiempo Jugado</p>
+                    <p class="text-2xl font-bold">{playerStats.playtime || '0h'}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="bg-card border rounded-lg p-6">
+                <div class="flex items-center space-x-3">
+                  <div class="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-sm text-muted-foreground">Logros</p>
+                    <p class="text-2xl font-bold">{playerStats.achievements || 0}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="bg-card border rounded-lg p-6">
+                <div class="flex items-center space-x-3">
+                  <div class="w-10 h-10 bg-red-500/10 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-sm text-muted-foreground">Muertes</p>
+                    <p class="text-2xl font-bold">{playerStats.deaths || 0}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="bg-card border rounded-lg p-6">
+                <div class="flex items-center space-x-3">
+                  <div class="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-sm text-muted-foreground">Distancia</p>
+                    <p class="text-2xl font-bold">{playerStats.distance || '0km'}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Secciones Detalladas -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <!-- Estadísticas de Combate -->
+              <div class="bg-card border rounded-lg">
+                <div class="p-6 border-b">
+                  <h3 class="text-lg font-semibold flex items-center space-x-2">
+                    <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                    </svg>
+                    <span>Combate</span>
+                  </h3>
+                </div>
+                <div class="p-6 space-y-4">
+                  <div class="flex justify-between items-center">
+                    <span class="text-muted-foreground">Mobs Eliminados</span>
+                    <span class="font-semibold">{playerStats?.mobKills || 0}</span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-muted-foreground">Jugadores Eliminados</span>
+                    <span class="font-semibold">{playerStats?.playerKills || 0}</span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-muted-foreground">Daño Infligido</span>
+                    <span class="font-semibold">{playerStats?.damageDealt || 0}</span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-muted-foreground">Daño Recibido</span>
+                    <span class="font-semibold">{playerStats?.damageTaken || 0}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Estadísticas de Construcción -->
+              <div class="bg-card border rounded-lg">
+                <div class="p-6 border-b">
+                  <h3 class="text-lg font-semibold flex items-center space-x-2">
+                    <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                    <span>Construcción</span>
+                  </h3>
+                </div>
+                <div class="p-6 space-y-4">
+                  <div class="flex justify-between items-center">
+                    <span class="text-muted-foreground">Bloques colocados</span>
+                    <span class="font-semibold">{playerStats?.blocksPlaced || 0}</span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-muted-foreground">Bloques rotos</span>
+                    <span class="font-semibold">{playerStats?.blocksBroken || 0}</span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-muted-foreground">Items crafteados</span>
+                    <span class="font-semibold">{playerStats?.itemsCrafted || 0}</span>
+                  </div>
+                  <div class="flex justify-between items-center">
+                    <span class="text-muted-foreground">Items usados</span>
+                    <span class="font-semibold">{playerStats?.itemsUsed || 0}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Secciones de Top Items -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <!-- Top Bloques Minados -->
+              <div class="bg-card border rounded-lg">
+                <div class="p-4 border-b">
+                  <h4 class="font-semibold text-sm text-muted-foreground uppercase tracking-wide">Top Bloques Minados</h4>
+                </div>
+                <div class="p-4 space-y-2">
+                  {topMined.length > 0 ? (
+                    topMined.map((item: { item: string; count: number; }) => (
+                      <div class="flex justify-between items-center text-sm">
+                        <span class="capitalize">{item.item}</span>
+                        <span class="font-semibold">{item.count.toLocaleString()}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p class="text-muted-foreground text-sm">No hay datos disponibles</p>
+                  )}
+                </div>
+              </div>
+
+              <!-- Top Items Crafteados -->
+              <div class="bg-card border rounded-lg">
+                <div class="p-4 border-b">
+                  <h4 class="font-semibold text-sm text-muted-foreground uppercase tracking-wide">Top Items Crafteados</h4>
+                </div>
+                <div class="p-4 space-y-2">
+                  {topCrafted.length > 0 ? (
+                    topCrafted.map((item, index) => (
+                      <div class="flex justify-between items-center text-sm">
+                        <span class="capitalize">{item.item}</span>
+                        <span class="font-semibold">{item.count.toLocaleString()}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p class="text-muted-foreground text-sm">No hay datos disponibles</p>
+                  )}
+                </div>
+              </div>
+
+              <!-- Top Items Usados -->
+              <div class="bg-card border rounded-lg">
+                <div class="p-4 border-b">
+                  <h4 class="font-semibold text-sm text-muted-foreground uppercase tracking-wide">Top Items Usados</h4>
+                </div>
+                <div class="p-4 space-y-2">
+                  {topUsed.length > 0 ? (
+                    topUsed.map((item, index) => (
+                      <div class="flex justify-between items-center text-sm">
+                        <span class="capitalize">{item.item}</span>
+                        <span class="font-semibold">{item.count.toLocaleString()}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p class="text-muted-foreground text-sm">No hay datos disponibles</p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <!-- Sección de Datos Completos (Desplegable) -->
+            <div class="bg-card border rounded-lg">
+              <details class="group">
+                <summary class="p-6 cursor-pointer flex items-center justify-between hover:bg-muted/50 transition-colors">
+                  <h3 class="text-lg font-semibold flex items-center space-x-2">
+                    <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                    <span>Datos Completos de la API</span>
+                  </h3>
+                  <svg class="w-5 h-5 text-muted-foreground group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </summary>
+                <div class="px-6 pb-6">
+                  <div class="bg-muted/30 rounded-lg p-4">
+                    <pre class="text-sm text-muted-foreground overflow-x-auto whitespace-pre-wrap">{JSON.stringify(rawPlayerData, null, 2)}</pre>
+                  </div>
+                </div>
+              </details>
+            </div>
+          </div>
+        ) : (
+          <div class="max-w-2xl mx-auto">
+            <div class="bg-muted/30 rounded-lg p-8 text-center">
+              <div class="w-16 h-16 mx-auto mb-4 bg-primary/20 rounded-full flex items-center justify-center animate-pulse">
+                <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+              </div>
+              <h2 class="text-xl font-semibold mb-2">Cargando estadísticas...</h2>
+              <p class="text-muted-foreground">Obteniendo datos del servidor</p>
+            </div>
+          </div>
+        )}
       </div>
     </main>
+    
+    <script>
+      // Script para mejorar la experiencia de los desplegables
+      document.addEventListener('DOMContentLoaded', function() {
+        const details = document.querySelectorAll('details');
+        details.forEach(detail => {
+          detail.addEventListener('toggle', function() {
+            if (this.open) {
+              // Scroll suave al contenido cuando se abre
+              setTimeout(() => {
+                this.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              }, 100);
+            }
+          });
+        });
+      });
+    </script>
   </body>
 </html>
