@@ -36,7 +36,6 @@ const Navbar = () => {
   const navItems = [
     { name: 'Inicio', href: '/' },
     { name: 'Mapa', href: '/mapa' },
-    { name: 'Blog', href: '/blog' },
     { name: 'Reglas', href: '/reglas' },
     { name: 'Miembros', href: '/miembros' },
   ];
