@@ -1,6 +1,7 @@
 ---
 import '../../styles/global.css';
 import Navbar from '../../components/Navbar';
+import StatsDebugger from '../../components/StatsDebugger.astro';
 import { mapPlayerStats, getTopStats, type PlayerStats } from '../../lib/statsMapper';
 
 // Función requerida para rutas dinámicas en Astro
@@ -102,6 +103,7 @@ try {
             </a>
           </div>
         </div>
+
 
         {error ? (
           <div class="max-w-2xl mx-auto">

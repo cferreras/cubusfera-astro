@@ -17,8 +17,8 @@ export interface PlayerStats {
 // Función para convertir ticks a tiempo legible
 function ticksToTime(ticks: number): string {
   if (!ticks) return '0h';
-  const hours = Math.floor(ticks / 72000); // 20 ticks por segundo * 3600 segundos por hora
-  const minutes = Math.floor((ticks % 72000) / 1200); // 20 ticks por segundo * 60 segundos por minuto
+  const hours = Math.floor(ticks / 72000);
+  const minutes = Math.floor((ticks % 72000) / 1200);
   
   if (hours > 0) {
     return `${hours}h ${minutes}m`;
@@ -29,54 +29,31 @@ function ticksToTime(ticks: number): string {
 // Función para convertir centímetros a kilómetros
 function cmToKm(cm: number): string {
   if (!cm) return '0km';
-  const km = (cm / 100000).toFixed(1); // 100,000 cm = 1 km
+  const km = (cm / 100000).toFixed(1);
   return `${km}km`;
 }
 
-// Función para obtener valor de estadística con múltiples formatos posibles
-function getStatValue(stats: any, category: string, stat: string): number {
-  // Intentar diferentes formatos de claves
-  const possibleKeys = [
-    `minecraft:${stat}`,
-    `${stat}`,
-    `minecraft:${category}.minecraft:${stat}`,
-    `${category}.${stat}`
-  ];
-  
-  // Buscar en la categoría específica
-  const categoryData = stats?.[`minecraft:${category}`] || stats?.[category];
-  if (categoryData) {
-    for (const key of possibleKeys) {
-      if (categoryData[key] !== undefined) {
-        return Number(categoryData[key]) || 0;
-      }
-    }
-  }
-  
-  // Buscar directamente en stats
-  for (const key of possibleKeys) {
-    if (stats[key] !== undefined) {
-      return Number(stats[key]) || 0;
-    }
-  }
-  
-  return 0;
-}
-
-// Función para buscar valores en toda la estructura de datos
-function findStatValue(data: any, searchTerms: string[]): number {
+// Función para buscar un valor en cualquier parte de la estructura
+function findAnyValue(data: any, searchTerms: string[]): number {
   function searchRecursive(obj: any, depth: number = 0): number {
-    if (depth > 3 || !obj || typeof obj !== 'object') return 0;
+    if (depth > 5 || !obj || typeof obj !== 'object') return 0;
     
+    // Buscar directamente por las claves
     for (const term of searchTerms) {
-      if (obj[term] !== undefined && typeof obj[term] === 'number') {
-        return obj[term];
+      if (obj[term] !== undefined) {
+        const value = Number(obj[term]);
+        if (!isNaN(value) && value > 0) {
+          return value;
+        }
       }
     }
     
-    for (const value of Object.values(obj)) {
-      const result = searchRecursive(value, depth + 1);
-      if (result > 0) return result;
+    // Buscar recursivamente
+    for (const [key, value] of Object.entries(obj)) {
+      if (typeof value === 'object' && value !== null) {
+        const result = searchRecursive(value, depth + 1);
+        if (result > 0) return result;
+      }
     }
     
     return 0;
@@ -85,114 +62,177 @@ function findStatValue(data: any, searchTerms: string[]): number {
   return searchRecursive(data);
 }
 
+// Función para contar items en categorías
+function countItemsInCategory(data: any, categoryNames: string[]): number {
+  let total = 0;
+  
+  function searchInObject(obj: any, depth: number = 0): void {
+    if (depth > 5 || !obj || typeof obj !== 'object') return;
+    
+    for (const categoryName of categoryNames) {
+      const category = obj[categoryName];
+      if (category && typeof category === 'object') {
+        for (const [key, value] of Object.entries(category)) {
+          const numValue = Number(value);
+          if (!isNaN(numValue) && numValue > 0) {
+            total += numValue;
+          }
+        }
+      }
+    }
+    
+    // Buscar recursivamente
+    for (const value of Object.values(obj)) {
+      if (typeof value === 'object' && value !== null) {
+        searchInObject(value, depth + 1);
+      }
+    }
+  }
+  
+  searchInObject(data);
+  return total;
+}
+
 // Función principal para mapear los datos de la API
 export function mapPlayerStats(apiData: any): PlayerStats {
-  console.log('Raw API Data:', apiData); // Debug log
+  if (!apiData) {
+    return createEmptyStats();
+  }
   
-  const stats = apiData?.stats || apiData || {};
-  console.log('Stats object:', stats); // Debug log
+  // Buscar tiempo de juego
+  const playtimeTerms = [
+    'play_time', 'playtime', 'play_one_minute', 'minecraft:play_time', 
+    'minecraft:play_one_minute', 'timePlayed', 'playTime'
+  ];
+  const playTimeTicks = findAnyValue(apiData, playtimeTerms);
   
-  // Calcular tiempo total jugado - buscar en múltiples ubicaciones
-  let playTimeTicks = getStatValue(stats, 'custom', 'play_time') || 
-                     getStatValue(stats, 'custom', 'play_one_minute') ||
-                     findStatValue(apiData, ['play_time', 'playtime', 'play_one_minute']);
-  
-  // Calcular distancia total
-  const walkDistance = getStatValue(stats, 'custom', 'walk_one_cm') || 
-                      findStatValue(apiData, ['walk_one_cm', 'walk_distance']);
-  const sprintDistance = getStatValue(stats, 'custom', 'sprint_one_cm') ||
-                        findStatValue(apiData, ['sprint_one_cm', 'sprint_distance']);
-  const swimDistance = getStatValue(stats, 'custom', 'swim_one_cm') ||
-                      findStatValue(apiData, ['swim_one_cm', 'swim_distance']);
-  const flyDistance = getStatValue(stats, 'custom', 'fly_one_cm') ||
-                     findStatValue(apiData, ['fly_one_cm', 'fly_distance']);
-  const totalDistance = walkDistance + sprintDistance + swimDistance + flyDistance;
-  
-  // Contar logros
+  // Buscar logros
   let achievements = 0;
-  if (apiData?.advancements) {
-    achievements = Object.keys(apiData.advancements).filter(
-      key => apiData.advancements[key]?.done === true
+  if (apiData.advancements) {
+    achievements = Object.values(apiData.advancements).filter(
+      (advancement: any) => advancement?.done === true
     ).length;
-  } else {
-    achievements = findStatValue(apiData, ['achievements', 'advancements_count']);
+  }
+  if (achievements === 0) {
+    achievements = findAnyValue(apiData, ['achievements', 'advancements', 'advancement_count']);
   }
   
-  // Obtener estadísticas básicas
-  const deaths = getStatValue(stats, 'custom', 'deaths') || 
-                findStatValue(apiData, ['deaths', 'death_count']);
+  // Buscar estadísticas básicas
+  const deaths = findAnyValue(apiData, [
+    'deaths', 'minecraft:deaths', 'death_count', 'deathCount'
+  ]);
   
-  const mobKills = getStatValue(stats, 'custom', 'mob_kills') ||
-                  findStatValue(apiData, ['mob_kills', 'mobs_killed']);
+  const mobKills = findAnyValue(apiData, [
+    'mob_kills', 'minecraft:mob_kills', 'mobKills', 'kills', 'mob_kill_count'
+  ]);
   
-  const playerKills = getStatValue(stats, 'custom', 'player_kills') ||
-                     findStatValue(apiData, ['player_kills', 'players_killed']);
+  const playerKills = findAnyValue(apiData, [
+    'player_kills', 'minecraft:player_kills', 'playerKills', 'pvp_kills'
+  ]);
   
-  const damageDealt = getStatValue(stats, 'custom', 'damage_dealt') ||
-                     findStatValue(apiData, ['damage_dealt', 'damage_done']);
+  // Buscar distancia
+  const walkDistance = findAnyValue(apiData, [
+    'walk_one_cm', 'minecraft:walk_one_cm', 'walkDistance', 'distance_walked'
+  ]);
+  const sprintDistance = findAnyValue(apiData, [
+    'sprint_one_cm', 'minecraft:sprint_one_cm', 'sprintDistance'
+  ]);
+  const totalDistance = walkDistance + sprintDistance;
   
-  const damageTaken = getStatValue(stats, 'custom', 'damage_taken') ||
-                     findStatValue(apiData, ['damage_taken', 'damage_received']);
+  // Buscar daño
+  const damageDealt = findAnyValue(apiData, [
+    'damage_dealt', 'minecraft:damage_dealt', 'damageDealt', 'damage_done'
+  ]);
+  const damageTaken = findAnyValue(apiData, [
+    'damage_taken', 'minecraft:damage_taken', 'damageTaken', 'damage_received'
+  ]);
   
-  // Calcular bloques y items
-  let blocksPlaced = 0;
-  let blocksBroken = 0;
-  let itemsCrafted = 0;
-  let itemsUsed = 0;
+  // Buscar estadísticas de construcción
+  const blocksPlaced = countItemsInCategory(apiData, [
+    'minecraft:used', 'used', 'use_item', 'placed', 'blocks_placed'
+  ]);
   
-  // Buscar en diferentes estructuras posibles
-  const usedStats = stats?.['minecraft:used'] || stats?.used || {};
-  const minedStats = stats?.['minecraft:mined'] || stats?.mined || {};
-  const craftedStats = stats?.['minecraft:crafted'] || stats?.crafted || {};
+  const blocksBroken = countItemsInCategory(apiData, [
+    'minecraft:mined', 'mined', 'mine_block', 'broken', 'blocks_broken'
+  ]);
   
-  if (Object.keys(usedStats).length > 0) {
-    blocksPlaced = Object.keys(usedStats)
-      .filter(key => key.includes('_block'))
-      .reduce((total, key) => total + (Number(usedStats[key]) || 0), 0);
-    
-    itemsUsed = Object.keys(usedStats)
-      .filter(key => !key.includes('_block'))
-      .reduce((total, key) => total + (Number(usedStats[key]) || 0), 0);
-  }
+  const itemsCrafted = countItemsInCategory(apiData, [
+    'minecraft:crafted', 'crafted', 'craft_item', 'items_crafted'
+  ]);
   
-  if (Object.keys(minedStats).length > 0) {
-    blocksBroken = Object.keys(minedStats)
-      .reduce((total, key) => total + (Number(minedStats[key]) || 0), 0);
-  }
+  const itemsUsed = countItemsInCategory(apiData, [
+    'minecraft:used', 'used', 'use_item', 'items_used'
+  ]);
   
-  if (Object.keys(craftedStats).length > 0) {
-    itemsCrafted = Object.keys(craftedStats)
-      .reduce((total, key) => total + (Number(craftedStats[key]) || 0), 0);
-  }
-  
-  const result = {
+  return {
     playtime: ticksToTime(playTimeTicks),
-    achievements,
-    deaths,
+    achievements: achievements || 0,
+    deaths: deaths || 0,
     distance: cmToKm(totalDistance),
-    mobKills,
-    playerKills,
-    damageDealt: Math.round(damageDealt / 10) || damageDealt, // Intentar ambos formatos
-    damageTaken: Math.round(damageTaken / 10) || damageTaken,
-    blocksPlaced,
-    blocksBroken,
-    itemsCrafted,
-    itemsUsed
+    mobKills: mobKills || 0,
+    playerKills: playerKills || 0,
+    damageDealt: Math.round((damageDealt || 0) / 10) || (damageDealt || 0),
+    damageTaken: Math.round((damageTaken || 0) / 10) || (damageTaken || 0),
+    blocksPlaced: blocksPlaced || 0,
+    blocksBroken: blocksBroken || 0,
+    itemsCrafted: itemsCrafted || 0,
+    itemsUsed: itemsUsed || 0
   };
-  
-  console.log('Mapped stats:', result); // Debug log
-  return result;
+}
+
+// Función para crear estadísticas vacías
+function createEmptyStats(): PlayerStats {
+  return {
+    playtime: '0h',
+    achievements: 0,
+    deaths: 0,
+    distance: '0km',
+    mobKills: 0,
+    playerKills: 0,
+    damageDealt: 0,
+    damageTaken: 0,
+    blocksPlaced: 0,
+    blocksBroken: 0,
+    itemsCrafted: 0,
+    itemsUsed: 0
+  };
 }
 
 // Función para obtener estadísticas específicas por categoría
 export function getTopStats(apiData: any, category: 'mined' | 'crafted' | 'used' | 'killed', limit: number = 5) {
-  const stats = apiData?.stats?.[`minecraft:${category}`] || {};
+  const possiblePaths = [
+    `minecraft:${category}`,
+    category,
+    `stats.minecraft:${category}`,
+    `stats.${category}`
+  ];
+  
+  let stats = {};
+  
+  for (const path of possiblePaths) {
+    const pathParts = path.split('.');
+    let current = apiData;
+    
+    for (const part of pathParts) {
+      if (current && current[part]) {
+        current = current[part];
+      } else {
+        current = null;
+        break;
+      }
+    }
+    
+    if (current && typeof current === 'object') {
+      stats = current;
+      break;
+    }
+  }
   
   return Object.entries(stats)
-    .sort(([,a], [,b]) => (b as number) - (a as number))
+    .sort(([,a], [,b]) => (Number(b) || 0) - (Number(a) || 0))
     .slice(0, limit)
     .map(([item, count]) => ({
       item: item.replace('minecraft:', '').replace(/_/g, ' '),
-      count: count as number
+      count: Number(count) || 0
     }));
 }
