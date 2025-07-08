@@ -246,57 +246,72 @@ try {
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <!-- Top Bloques Minados -->
               <div class="bg-card border rounded-lg">
-                <div class="p-4 border-b">
-                  <h4 class="font-semibold text-sm text-muted-foreground uppercase tracking-wide">Top Bloques Minados</h4>
+                <div class="p-6 border-b">
+                  <h3 class="text-lg font-semibold flex items-center space-x-2">
+                    <svg class="w-5 h-5 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                    </svg>
+                    <span>Top Bloques Minados</span>
+                  </h3>
                 </div>
-                <div class="p-4 space-y-2">
+                <div class="p-6 space-y-4">
                   {topMined.length > 0 ? (
                     topMined.map((item: { item: string; count: number; }) => (
-                      <div class="flex justify-between items-center text-sm">
-                        <span class="capitalize">{item.item}</span>
+                      <div class="flex justify-between items-center">
+                        <span class="text-muted-foreground capitalize">{item.item}</span>
                         <span class="font-semibold">{item.count.toLocaleString()}</span>
                       </div>
                     ))
                   ) : (
-                    <p class="text-muted-foreground text-sm">No hay datos disponibles</p>
+                    <p class="text-muted-foreground">No hay datos disponibles</p>
                   )}
                 </div>
               </div>
 
               <!-- Top Items Crafteados -->
               <div class="bg-card border rounded-lg">
-                <div class="p-4 border-b">
-                  <h4 class="font-semibold text-sm text-muted-foreground uppercase tracking-wide">Top Items Crafteados</h4>
+                <div class="p-6 border-b">
+                  <h3 class="text-lg font-semibold flex items-center space-x-2">
+                    <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"></path>
+                    </svg>
+                    <span>Top Items Crafteados</span>
+                  </h3>
                 </div>
-                <div class="p-4 space-y-2">
+                <div class="p-6 space-y-4">
                   {topCrafted.length > 0 ? (
                     topCrafted.map((item, index) => (
-                      <div class="flex justify-between items-center text-sm">
-                        <span class="capitalize">{item.item}</span>
+                      <div class="flex justify-between items-center">
+                        <span class="text-muted-foreground capitalize">{item.item}</span>
                         <span class="font-semibold">{item.count.toLocaleString()}</span>
                       </div>
                     ))
                   ) : (
-                    <p class="text-muted-foreground text-sm">No hay datos disponibles</p>
+                    <p class="text-muted-foreground">No hay datos disponibles</p>
                   )}
                 </div>
               </div>
 
               <!-- Top Items Usados -->
               <div class="bg-card border rounded-lg">
-                <div class="p-4 border-b">
-                  <h4 class="font-semibold text-sm text-muted-foreground uppercase tracking-wide">Top Items Usados</h4>
+                <div class="p-6 border-b">
+                  <h3 class="text-lg font-semibold flex items-center space-x-2">
+                    <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
+                    </svg>
+                    <span>Top Items Usados</span>
+                  </h3>
                 </div>
-                <div class="p-4 space-y-2">
+                <div class="p-6 space-y-4">
                   {topUsed.length > 0 ? (
                     topUsed.map((item, index) => (
-                      <div class="flex justify-between items-center text-sm">
-                        <span class="capitalize">{item.item}</span>
+                      <div class="flex justify-between items-center">
+                        <span class="text-muted-foreground capitalize">{item.item}</span>
                         <span class="font-semibold">{item.count.toLocaleString()}</span>
                       </div>
                     ))
                   ) : (
-                    <p class="text-muted-foreground text-sm">No hay datos disponibles</p>
+                    <p class="text-muted-foreground">No hay datos disponibles</p>
                   )}
                 </div>
               </div>
