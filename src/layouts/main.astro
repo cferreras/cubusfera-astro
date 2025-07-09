@@ -21,7 +21,10 @@ const { content } = Astro.props;
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={content.title} />
 		<meta property="og:description" content={content.description || "Cubusfera - Servidor de Minecraft con una comunidad activa. Únete a nosotros para vivir aventuras épicas en nuestro mundo personalizado."} />
-		<meta property="og:image" content={new URL('/og-image.png', Astro.url).href} />
+		<meta property="og:image" content={new URL('/og-image.png', Astro.site || Astro.url).href} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:type" content="image/png" />
 		<meta property="og:url" content={Astro.url.href} />
 		<meta property="og:site_name" content="Cubusfera" />
 		<meta property="og:locale" content="es_ES" />
@@ -30,7 +33,8 @@ const { content } = Astro.props;
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={content.title} />
 		<meta name="twitter:description" content={content.description || "Cubusfera - Servidor de Minecraft con una comunidad activa. Únete a nosotros para vivir aventuras épicas en nuestro mundo personalizado."} />
-		<meta name="twitter:image" content={new URL('/og-image.png', Astro.url).href} />
+		<meta name="twitter:image" content={"https://www.cubusfera.com/og-image.png"} />
+		<meta name="twitter:image:alt" content="Cubusfera - Servidor de Minecraft" />
 		
 		<!-- Favicon and Icons -->
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
