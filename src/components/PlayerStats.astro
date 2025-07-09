@@ -30,7 +30,7 @@ try {
     topMined = getTopStats(rawPlayerData, 'mined', 5);
     topCrafted = getTopStats(rawPlayerData, 'crafted', 5);
     topUsed = getTopStats(rawPlayerData, 'used', 5);
-    playerAnalysis = await analyzePlayerStats(playerStats);
+    playerAnalysis = await analyzePlayerStats(playerStats, member);
     personalizedTip = getPersonalizedTip(playerStats);
   } else if (response.status === 404) {
     error = 'Jugador no encontrado';

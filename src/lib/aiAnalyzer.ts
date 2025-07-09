@@ -14,14 +14,108 @@ export interface PlayerAnalysis {
   traits: string[];
 }
 
-// Función para obtener análisis de IA usando Mistral API
-export async function analyzePlayerStatsWithAI(playerStats: any): Promise<PlayerAnalysis> {
+interface CacheEntry {
+  data: PlayerAnalysis;
+  timestamp: number;
+  playerStatsHash: string;
+}
+
+// Caché en memoria con TTL de 3 horas
+const CACHE_TTL = 3 * 60 * 60 * 1000; // 3 horas en milisegundos
+const analysisCache = new Map<string, CacheEntry>();
+
+// Función para generar un hash simple de las estadísticas del jugador
+function generateStatsHash(playerStats: any): string {
+  const statsString = JSON.stringify({
+    playtime: playerStats.playtime,
+    deaths: playerStats.deaths,
+    mobKills: playerStats.mobKills,
+    playerKills: playerStats.playerKills,
+    blocksPlaced: playerStats.blocksPlaced,
+    blocksBroken: playerStats.blocksBroken,
+    itemsCrafted: playerStats.itemsCrafted,
+    itemsUsed: playerStats.itemsUsed,
+    damageDealt: playerStats.damageDealt,
+    damageTaken: playerStats.damageTaken,
+    jumps: playerStats.jumps
+  });
+  
+  // Hash simple usando el contenido de las estadísticas
+  let hash = 0;
+  for (let i = 0; i < statsString.length; i++) {
+    const char = statsString.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convertir a 32bit integer
+  }
+  return hash.toString();
+}
+
+// Función para limpiar entradas expiradas del caché
+function cleanExpiredCache(): void {
+  const now = Date.now();
+  for (const [key, entry] of analysisCache.entries()) {
+    if (now - entry.timestamp > CACHE_TTL) {
+      analysisCache.delete(key);
+    }
+  }
+}
+
+// Función para obtener análisis del caché o generar uno nuevo
+function getCachedAnalysis(playerName: string, playerStats: any): PlayerAnalysis | null {
+  cleanExpiredCache();
+  
+  const cacheKey = playerName.toLowerCase();
+  const cachedEntry = analysisCache.get(cacheKey);
+  
+  if (cachedEntry) {
+    const now = Date.now();
+    const isExpired = now - cachedEntry.timestamp > CACHE_TTL;
+    const statsHash = generateStatsHash(playerStats);
+    const statsChanged = cachedEntry.playerStatsHash !== statsHash;
+    
+    // Si no ha expirado y las estadísticas no han cambiado, usar caché
+    if (!isExpired && !statsChanged) {
+      console.log(`Usando análisis en caché para ${playerName} (válido por ${Math.round((CACHE_TTL - (now - cachedEntry.timestamp)) / (60 * 1000))} minutos más)`);
+      return cachedEntry.data;
+    }
+    
+    // Si las estadísticas cambiaron o expiró, eliminar entrada
+    analysisCache.delete(cacheKey);
+  }
+  
+  return null;
+}
+
+// Función para guardar análisis en caché
+function setCachedAnalysis(playerName: string, playerStats: any, analysis: PlayerAnalysis): void {
+  const cacheKey = playerName.toLowerCase();
+  const statsHash = generateStatsHash(playerStats);
+  
+  analysisCache.set(cacheKey, {
+    data: analysis,
+    timestamp: Date.now(),
+    playerStatsHash: statsHash
+  });
+  
+  console.log(`Análisis guardado en caché para ${playerName} (válido por 3 horas)`);
+}
+
+// Función para obtener análisis de IA usando Mistral API con caché
+export async function analyzePlayerStatsWithAI(playerStats: any, playerName?: string): Promise<PlayerAnalysis> {
   if (!playerStats) {
     return {
       playerType: "Jugador Misterioso",
       description: "Este jugador mantiene sus secretos bien guardados. Sus estadísticas están envueltas en misterio.",
       traits: ["Enigmático", "Reservado"]
     };
+  }
+
+  // Verificar caché si tenemos el nombre del jugador
+  if (playerName) {
+    const cachedAnalysis = getCachedAnalysis(playerName, playerStats);
+    if (cachedAnalysis) {
+      return cachedAnalysis;
+    }
   }
 
   try {
@@ -55,11 +149,18 @@ Estadísticas:
       cleanResponse = cleanResponse.replace(/```json\s*/, '').replace(/\s*```$/, '').trim();
       
       const parsedResponse = JSON.parse(cleanResponse);
-      return {
+      const analysis: PlayerAnalysis = {
         playerType: parsedResponse.playerType || "Jugador Único",
         description: parsedResponse.description || "Un jugador con características especiales.",
         traits: parsedResponse.traits || ["Único", "Especial"]
       };
+      
+      // Guardar en caché si tenemos el nombre del jugador
+      if (playerName) {
+        setCachedAnalysis(playerName, playerStats, analysis);
+      }
+      
+      return analysis;
     } catch (parseError) {
       console.warn('Error parsing AI response, using simple fallback. Response was:', aiResponseContent);
       return getSimpleFallback(playerStats);
@@ -95,9 +196,30 @@ function getSimpleFallback(playerStats: any): PlayerAnalysis {
   };
 }
 
-// Función principal que usa exclusivamente la API de Mistral
-export async function analyzePlayerStats(playerStats: any): Promise<PlayerAnalysis> {
-  return await analyzePlayerStatsWithAI(playerStats);
+// Función principal que usa exclusivamente la API de Mistral con caché
+export async function analyzePlayerStats(playerStats: any, playerName?: string): Promise<PlayerAnalysis> {
+  return await analyzePlayerStatsWithAI(playerStats, playerName);
+}
+
+// Función para obtener información del caché (útil para debugging)
+export function getCacheInfo(): { size: number; entries: Array<{ playerName: string; timestamp: number; age: string }> } {
+  cleanExpiredCache();
+  const entries = Array.from(analysisCache.entries()).map(([playerName, entry]) => ({
+    playerName,
+    timestamp: entry.timestamp,
+    age: `${Math.round((Date.now() - entry.timestamp) / (60 * 1000))} minutos`
+  }));
+  
+  return {
+    size: analysisCache.size,
+    entries
+  };
+}
+
+// Función para limpiar manualmente el caché
+export function clearCache(): void {
+  analysisCache.clear();
+  console.log('Caché de análisis limpiado manualmente');
 }
 
 // Función para obtener un consejo personalizado basado en las estadísticas
