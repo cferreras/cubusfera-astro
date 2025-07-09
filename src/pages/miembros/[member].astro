@@ -1,15 +1,20 @@
 ---
-export const prerender = true;
 import Layout from '../../layouts/main.astro';
 import Navbar from '../../components/Navbar';
 import PlayerStats from '../../components/PlayerStats.astro';
 
 // Función requerida para rutas dinámicas en Astro
 export async function getStaticPaths() {
-  // Obtener la URL de la API desde las variables de entorno
+  // En modo servidor con prerender, solo generar rutas si estamos en desarrollo
+  // o si la API está disponible
   const WHITELIST_API_URL = (import.meta.env as ImportMetaEnv & {
     WHITELIST_API_URL?: string
   }).WHITELIST_API_URL || 'http://localhost:8080/whitelist';
+
+  // En producción, permitir que las rutas se generen dinámicamente
+  if (import.meta.env.PROD) {
+    return [];
+  }
 
   try {
     const response = await fetch(WHITELIST_API_URL);
