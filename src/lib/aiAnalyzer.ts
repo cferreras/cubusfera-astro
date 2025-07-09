@@ -137,8 +137,7 @@ Estadísticas:
 - Items usados: ${playerStats.itemsUsed || 0}
 - Daño infligido: ${playerStats.damageDealt || 0}
 - Daño recibido: ${playerStats.damageTaken || 0}
-- Experiencia: ${playerStats.experienceGained || 0}
-- Logros: ${playerStats.achievements || 0}
+- Saltos: ${playerStats.jumps || 0}
 
 CONTEXTO DEL SERVIDOR:
 - Servidor técnico enfocado en construcción, redstone y automatización
