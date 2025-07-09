@@ -1,4 +1,5 @@
 ---
+export const prerender = true;
 import Layout from '../layouts/main.astro';
 // Component Imports
 import Navbar from '../components/Navbar.js';
@@ -11,12 +12,12 @@ import Navbar from '../components/Navbar.js';
 		<Navbar client:load />
 		<main class="flex-1 bg-background">
 			<!-- Hero Section -->
-			<div class="container mx-auto px-4 py-16">
-				<div class="text-center space-y-8">
-					<h1 class="text-4xl md:text-6xl font-bold text-foreground">
+			<div class="container px-4 py-16 mx-auto">
+				<div class="space-y-8 text-center">
+					<h1 class="text-4xl font-bold md:text-6xl text-foreground">
 						<span class="text-primary">Normas</span> de Cubusfera
 					</h1>
-					<p class="text-xl text-muted-foreground max-w-2xl mx-auto">
+					<p class="mx-auto max-w-2xl text-xl text-muted-foreground">
 						Estas son las normas de Cubusfera tanto para Discord como para Minecraft.
 					</p>
 				</div>
@@ -24,17 +25,17 @@ import Navbar from '../components/Navbar.js';
 
 			<!-- Reglas Section -->
 			<section class="pb-16">
-				<div class="container mx-auto px-4">
-					<div class="max-w-4xl mx-auto space-y-8">
+				<div class="container px-4 mx-auto">
+					<div class="mx-auto space-y-8 max-w-4xl">
 						<!-- Regla 1 -->
-						<div class="bg-card rounded-lg p-6 shadow-sm border border-border">
-							<div class="flex items-start gap-4">
-								<div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-									<span class="text-primary font-bold text-lg">1</span>
+						<div class="p-6 rounded-lg border shadow-sm bg-card border-border">
+							<div class="flex gap-4 items-start">
+								<div class="flex flex-shrink-0 justify-center items-center w-10 h-10 rounded-full bg-primary/10">
+									<span class="text-lg font-bold text-primary">1</span>
 								</div>
 								<div>
-									<h3 class="text-xl font-semibold text-foreground mb-3">Sé amable con los demás</h3>
-									<div class="text-muted-foreground space-y-2">
+									<h3 class="mb-3 text-xl font-semibold text-foreground">Sé amable con los demás</h3>
+									<div class="space-y-2 text-muted-foreground">
 										<p>Sé respetuoso con los demás, aunque no te gusten. No se tolera ningún tipo de discurso de odio.</p>
 										<p>No discrimines por ningún motivo, incluidos, entre otros, la raza, el sexo, la sexualidad, la religión o cualquier discapacidad.</p>
 										<p>No hagas caza de brujas ni acoses a nuestros miembros, ni intentes incitar a la violencia.</p>
@@ -44,14 +45,14 @@ import Navbar from '../components/Navbar.js';
 						</div>
 
 						<!-- Regla 2 -->
-						<div class="bg-card rounded-lg p-6 shadow-sm border border-border">
-							<div class="flex items-start gap-4">
-								<div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-									<span class="text-primary font-bold text-lg">2</span>
+						<div class="p-6 rounded-lg border shadow-sm bg-card border-border">
+							<div class="flex gap-4 items-start">
+								<div class="flex flex-shrink-0 justify-center items-center w-10 h-10 rounded-full bg-primary/10">
+									<span class="text-lg font-bold text-primary">2</span>
 								</div>
 								<div>
-									<h3 class="text-xl font-semibold text-foreground mb-3">Mantén un contenido apropiado</h3>
-									<div class="text-muted-foreground space-y-2">
+									<h3 class="mb-3 text-xl font-semibold text-foreground">Mantén un contenido apropiado</h3>
+									<div class="space-y-2 text-muted-foreground">
 										<p>No publiques contenido NSFW u obsceno de ningún tipo, esto incluye, pero no se limita a la desnudez, el sexo, la violencia dura, o cualquier otro contenido perturbador.</p>
 										<p>Esta regla se aplica al texto, las imágenes, los vídeos, el audio, los enlaces, tu nombre de usuario, tu avatar, tu estado, y apariencia.</p>
 									</div>
@@ -60,14 +61,14 @@ import Navbar from '../components/Navbar.js';
 						</div>
 
 						<!-- Regla 3 -->
-						<div class="bg-card rounded-lg p-6 shadow-sm border border-border">
-							<div class="flex items-start gap-4">
-								<div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-									<span class="text-primary font-bold text-lg">3</span>
+						<div class="p-6 rounded-lg border shadow-sm bg-card border-border">
+							<div class="flex gap-4 items-start">
+								<div class="flex flex-shrink-0 justify-center items-center w-10 h-10 rounded-full bg-primary/10">
+									<span class="text-lg font-bold text-primary">3</span>
 								</div>
 								<div>
-									<h3 class="text-xl font-semibold text-foreground mb-3">No hagas publicidad</h3>
-									<div class="text-muted-foreground space-y-2">
+									<h3 class="mb-3 text-xl font-semibold text-foreground">No hagas publicidad</h3>
+									<div class="space-y-2 text-muted-foreground">
 										<p>No se permite la publicidad no solicitada en los canales del servidor ni en los DMs de los miembros. Esto incluye la publicidad en tu nick.</p>
 										<p>Cuando sea apropiado dentro de la conversación, se harán excepciones. Aunque eso no significa que deba ser el objetivo principal de la conversación.</p>
 									</div>
@@ -76,14 +77,14 @@ import Navbar from '../components/Navbar.js';
 						</div>
 
 						<!-- Regla 4 -->
-						<div class="bg-card rounded-lg p-6 shadow-sm border border-border">
-							<div class="flex items-start gap-4">
-								<div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-									<span class="text-primary font-bold text-lg">4</span>
+						<div class="p-6 rounded-lg border shadow-sm bg-card border-border">
+							<div class="flex gap-4 items-start">
+								<div class="flex flex-shrink-0 justify-center items-center w-10 h-10 rounded-full bg-primary/10">
+									<span class="text-lg font-bold text-primary">4</span>
 								</div>
 								<div>
-									<h3 class="text-xl font-semibold text-foreground mb-3">Juega limpio</h3>
-									<div class="text-muted-foreground space-y-2">
+									<h3 class="mb-3 text-xl font-semibold text-foreground">Juega limpio</h3>
+									<div class="space-y-2 text-muted-foreground">
 										<p>Cualquier ventaja abusiva está completamente prohibida, ya sea por mods, exploits, programas externos, o mecánicas poco conocidas.</p>
 										<p>Esto no quiere decir que todos los mods o mecánicas estén prohibidas, solo se prohíbe aquello que suponga una ventaja importante y que no esté adoptado en el servidor.</p>
 									</div>
@@ -92,14 +93,14 @@ import Navbar from '../components/Navbar.js';
 						</div>
 
 						<!-- Regla 5 -->
-						<div class="bg-card rounded-lg p-6 shadow-sm border border-border">
-							<div class="flex items-start gap-4">
-								<div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-									<span class="text-primary font-bold text-lg">5</span>
+						<div class="p-6 rounded-lg border shadow-sm bg-card border-border">
+							<div class="flex gap-4 items-start">
+								<div class="flex flex-shrink-0 justify-center items-center w-10 h-10 rounded-full bg-primary/10">
+									<span class="text-lg font-bold text-primary">5</span>
 								</div>
 								<div>
-									<h3 class="text-xl font-semibold text-foreground mb-3">Sigue la planificación del servidor</h3>
-									<div class="text-muted-foreground space-y-2">
+									<h3 class="mb-3 text-xl font-semibold text-foreground">Sigue la planificación del servidor</h3>
+									<div class="space-y-2 text-muted-foreground">
 										<p>Todas las construcciones deben seguir la planificación establecida del servidor. No puedes construir libremente donde quieras. Debes colaborar en proyectos comunes y seguir las directrices de construcción.</p>
 										<p class="font-medium text-foreground">Las bases individuales están completamente prohibidas. Todo debe ser parte de la planificación comunitaria del servidor.</p>
 									</div>
@@ -108,14 +109,14 @@ import Navbar from '../components/Navbar.js';
 						</div>
 
 						<!-- Regla 6 -->
-						<div class="bg-card rounded-lg p-6 shadow-sm border border-border">
-							<div class="flex items-start gap-4">
-								<div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-									<span class="text-primary font-bold text-lg">6</span>
+						<div class="p-6 rounded-lg border shadow-sm bg-card border-border">
+							<div class="flex gap-4 items-start">
+								<div class="flex flex-shrink-0 justify-center items-center w-10 h-10 rounded-full bg-primary/10">
+									<span class="text-lg font-bold text-primary">6</span>
 								</div>
 								<div>
-									<h3 class="text-xl font-semibold text-foreground mb-3">Comunica y repara los daños</h3>
-									<div class="text-muted-foreground space-y-2">
+									<h3 class="mb-3 text-xl font-semibold text-foreground">Comunica y repara los daños</h3>
+									<div class="space-y-2 text-muted-foreground">
 										<p>Si rompes algo accidentalmente, debes avisar inmediatamente y repararlo. No dejes estructuras dañadas sin comunicarlo.</p>
 										<p>Si no puedes reparar el daño tú mismo, informa a los moderadores para que puedan solucionarlo.</p>
 									</div>
@@ -124,14 +125,14 @@ import Navbar from '../components/Navbar.js';
 						</div>
 
 						<!-- Regla 7 -->
-						<div class="bg-card rounded-lg p-6 shadow-sm border border-border">
-							<div class="flex items-start gap-4">
-								<div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-									<span class="text-primary font-bold text-lg">7</span>
+						<div class="p-6 rounded-lg border shadow-sm bg-card border-border">
+							<div class="flex gap-4 items-start">
+								<div class="flex flex-shrink-0 justify-center items-center w-10 h-10 rounded-full bg-primary/10">
+									<span class="text-lg font-bold text-primary">7</span>
 								</div>
 								<div>
-									<h3 class="text-xl font-semibold text-foreground mb-3">Prohibido duplicar items renovables</h3>
-									<div class="text-muted-foreground space-y-2">
+									<h3 class="mb-3 text-xl font-semibold text-foreground">Prohibido duplicar items renovables</h3>
+									<div class="space-y-2 text-muted-foreground">
 										<p>Está completamente prohibido duplicar items que son renovables por medios legítimos en el juego. Esto incluye cualquier método de duplicación mediante bugs, exploits o mecánicas no intencionadas.</p>
 										<p>Si un item se puede obtener de forma renovable (granjas, generadores naturales, etc.), no debe ser duplicado artificialmente.</p>
 									</div>
@@ -140,14 +141,14 @@ import Navbar from '../components/Navbar.js';
 						</div>
 
 						<!-- Regla 8 -->
-						<div class="bg-card rounded-lg p-6 shadow-sm border border-border">
-							<div class="flex items-start gap-4">
-								<div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-									<span class="text-primary font-bold text-lg">8</span>
+						<div class="p-6 rounded-lg border shadow-sm bg-card border-border">
+							<div class="flex gap-4 items-start">
+								<div class="flex flex-shrink-0 justify-center items-center w-10 h-10 rounded-full bg-primary/10">
+									<span class="text-lg font-bold text-primary">8</span>
 								</div>
 								<div>
-									<h3 class="text-xl font-semibold text-foreground mb-3">Practica el sentido común</h3>
-									<div class="text-muted-foreground space-y-2">
+									<h3 class="mb-3 text-xl font-semibold text-foreground">Practica el sentido común</h3>
+									<div class="space-y-2 text-muted-foreground">
 										<p>Por favor, intenta mantener la comunidad sana, no podemos (y no deberíamos) explicar todo punto por punto.</p>
 										<p class="font-medium text-foreground">Todas las decisiones de los moderadores son definitivas y no se pueden discutir.</p>
 									</div>
@@ -157,14 +158,14 @@ import Navbar from '../components/Navbar.js';
 					</div>
 
 					<!-- Nota final -->
-					<div class="max-w-4xl mx-auto mt-8">
-						<div class="bg-primary/5 border border-primary/20 rounded-lg p-6">
-							<div class="flex items-start gap-3">
-								<svg class="w-6 h-6 text-primary flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<div class="mx-auto mt-8 max-w-4xl">
+						<div class="p-6 rounded-lg border bg-primary/5 border-primary/20">
+							<div class="flex gap-3 items-start">
+								<svg class="flex-shrink-0 mt-0.5 w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
 								</svg>
 								<div>
-									<h4 class="font-semibold text-foreground mb-2">Importante</h4>
+									<h4 class="mb-2 font-semibold text-foreground">Importante</h4>
 									<p class="text-muted-foreground">
 										Estas normas están sujetas a cambios. Es responsabilidad de cada miembro mantenerse actualizado con las reglas vigentes. El desconocimiento de las normas no exime de su cumplimiento.
 									</p>
