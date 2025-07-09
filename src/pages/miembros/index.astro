@@ -1,4 +1,5 @@
 ---
+export const prerender = false; 
 import Layout from '../../layouts/main.astro';
 import Navbar from '../../components/Navbar';
 import MembersList from '../../components/MembersList.astro';
@@ -8,22 +9,22 @@ import MembersList from '../../components/MembersList.astro';
     <Navbar client:load />
     <main class="min-h-screen bg-background">
       <!-- Hero Section -->
-      <div class="relative bg-gradient-to-br from-primary/5 via-background to-secondary/5 border-b">
-        <div class="absolute inset-0 bg-grid-pattern opacity-5"></div>
-        <div class="container mx-auto px-4 py-20 relative">
-          <div class="text-center space-y-8">
-            <div class="inline-flex items-center px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-sm font-medium text-primary mb-4">
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="relative bg-gradient-to-br border-b from-primary/5 via-background to-secondary/5">
+        <div class="absolute inset-0 opacity-5 bg-grid-pattern"></div>
+        <div class="container relative px-4 py-20 mx-auto">
+          <div class="space-y-8 text-center">
+            <div class="inline-flex items-center px-4 py-2 mb-4 text-sm font-medium rounded-full border bg-primary/10 border-primary/20 text-primary">
+              <svg class="mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
               </svg>
               Comunidad Activa
             </div>
-            <h1 class="text-5xl md:text-7xl font-bold text-foreground leading-tight">
+            <h1 class="text-5xl font-bold leading-tight md:text-7xl text-foreground">
               <span>Miembros</span>
               <br class="hidden sm:block" />
               <span>de Cubusfera</span>
             </h1>
-            <p class="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            <p class="mx-auto max-w-3xl text-xl leading-relaxed md:text-2xl text-muted-foreground">
               Descubre a todos los jugadores que forman parte de nuestra increíble comunidad de Minecraft
             </p>
           </div>
@@ -31,11 +32,11 @@ import MembersList from '../../components/MembersList.astro';
       </div>
 
       <!-- Members Grid -->
-      <div class="container mx-auto px-4 py-16">
+      <div class="container px-4 py-16 mx-auto">
         <MembersList server:defer>
-          <div slot="fallback" class="text-center py-12">
-            <div class="inline-flex items-center px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-sm font-medium text-primary mb-4">
-              <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <div slot="fallback" class="py-12 text-center">
+            <div class="inline-flex items-center px-4 py-2 mb-4 text-sm font-medium rounded-full border bg-primary/10 border-primary/20 text-primary">
+              <svg class="mr-3 -ml-1 w-5 h-5 animate-spin text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
