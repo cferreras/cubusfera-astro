@@ -6,11 +6,11 @@ import node from '@astrojs/node';
 
 // https://astro.build/config
 export default defineConfig({
-  server:{
-		port: 3000,
-		host: true
-	},
-  output: 'server',
+  server: {
+    port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
+    host: '0.0.0.0'
+  },
+  output: 'server', // Mantener como 'server'
   adapter: node({
     mode: 'standalone'
   }),
