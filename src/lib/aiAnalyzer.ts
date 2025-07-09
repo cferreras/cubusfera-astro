@@ -124,20 +124,50 @@ export async function analyzePlayerStatsWithAI(playerStats: any, playerName?: st
       throw new ApiKeyMissingError('No se encontró MISTRAL_API_KEY en las variables de entorno');
     }
     
-    const statsPrompt = `Analiza las siguientes estadísticas de Minecraft y describe qué tipo de jugador es esta persona en español. Responde SOLO con un JSON válido con esta estructura exacta: {"playerType": "tipo de jugador", "description": "descripción detallada", "traits": ["rasgo1", "rasgo2", "rasgo3"]}.
+    const statsPrompt = `Analiza estas estadísticas de Minecraft de un servidor técnico NO-PVP. El TIEMPO JUGADO es el factor más importante para evaluar todas las demás estadísticas. Responde SOLO con JSON: {"playerType": "tipo", "description": "descripción detallada de 2-3 oraciones", "traits": ["palabra1", "palabra2", "palabra3"]}.
 
 Estadísticas:
-- Tiempo jugado: ${playerStats.playtime || '0h'}
+- Tiempo: ${playerStats.playtime || '0h'} ⭐ FACTOR PRINCIPAL
 - Muertes: ${playerStats.deaths || 0}
 - Mobs eliminados: ${playerStats.mobKills || 0}
-- Jugadores eliminados: ${playerStats.playerKills || 0}
+- Jugadores eliminados: ${playerStats.playerKills || 0} (NOTA: Servidor NO-PVP, probablemente accidentes o duelos amistosos)
 - Bloques colocados: ${playerStats.blocksPlaced || 0}
 - Bloques rotos: ${playerStats.blocksBroken || 0}
 - Items crafteados: ${playerStats.itemsCrafted || 0}
 - Items usados: ${playerStats.itemsUsed || 0}
 - Daño infligido: ${playerStats.damageDealt || 0}
 - Daño recibido: ${playerStats.damageTaken || 0}
-- Saltos: ${playerStats.jumps || 0}`;
+- Experiencia: ${playerStats.experienceGained || 0}
+- Logros: ${playerStats.achievements || 0}
+
+CONTEXTO DEL SERVIDOR:
+- Servidor técnico enfocado en construcción, redstone y automatización
+- NO es PvP: las kills de jugadores son raras y no indican agresividad
+- Prioriza cooperación, construcción y mecánicas técnicas
+
+REFERENCIAS DE ESCALA (por hora jugada):
+- Bloques colocados: <500/h = Bajo, 500-2000/h = Medio, >2000/h = Alto
+- Bloques rotos: <1000/h = Bajo, 1000-5000/h = Medio, >5000/h = Alto
+- Mobs eliminados: <50/h = Bajo, 50-200/h = Medio, >200/h = Alto
+- Items crafteados: <100/h = Bajo, 100-500/h = Medio, >500/h = Alto
+- Muertes: >5/h = Problemático, 1-5/h = Normal, <1/h = Cuidadoso
+- Jugadores eliminados: Ignorar o mencionar como "accidentes" si >0
+
+IMPORTANTE:
+- Menciona el tiempo jugado SOLO si es destacable (muy poco/mucho) o relevante para el análisis
+- Calcula ratios por hora para evaluar eficiencia
+- Un jugador con pocas horas pero buenas ratios es "Prometedor"
+- Un jugador con muchas horas pero malas ratios necesita "Mejorar"
+- NO interpretes kills de jugadores como agresividad
+- Enfócate en las estadísticas más relevantes y patrones de juego
+
+REQUISITOS:
+- description: Mínimo 2 oraciones, enfócate en eficiencia y estilo de juego
+- traits: Solo palabras simples (máximo 2 palabras cada una)
+- Menciona tiempo jugado solo si es muy relevante (ej: "novato con pocas horas" o "veterano experimentado")
+
+Tipos: Novato, Prometedor, Eficiente, Constructor, Explorador, Ingeniero, Técnico, Veterano, Cooperativo.
+Traits ejemplo: "Eficiente", "Novato", "Técnico", "Paciente", "Activo", "Cuidadoso", "Productivo", "Cooperativo".`;
 
     const aiResponseContent = await callMistralApi(apiKey, statsPrompt);
     
