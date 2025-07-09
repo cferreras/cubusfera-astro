@@ -23,12 +23,9 @@ export default defineConfig({
      react(), 
 sitemap({
        filter: (page) => {
-         // Incluir la página índice de miembros pero excluir páginas individuales
-         if (page === '/miembros/' || page === '/miembros') {
-           return true;
-         }
-         // Excluir rutas de miembros específicos ya que son dinámicas
-         if (page.includes('/miembros/')) {
+         // Excluir solo las páginas dinámicas de miembros individuales
+         // pero incluir la página índice /miembros/
+         if (page.match(/\/miembros\/[^/]+$/)) {
            return false;
          }
          return true;
@@ -36,28 +33,37 @@ sitemap({
        serialize: (item) => {
          const url = item.url;
          
-         // Página principal
+         // Página principal - máxima prioridad
          if (url === '/' || url === '') {
            return {
              ...item,
              priority: 1.0,
-             changefreq: 'weekly'
-           };
-         }
-         
-         // Página de miembros (índice)
-         if (url === '/miembros/' || url === '/miembros') {
-           return {
-             ...item,
-             priority: 0.8,
              changefreq: 'daily'
            };
          }
          
-         // Otras páginas
+         // Página de miembros - alta prioridad por contenido dinámico
+         if (url.endsWith('/miembros/') || url.endsWith('/miembros')) {
+           return {
+             ...item,
+             priority: 0.9,
+             changefreq: 'daily'
+           };
+         }
+         
+         // Página del mapa - prioridad media-alta
+         if (url.endsWith('/mapa/') || url.endsWith('/mapa')) {
+           return {
+             ...item,
+             priority: 0.7,
+             changefreq: 'weekly'
+           };
+         }
+         
+         // Otras páginas (normas, etc.) - prioridad media
          return {
            ...item,
-           priority: 0.6,
+           priority: 0.5,
            changefreq: 'monthly'
          };
        }
