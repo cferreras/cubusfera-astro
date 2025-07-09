@@ -12,6 +12,8 @@ export interface PlayerStats {
   blocksBroken: number;
   itemsCrafted: number;
   itemsUsed: number;
+  experienceGained: number;
+  jumps: number;
 }
 
 // Función para convertir ticks a tiempo legible
@@ -190,6 +192,18 @@ export function mapPlayerStats(apiData: any): PlayerStats {
     'minecraft:used', 'used', 'use_item', 'items_used'
   ]);
   
+  // Buscar experiencia obtenida
+  const experienceGained = findAnyValue(apiData, [
+    'xp_total', 'minecraft:xp_total', 'experience', 'experienceGained',
+    'total_experience', 'minecraft:total_experience', 'exp_gained',
+    'experience_gained', 'minecraft:experience_gained'
+  ]);
+  
+  // Buscar saltos
+  const jumps = findAnyValue(apiData, [
+    'jump', 'minecraft:jump', 'jumps', 'jumpCount', 'jump_count'
+  ]);
+  
   return {
     playtime: ticksToTime(playTimeTicks),
     achievements: achievements || 0,
@@ -202,7 +216,9 @@ export function mapPlayerStats(apiData: any): PlayerStats {
     blocksPlaced: blocksPlaced || 0,
     blocksBroken: blocksBroken || 0,
     itemsCrafted: itemsCrafted || 0,
-    itemsUsed: itemsUsed || 0
+    itemsUsed: itemsUsed || 0,
+    experienceGained: experienceGained || 0,
+    jumps: jumps || 0
   };
 }
 
@@ -220,7 +236,9 @@ function createEmptyStats(): PlayerStats {
     blocksPlaced: 0,
     blocksBroken: 0,
     itemsCrafted: 0,
-    itemsUsed: 0
+    itemsUsed: 0,
+    experienceGained: 0,
+    jumps: 0
   };
 }
 

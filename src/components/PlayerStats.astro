@@ -97,14 +97,14 @@ try {
 
       <div class="p-6 rounded-lg border bg-card">
         <div class="flex items-center space-x-3">
-          <div class="flex justify-center items-center w-10 h-10 rounded-lg bg-orange-500/10">
-            <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-            </svg>
-          </div>
+          <div class="flex justify-center items-center w-10 h-10 rounded-lg bg-green-500/10">
+             <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+             </svg>
+           </div>
           <div>
-            <p class="text-sm text-muted-foreground">Bloques rotos</p>
-            <p class="text-2xl font-bold">{playerStats.blocksBroken || 0}</p>
+            <p class="text-sm text-muted-foreground">Saltos</p>
+            <p class="text-2xl font-bold">{playerStats.jumps || 0}</p>
           </div>
         </div>
       </div>
@@ -180,7 +180,7 @@ try {
         <div class="p-6 border-b">
           <h3 class="flex items-center space-x-2 text-lg font-semibold">
             <svg class="w-5 h-5 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18v18H3V3zm6 6h6v6H9V9z"></path>
             </svg>
             <span>Top Bloques Minados</span>
           </h3>
@@ -251,7 +251,7 @@ try {
     <!-- Sección de Datos Completos (Desplegable) -->
     <div class="rounded-lg border bg-card">
       <details class="group">
-        <summary class="flex justify-between items-center p-6 transition-colors cursor-pointer hover:bg-muted/50">
+        <summary class="flex justify-between items-center p-6 transition-colors cursor-pointer hover:bg-muted/50 rounded-lg">
           <h3 class="flex items-center space-x-2 text-lg font-semibold">
             <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
