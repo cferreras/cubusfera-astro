@@ -3,6 +3,7 @@ export const prerender = true;
 import Layout from '../../layouts/main.astro';
 import Navbar from '../../components/Navbar';
 import MembersList from '../../components/MembersList.astro';
+import TopsSection from '../../components/TopsSection.astro';
 ---
 
 <Layout content={{ title: 'Miembros - Cubusfera', description: 'Conoce a todos los miembros de la comunidad Cubusfera. Descubre quiénes forman parte de nuestro servidor de Minecraft y únete a nuestra familia de jugadores.' }}>
@@ -15,7 +16,7 @@ import MembersList from '../../components/MembersList.astro';
           <div class="space-y-8 text-center">
             <div class="inline-flex items-center px-4 py-2 mb-4 text-sm font-medium rounded-full border bg-primary/10 border-primary/20 text-primary">
               <svg class="mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
               </svg>
               Comunidad Activa
             </div>
@@ -33,6 +34,15 @@ import MembersList from '../../components/MembersList.astro';
 
       <!-- Members Grid -->
       <div class="container px-4 py-16 mx-auto">
+        <div class="mb-8 text-center">
+          <h2 class="mb-4 text-3xl font-bold text-foreground md:text-4xl">
+            Todos los Miembros
+          </h2>
+          <p class="text-lg text-muted-foreground">
+            Explora los perfiles de todos nuestros jugadores
+          </p>
+        </div>
+        
         <MembersList server:defer>
           <div slot="fallback" class="py-12 text-center">
             <div class="inline-flex items-center px-4 py-2 mb-4 text-sm font-medium rounded-full border bg-primary/10 border-primary/20 text-primary">
@@ -45,6 +55,23 @@ import MembersList from '../../components/MembersList.astro';
             <p class="text-muted-foreground">Obteniendo la lista de miembros de la comunidad</p>
           </div>
         </MembersList>
+      </div>
+
+      <hr class="w-full border-b">
+            <!-- Tops Section -->
+      <div class="container px-4 py-16 mx-auto">
+        <TopsSection server:defer>
+          <div slot="fallback" class="py-12 text-center">
+            <div class="inline-flex items-center px-4 py-2 mb-4 text-sm font-medium rounded-full border bg-primary/10 border-primary/20 text-primary">
+              <svg class="mr-3 -ml-1 w-5 h-5 animate-spin text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Cargando rankings...
+            </div>
+            <p class="text-muted-foreground">Obteniendo los tops de la comunidad</p>
+          </div>
+        </TopsSection>
       </div>
     </main>
 </Layout>

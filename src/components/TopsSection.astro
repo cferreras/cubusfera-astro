@@ -1,0 +1,259 @@
+---
+import { getCachedData } from '../lib/utils';
+import { mapPlayerStats, getTopStats } from '../lib/statsMapper';
+
+// Obtener la URL de la API desde las variables de entorno
+const WHITELIST_API_URL = (import.meta.env as ImportMetaEnv & {
+  WHITELIST_API_URL?: string
+}).WHITELIST_API_URL || 'http://localhost:8080/whitelist';
+
+const STATS_API_URL = (import.meta.env as ImportMetaEnv & {
+  STATS_API_URL?: string
+}).STATS_API_URL || 'http://localhost:8080/stats';
+
+interface TopPlayer {
+  name: string;
+  value: number;
+  formattedValue: string;
+}
+
+interface TopCategory {
+  title: string;
+  icon: string;
+  players: TopPlayer[];
+}
+
+let topsData: TopCategory[] = [];
+let error = null;
+
+try {
+  // Función para obtener tops con caché de 15 minutos
+  topsData = await getCachedData('player-tops', async () => {
+    // Obtener lista de miembros
+    const membersResponse = await fetch(WHITELIST_API_URL);
+    if (!membersResponse.ok) {
+      throw new Error(`Error al obtener miembros: ${membersResponse.status}`);
+    }
+    const members = await membersResponse.json();
+    
+    // Obtener estadísticas de todos los jugadores
+    const playerStats = await Promise.all(
+      members.map(async (member: any) => {
+        try {
+          const statsResponse = await fetch(`${STATS_API_URL}/${member.name}`);
+          if (statsResponse.ok) {
+            const rawStats = await statsResponse.json();
+            const mappedStats = mapPlayerStats(rawStats);
+            return { name: member.name, stats: mappedStats, rawStats };
+          }
+        } catch (e) {
+          console.warn(`Error obteniendo stats de ${member.name}:`, e);
+        }
+        return null;
+      })
+    );
+    
+    const validStats = playerStats.filter(Boolean);
+    
+    // Crear tops por categoría
+    const categories: TopCategory[] = [
+      {
+        title: 'Tiempo de Juego',
+        icon: '⏰',
+        players: validStats
+          .map(player => {
+            const playtimeMatch = player.stats.playtime.match(/(\d+)h/);
+            const hours = playtimeMatch ? parseInt(playtimeMatch[1]) : 0;
+            return {
+              name: player.name,
+              value: hours,
+              formattedValue: player.stats.playtime
+            };
+          })
+          .sort((a, b) => b.value - a.value)
+          .slice(0, 5)
+      },
+      {
+        title: 'Bloques Minados',
+        icon: '⛏️',
+        players: validStats
+          .map(player => ({
+            name: player.name,
+            value: player.stats.blocksBroken,
+            formattedValue: player.stats.blocksBroken.toLocaleString()
+          }))
+          .sort((a, b) => b.value - a.value)
+          .slice(0, 5)
+      },
+      {
+        title: 'Bloques Colocados',
+        icon: '🧱',
+        players: validStats
+          .map(player => ({
+            name: player.name,
+            value: player.stats.blocksPlaced,
+            formattedValue: player.stats.blocksPlaced.toLocaleString()
+          }))
+          .sort((a, b) => b.value - a.value)
+          .slice(0, 5)
+      },
+      {
+        title: 'Distancia Recorrida',
+        icon: '🏃',
+        players: validStats
+          .map(player => {
+            const distanceMatch = player.stats.distance.match(/([\d.]+)km/);
+            const km = distanceMatch ? parseFloat(distanceMatch[1]) : 0;
+            return {
+              name: player.name,
+              value: km,
+              formattedValue: player.stats.distance
+            };
+          })
+          .sort((a, b) => b.value - a.value)
+          .slice(0, 5)
+      },
+      {
+        title: 'Mobs Eliminados',
+        icon: '⚔️',
+        players: validStats
+          .map(player => ({
+            name: player.name,
+            value: player.stats.mobKills,
+            formattedValue: player.stats.mobKills.toLocaleString()
+          }))
+          .sort((a, b) => b.value - a.value)
+          .slice(0, 5)
+      },
+      {
+        title: 'Items Crafteados',
+        icon: '🔨',
+        players: validStats
+          .map(player => ({
+            name: player.name,
+            value: player.stats.itemsCrafted,
+            formattedValue: player.stats.itemsCrafted.toLocaleString()
+          }))
+          .sort((a, b) => b.value - a.value)
+          .slice(0, 5)
+      }
+    ];
+    
+    return categories;
+  }, 15); // Caché de 15 minutos
+  
+} catch (e) {
+  error = `Error al obtener tops: ${(e as Error).message}`;
+}
+
+// Función para obtener el color de posición
+function getPositionColor(position: number): string {
+  switch (position) {
+    case 1:
+      return 'text-yellow-500 dark:text-yellow-400'; // Oro
+    case 2:
+      return 'text-gray-400 dark:text-gray-300'; // Plata
+    case 3:
+      return 'text-amber-600 dark:text-amber-500'; // Bronce
+    default:
+      return 'text-muted-foreground';
+  }
+}
+
+function getPositionIcon(position: number): string {
+  switch (position) {
+    case 1:
+      return '🥇';
+    case 2:
+      return '🥈';
+    case 3:
+      return '🥉';
+    default:
+      return `${position}°`;
+  }
+}
+---
+
+{error ? (
+  <div class="p-6 text-center bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+    <div class="mb-2 text-red-600 dark:text-red-400">
+      <svg class="mx-auto mb-2 w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+    </div>
+    <h3 class="mb-2 text-lg font-semibold text-red-800 dark:text-red-300">Error al cargar tops</h3>
+    <p class="text-red-600 dark:text-red-400">{error}</p>
+  </div>
+) : (
+  <div class="space-y-8">
+    <!-- Título de la sección -->
+    <div class="text-center space-y-4">
+      <div class="inline-flex items-center px-4 py-2 mb-4 text-sm font-medium rounded-full border bg-primary/10 border-primary/20 text-primary">
+        <svg class="mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+        </svg>
+        Rankings de la Comunidad
+      </div>
+      <h2 class="text-3xl font-bold text-foreground md:text-4xl">
+        Tops de Jugadores
+      </h2>
+      <p class="mx-auto max-w-2xl text-lg text-muted-foreground">
+        Descubre quiénes lideran en diferentes categorías de nuestro servidor
+      </p>
+    </div>
+
+    <!-- Grid de tops -->
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {topsData.map((category) => (
+        <div class="p-6 rounded-lg border bg-card border-border hover:border-primary/50 transition-colors duration-200">
+          <div class="flex items-center mb-4 space-x-3">
+            <span class="text-2xl">{category.icon}</span>
+            <h3 class="text-lg font-semibold text-foreground">{category.title}</h3>
+          </div>
+          
+          <div class="space-y-3">
+            {category.players.length > 0 ? (
+              category.players.map((player, index) => (
+                <div class="flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors duration-200">
+                  <div class="flex items-center space-x-3">
+                    <span class={`text-lg font-bold ${getPositionColor(index + 1)}`}>
+                      {getPositionIcon(index + 1)}
+                    </span>
+                    <a 
+                      href={`/miembros/${player.name}`}
+                      class="flex items-center space-x-2 group hover:scale-105 transition-transform duration-200"
+                    >
+                      <img 
+                        src={`https://mc-heads.net/avatar/${player.name}/24`}
+                        alt={`Avatar de ${player.name}`}
+                        class="w-6 h-6 rounded group-hover:shadow-md transition-shadow duration-200"
+                        loading="lazy"
+                      />
+                      <span class="font-medium text-foreground group-hover:text-primary transition-colors duration-200 cursor-pointer">
+                        {player.name}
+                      </span>
+                    </a>
+                  </div>
+                  <span class="text-sm font-semibold text-primary">
+                    {player.formattedValue}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <div class="p-4 text-center text-muted-foreground">
+                <p class="text-sm">No hay datos disponibles</p>
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Nota sobre caché -->
+    <div class="p-4 text-center bg-muted/30 rounded-lg border border-muted">
+      <p class="text-sm text-muted-foreground">
+        📊 Los rankings se actualizan cada 15 minutos para optimizar el rendimiento
+      </p>
+    </div>
+  </div>
+)}

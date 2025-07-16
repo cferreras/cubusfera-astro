@@ -1,7 +1,6 @@
 // Función para mapear los datos de la API de Minecraft a un formato más legible
 export interface PlayerStats {
   playtime: string;
-  achievements: number;
   deaths: number;
   distance: string;
   mobKills: number;
@@ -108,43 +107,6 @@ export function mapPlayerStats(apiData: any): PlayerStats {
   ];
   const playTimeTicks = findAnyValue(apiData, playtimeTerms);
   
-  // Buscar logros con múltiples estrategias
-  let achievements = 0;
-  
-  // Estrategia 1: Contar advancements completados
-  if (apiData.advancements && typeof apiData.advancements === 'object') {
-    achievements = Object.values(apiData.advancements).filter(
-      (advancement: any) => advancement?.done === true || advancement?.completed === true
-    ).length;
-  }
-  
-  // Estrategia 2: Buscar en stats.advancements
-  if (achievements === 0 && apiData.stats?.advancements) {
-    achievements = Object.values(apiData.stats.advancements).filter(
-      (advancement: any) => advancement?.done === true || advancement?.completed === true
-    ).length;
-  }
-  
-  // Estrategia 3: Buscar valores numéricos directos
-  if (achievements === 0) {
-    achievements = findAnyValue(apiData, [
-      'achievements', 'advancements', 'advancement_count', 'completed_advancements',
-      'minecraft:advancements', 'total_advancements', 'unlocked_achievements'
-    ]);
-  }
-  
-  // Estrategia 4: Contar objetos en categorías de advancements
-  if (achievements === 0) {
-    const advancementCategories = ['story', 'nether', 'end', 'adventure', 'husbandry'];
-    for (const category of advancementCategories) {
-      if (apiData.advancements?.[category]) {
-        achievements += Object.values(apiData.advancements[category]).filter(
-          (adv: any) => adv?.done === true || adv?.completed === true
-        ).length;
-      }
-    }
-  }
-  
   // Buscar estadísticas básicas
   const deaths = findAnyValue(apiData, [
     'deaths', 'minecraft:deaths', 'death_count', 'deathCount'
@@ -206,7 +168,6 @@ export function mapPlayerStats(apiData: any): PlayerStats {
   
   return {
     playtime: ticksToTime(playTimeTicks),
-    achievements: achievements || 0,
     deaths: deaths || 0,
     distance: cmToKm(totalDistance),
     mobKills: mobKills || 0,
@@ -226,7 +187,6 @@ export function mapPlayerStats(apiData: any): PlayerStats {
 function createEmptyStats(): PlayerStats {
   return {
     playtime: '0h',
-    achievements: 0,
     deaths: 0,
     distance: '0km',
     mobKills: 0,
