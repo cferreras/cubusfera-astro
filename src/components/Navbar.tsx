@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Sun, Moon } from 'lucide-react';
+import { Menu, X, Sun, Moon, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
+interface NavItem {
+  name: string;
+  href?: string;
+  disabled?: boolean;
+  children?: NavItem[];
+}
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
+  const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     // Check for saved theme preference or default to light mode
@@ -33,12 +41,168 @@ const Navbar = () => {
     }
   };
 
-  const navItems = [
+  const navItems: NavItem[] = [
     { name: 'Inicio', href: '/' },
-    { name: 'Mapa', href: '/mapa' },
-    { name: 'Normas', href: '/normas' },
-    { name: 'Miembros', href: '/miembros' },
+    {
+      name: 'Servidor',
+      children: [
+        { name: 'Mapa', href: '/mapa' },
+        { name: 'Normas', href: '/normas' },
+        { name: 'Proyectos', href: '/proyectos', disabled: true },
+      ]
+    },
+    {
+      name: 'Jugadores',
+      children: [
+        { name: 'Miembros', href: '/miembros' },
+        { name: 'Top', href: '/top' },
+      ]
+    },
+    { name: 'Blog', href: '/blog', disabled: true },
   ];
+
+  const handleMobileDropdownToggle = (itemName: string) => {
+    setOpenMobileDropdown(openMobileDropdown === itemName ? null : itemName);
+  };
+
+  const handleNavigation = (href: string | undefined, disabled: boolean | undefined) => {
+    if (disabled || !href) return;
+    
+    setIsOpen(false);
+    setOpenMobileDropdown(null);
+    window.location.href = href;
+  };
+
+  const renderDesktopNavItem = (item: NavItem) => {
+    if (item.children) {
+      return (
+        <div key={item.name} className="relative group">
+          <button
+            className="flex items-center space-x-1 text-muted-foreground hover:text-foreground px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:bg-accent"
+            type="button"
+          >
+            <span>{item.name}</span>
+            <ChevronDown className="h-4 w-4 transition-transform duration-200 group-hover:rotate-180" />
+          </button>
+          
+          {/* Dropdown que aparece en hover */}
+          <div className="absolute left-0 mt-1 bg-background border border-border rounded-md shadow-lg min-w-[160px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+            {item.children.map((child) => (
+              <button
+                key={child.name}
+                onClick={() => handleNavigation(child.href, child.disabled)}
+                disabled={child.disabled}
+                className={cn(
+                  "w-full text-left block px-4 py-2 text-sm transition-colors duration-200 first:rounded-t-md last:rounded-b-md",
+                  child.disabled 
+                    ? "text-muted-foreground/50 cursor-not-allowed" 
+                    : "text-muted-foreground hover:text-foreground hover:bg-accent cursor-pointer"
+                )}
+                type="button"
+              >
+                {child.name}
+                {child.disabled && (
+                  <span className="ml-2 text-xs bg-muted text-muted-foreground px-1.5 py-0.5 rounded">
+                    Próximamente
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <button
+        key={item.name}
+        onClick={() => handleNavigation(item.href, item.disabled)}
+        disabled={item.disabled}
+        className={cn(
+          "px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200",
+          item.disabled 
+            ? "text-muted-foreground/50 cursor-not-allowed" 
+            : "text-muted-foreground hover:text-foreground hover:bg-accent"
+        )}
+        type="button"
+      >
+        {item.name}
+        {item.disabled && (
+          <span className="ml-2 text-xs bg-muted text-muted-foreground px-1.5 py-0.5 rounded">
+            Próximamente
+          </span>
+        )}
+      </button>
+    );
+  };
+
+  const renderMobileNavItem = (item: NavItem) => {
+    if (item.children) {
+      return (
+        <div key={item.name}>
+          <button
+            onClick={() => handleMobileDropdownToggle(item.name)}
+            className="w-full flex items-center justify-between text-muted-foreground hover:text-foreground px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 hover:bg-accent"
+            type="button"
+          >
+            <span>{item.name}</span>
+            <ChevronDown className={cn(
+              "h-4 w-4 transition-transform duration-200",
+              openMobileDropdown === item.name && "rotate-180"
+            )} />
+          </button>
+          
+          {openMobileDropdown === item.name && (
+            <div className="ml-4 mt-1 space-y-1">
+              {item.children.map((child) => (
+                <button
+                  key={child.name}
+                  onClick={() => handleNavigation(child.href, child.disabled)}
+                  disabled={child.disabled}
+                  className={cn(
+                    "w-full text-left block px-4 py-2 text-sm transition-colors duration-200 rounded-md",
+                    child.disabled 
+                      ? "text-muted-foreground/50 cursor-not-allowed" 
+                      : "text-muted-foreground hover:text-foreground hover:bg-accent cursor-pointer"
+                  )}
+                  type="button"
+                >
+                  {child.name}
+                  {child.disabled && (
+                    <span className="ml-2 text-xs bg-muted text-muted-foreground px-1.5 py-0.5 rounded">
+                      Próximamente
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    return (
+      <button
+        key={item.name}
+        onClick={() => handleNavigation(item.href, item.disabled)}
+        disabled={item.disabled}
+        className={cn(
+          "w-full text-left block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200",
+          item.disabled 
+            ? "text-muted-foreground/50 cursor-not-allowed" 
+            : "text-muted-foreground hover:text-foreground hover:bg-accent"
+        )}
+        type="button"
+      >
+        {item.name}
+        {item.disabled && (
+          <span className="ml-2 text-xs bg-muted text-muted-foreground px-1.5 py-0.5 rounded">
+            Próximamente
+          </span>
+        )}
+      </button>
+    );
+  };
 
   return (
     <nav className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border sticky top-0 z-50">
@@ -64,15 +228,7 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
-              {navItems.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="text-muted-foreground hover:text-foreground px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:bg-accent"
-                >
-                  {item.name}
-                </a>
-              ))}
+              {navItems.map((item) => renderDesktopNavItem(item))}
             </div>
           </div>
 
@@ -83,6 +239,7 @@ const Navbar = () => {
               onClick={toggleTheme}
               className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors duration-200"
               aria-label="Toggle theme"
+              type="button"
             >
               {isDark ? (
                 <Sun className="h-5 w-5" />
@@ -97,6 +254,7 @@ const Navbar = () => {
                 onClick={() => setIsOpen(!isOpen)}
                 className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors duration-200"
                 aria-label="Toggle menu"
+                type="button"
               >
                 {isOpen ? (
                   <X className="h-6 w-6" />
@@ -112,19 +270,10 @@ const Navbar = () => {
       {/* Mobile Navigation Menu */}
       <div className={cn(
         "md:hidden transition-all duration-300 ease-in-out overflow-hidden",
-        isOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
+        isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
       )}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-background border-t border-border">
-          {navItems.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              className="text-muted-foreground hover:text-foreground block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 hover:bg-accent"
-              onClick={() => setIsOpen(false)}
-            >
-              {item.name}
-            </a>
-          ))}
+          {navItems.map((item) => renderMobileNavItem(item))}
         </div>
       </div>
     </nav>
