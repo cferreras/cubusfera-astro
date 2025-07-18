@@ -516,33 +516,50 @@ export default function DynamicTopsSelector() {
               </div>
             ) : (
               <div className="space-y-3">
-                <select
-                  value={selectedItem?.id || ''}
-                  onChange={(e) => {
-                    const item = availableItems.find(i => i.id === e.target.value);
-                    setSelectedItem(item || null);
-                  }}
-                  className="w-full p-3 text-sm rounded-md border border-border bg-background text-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
-                >
-                  {availableItems.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.displayName} {item.formattedTotal && `(${item.formattedTotal})`}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select
+                    value={selectedItem?.id || ''}
+                    onChange={(e) => {
+                      const item = availableItems.find(i => i.id === e.target.value);
+                      setSelectedItem(item || null);
+                    }}
+                    className="w-full p-4 pr-10 text-sm rounded-lg border-2 border-border bg-background text-foreground focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 appearance-none cursor-pointer hover:border-primary/50 shadow-sm"
+                  >
+                    {availableItems.map((item) => (
+                      <option key={item.id} value={item.id} className="py-2">
+                        {item.displayName} {item.formattedTotal && `(${item.formattedTotal})`}
+                      </option>
+                    ))}
+                  </select>
+                  
+                  {/* Icono de flecha personalizado */}
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                    <svg className="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </div>
+                </div>
                 
                 {selectedItem && (
-                  <div className="text-sm text-muted-foreground space-y-2 p-3 bg-muted/30 rounded-md">
-                    <div>
-                      <span className="font-medium">{selectedCategory.title}</span>
+                  <div className="bg-gradient-to-r from-primary/5 to-secondary/5 border border-primary/20 rounded-lg p-4 space-y-3">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      <span className="font-semibold text-foreground">{selectedCategory.title}</span>
                       {selectedItem.id !== 'total' && (
-                        <span> → {selectedItem.displayName}</span>
+                        <>
+                          <span className="text-muted-foreground">→</span>
+                          <span className="text-primary font-medium">{selectedItem.displayName}</span>
+                        </>
                       )}
                     </div>
+                    
                     {selectedItem.formattedTotal && (
-                      <div className="flex items-center space-x-2">
-                        <span className="text-primary font-medium">📊</span>
-                        <span>Total del servidor: <span className="font-semibold text-primary">{selectedItem.formattedTotal}</span></span>
+                      <div className="flex items-center justify-between p-3 bg-background/50 rounded-md border border-border/50">
+                        <div className="flex items-center space-x-2">
+                          <span className="text-lg">📊</span>
+                          <span className="text-sm text-muted-foreground">Total del servidor:</span>
+                        </div>
+                        <span className="font-bold text-primary text-lg">{selectedItem.formattedTotal}</span>
                       </div>
                     )}
                   </div>
