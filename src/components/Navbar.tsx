@@ -55,7 +55,7 @@ const Navbar = () => {
       name: 'Jugadores',
       children: [
         { name: 'Miembros', href: '/miembros' },
-        { name: 'Explorador', href: '/top' },
+        { name: 'Explorador', href: '/explorador' },
       ]
     },
     { name: 'Blog', href: '/blog', disabled: true },
