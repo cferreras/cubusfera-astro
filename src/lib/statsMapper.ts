@@ -202,6 +202,87 @@ function createEmptyStats(): PlayerStats {
   };
 }
 
+// Función para obtener estadísticas específicas por categoría desde datos raw
+export function getTopStatsFromRaw(apiData: any, category: string, limit: number = 10) {
+  const possiblePaths = [
+    category,
+    `stats.${category}`,
+    `minecraft:${category}`,
+    `stats.minecraft:${category}`
+  ];
+  
+  let stats = {};
+  
+  for (const path of possiblePaths) {
+    const pathParts = path.split('.');
+    let current = apiData;
+    
+    for (const part of pathParts) {
+      if (current && current[part]) {
+        current = current[part];
+      } else {
+        current = null;
+        break;
+      }
+    }
+    
+    if (current && typeof current === 'object') {
+      stats = current;
+      break;
+    }
+  }
+  
+  return Object.entries(stats)
+    .sort(([,a], [,b]) => (Number(b) || 0) - (Number(a) || 0))
+    .slice(0, limit)
+    .map(([item, count]) => ({
+      item: item.replace('minecraft:', '').replace(/_/g, ' '),
+      count: Number(count) || 0,
+      formattedCount: (Number(count) || 0).toLocaleString()
+    }));
+}
+
+// Función para obtener el total de una categoría
+export function getCategoryTotal(apiData: any, category: string): number {
+  const possiblePaths = [
+    category,
+    `stats.${category}`,
+    `minecraft:${category}`,
+    `stats.minecraft:${category}`
+  ];
+  
+  let stats = {};
+  
+  for (const path of possiblePaths) {
+    const pathParts = path.split('.');
+    let current = apiData;
+    
+    for (const part of pathParts) {
+      if (current && current[part]) {
+        current = current[part];
+      } else {
+        current = null;
+        break;
+      }
+    }
+    
+    if (current && typeof current === 'object') {
+      stats = current;
+      break;
+    }
+  }
+  
+  let total = 0;
+  Object.values(stats).forEach(value => {
+    const numValue = Number(value);
+    if (!isNaN(numValue) && numValue > 0) {
+      total += numValue;
+    }
+  });
+  
+  return total;
+}
+
 // Función para obtener estadísticas específicas por categoría
 export function getTopStats(apiData: any, category: 'mined' | 'crafted' | 'used' | 'killed', limit: number = 5) {
   const possiblePaths = [

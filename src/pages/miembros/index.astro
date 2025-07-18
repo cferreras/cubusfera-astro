@@ -3,6 +3,7 @@ export const prerender = true;
 import Layout from '../../layouts/main.astro';
 import Navbar from '../../components/Navbar';
 import MembersList from '../../components/MembersList.astro';
+import TopsSection from '../../components/TopsSection.astro';
 ---
 
 <Layout content={{ title: 'Miembros - Cubusfera', description: 'Conoce a todos los miembros de la comunidad Cubusfera. Descubre quiénes forman parte de nuestro servidor de Minecraft y únete a nuestra familia de jugadores.' }}>
@@ -31,6 +32,8 @@ import MembersList from '../../components/MembersList.astro';
         </div>
       </div>
 
+
+
       <!-- Members Grid -->
       <div class="container px-4 py-16 mx-auto">
         <div class="mb-8 text-center">
@@ -54,6 +57,11 @@ import MembersList from '../../components/MembersList.astro';
             <p class="text-muted-foreground">Obteniendo la lista de miembros de la comunidad</p>
           </div>
         </MembersList>
+        </div>
+        <hr class="border-b">
+            <!-- Statistics Section -->
+      <div class="container px-4 py-16 mx-auto">
+        <TopsSection />
       </div>
     </main>
 </Layout>
