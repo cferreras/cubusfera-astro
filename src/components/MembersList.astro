@@ -37,8 +37,9 @@ function getGroupColor(group: string): string {
     case 'owner':
       return 'bg-gradient-to-r from-red-500 to-red-700 text-white dark:from-red-400 dark:to-red-600';
     case 'admin':
-      return 'bg-red-500 text-white dark:bg-red-400';
+      return 'bg-gradient-to-r from-orange-500 to-orange-700 text-white dark:from-orange-400 dark:to-orange-600 shadow-lg border border-orange-300 dark:border-orange-500';
     case 'moderator':
+    case 'helper':
     case 'mod':
       return 'bg-blue-500 text-white dark:bg-blue-400';
     case 'vip':
@@ -53,7 +54,7 @@ function getGroupColor(group: string): string {
 ---
 
 {error ? (
-  <div class="p-6 text-center bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+  <div class="p-6 text-center bg-red-50 rounded-lg border border-red-200 dark:bg-red-900/20 dark:border-red-800">
     <div class="mb-2 text-red-600 dark:text-red-400">
       <svg class="mx-auto mb-2 w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -106,7 +107,7 @@ function getGroupColor(group: string): string {
             </span>
           </div>
           
-          <div class="flex items-center justify-center space-x-1">
+          <div class="flex justify-center items-center space-x-1">
             <div class={`w-2 h-2 rounded-full ${
               member.online ? 'bg-green-500 dark:bg-green-400' : 'bg-gray-400 dark:bg-gray-500'
             }`}></div>
