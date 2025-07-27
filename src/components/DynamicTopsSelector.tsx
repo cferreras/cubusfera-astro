@@ -389,6 +389,156 @@ export default function DynamicTopsSelector() {
     }
   };
 
+  // Función para seleccionar categoría e ítem aleatorio
+  const selectRandomCategoryAndItem = async () => {
+    setLoadingItems(true);
+    
+    try {
+      // Seleccionar categoría aleatoria
+      const randomCategory = TOP_CATEGORIES[Math.floor(Math.random() * TOP_CATEGORIES.length)];
+      console.log(`🎲 Categoría seleccionada: ${randomCategory.title}`);
+      
+      // Cambiar la categoría primero
+      setSelectedCategory(randomCategory);
+      
+      // Obtener items para esta categoría
+      let items: ItemOption[] = [];
+      
+      // Verificar caché
+      const cached = itemsCache[randomCategory.id];
+      if (isCacheValid(cached)) {
+        console.log(`📦 Usando items desde caché para ${randomCategory.title}`);
+        items = cached.data;
+      } else {
+        console.log(`🔄 Cargando items para ${randomCategory.title}`);
+        
+        // Cargar items manualmente
+        const members = await getCachedMembers();
+        const itemTotals: { [itemName: string]: number } = {};
+
+        // Procesar en lotes
+        const batchSize = 10;
+        for (let i = 0; i < members.length; i += batchSize) {
+          const batch = members.slice(i, i + batchSize);
+          
+          const batchPromises = batch.map(async (member) => {
+            const rawStats = await getCachedPlayerStats(member.name);
+            if (!rawStats) return;
+            
+            let categoryData = null;
+            if (rawStats.stats && rawStats.stats[randomCategory.apiPath]) {
+              categoryData = rawStats.stats[randomCategory.apiPath];
+            } else if (rawStats[randomCategory.apiPath]) {
+              categoryData = rawStats[randomCategory.apiPath];
+            }
+            
+            if (categoryData && typeof categoryData === 'object') {
+              Object.entries(categoryData).forEach(([item, value]) => {
+                const numValue = Number(value);
+                if (!isNaN(numValue) && numValue > 0) {
+                  itemTotals[item] = (itemTotals[item] || 0) + numValue;
+                }
+              });
+            }
+          });
+          
+          await Promise.all(batchPromises);
+        }
+
+        // Crear array de items específicos (sin "Todos")
+        const itemsArray: ItemOption[] = Object.entries(itemTotals)
+          .sort(([,a], [,b]) => b - a)
+          .map(([item, total]) => ({
+            id: item,
+            name: item,
+            displayName: formatItemName(item),
+            total,
+            formattedTotal: total.toLocaleString()
+          }));
+
+        // Calcular total general
+        const grandTotal = Object.values(itemTotals).reduce((sum, value) => sum + value, 0);
+
+        // Crear lista completa con "Todos" al principio
+        const completeItems = [
+          {
+            id: 'total',
+            name: 'total',
+            displayName: 'Todos (Total)',
+            total: grandTotal,
+            formattedTotal: grandTotal.toLocaleString()
+          },
+          ...itemsArray
+        ];
+
+        // Guardar en caché la lista completa
+        const cacheEntry: CacheEntry<ItemOption[]> = {
+          data: completeItems,
+          timestamp: Date.now(),
+          ttl: CACHE_TTL.AVAILABLE_ITEMS
+        };
+        
+        setItemsCache(prev => ({
+          ...prev,
+          [randomCategory.id]: cacheEntry
+        }));
+
+        // Actualizar availableItems con la lista completa
+        setAvailableItems(completeItems);
+        
+        // Usar la lista completa para la selección
+        items = completeItems;
+      }
+      
+      // SELECCIÓN ALEATORIA: FORZAR selección de ítems específicos ÚNICAMENTE
+      console.log(`📋 Total de items cargados: ${items.length}`);
+      console.log(`📋 Todos los items:`, items.map(i => `${i.id} - ${i.displayName}`));
+      
+      // Filtrar AGRESIVAMENTE cualquier cosa que sea "total" o "Todos"
+      const specificItems = items.filter(item => 
+        item.id !== 'total' && 
+        item.name !== 'total' && 
+        !item.displayName.includes('Todos') &&
+        !item.displayName.includes('Total')
+      );
+      
+      console.log(`📋 Items específicos después del filtro: ${specificItems.length}`);
+      console.log(`📋 Items específicos filtrados:`, specificItems.map(i => `${i.id} - ${i.displayName}`));
+      
+      if (specificItems.length > 0) {
+        // Asegurar que availableItems esté actualizado ANTES de seleccionar
+        setAvailableItems(items);
+        
+        // Esperar un tick para que el estado se actualice
+        await new Promise(resolve => setTimeout(resolve, 10));
+        
+        const randomIndex = Math.floor(Math.random() * specificItems.length);
+        const selectedRandomItem = specificItems[randomIndex];
+        
+        console.log(`✅ SELECCIONADO FINAL: ${selectedRandomItem.displayName} (índice ${randomIndex} de ${specificItems.length})`);
+        console.log(`✅ Item seleccionado completo:`, selectedRandomItem);
+        
+        // Seleccionar el ítem específico
+        setSelectedItem(selectedRandomItem);
+      } else {
+        console.error(`❌ NO HAY ÍTEMS ESPECÍFICOS para ${randomCategory.title}`);
+        console.error(`❌ Items disponibles:`, items);
+        // Como último recurso, si realmente no hay ítems específicos
+        if (items.length > 1) {
+          // Tomar el segundo ítem (saltarse el primero que suele ser "Todos")
+          setSelectedItem(items[1]);
+        } else if (items.length === 1) {
+          setSelectedItem(items[0]);
+        }
+      }
+      
+    } catch (error) {
+      console.error('❌ Error en selección aleatoria:', error);
+    } finally {
+      setLoadingItems(false);
+    }
+  };
+
   // Función para limpiar cachés expirados
   const cleanExpiredCaches = () => {
     // Limpiar caché de miembros
@@ -499,6 +649,24 @@ export default function DynamicTopsSelector() {
                   </div>
                 </button>
               ))}
+              
+              {/* Botón de selección aleatoria como categoría */}
+              <button
+                onClick={selectRandomCategoryAndItem}
+                disabled={loadingItems || loading}
+                className="p-3 rounded-md border text-sm transition-all duration-200 hover:scale-105 bg-background border-border hover:border-primary/50 hover:bg-muted/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              >
+                <div className="text-xl mb-2">
+                  {loadingItems || loading ? (
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary mx-auto"></div>
+                  ) : (
+                    "🎲"
+                  )}
+                </div>
+                <div className="font-medium leading-tight">
+                  {loadingItems || loading ? "Seleccionando..." : "Sorpréndeme"}
+                </div>
+              </button>
             </div>
           </div>
 
