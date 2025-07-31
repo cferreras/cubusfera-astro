@@ -3,66 +3,23 @@ export const prerender = true;
 import Layout from "../layouts/main.astro";
 import Navbar from "../components/Navbar.js";
 import Breadcrumb from "../components/Breadcrumb.astro";
+import { getCollection } from 'astro:content';
 
-// Datos estáticos de proyectos (por ahora)
-const proyectos = [
-  {
-    id: "granja-hierro",
-    titulo: "Granja de Hierro Industrial",
-    descripcion: "Granja masiva de hierro con capacidad de 2000 lingotes por hora",
-    imagen: "/logo.svg", // Placeholder por ahora
-    etiquetas: ["Granja", "Hierro", "Industrial"],
-    dimension: "Overworld",
-    coordenadas: { x: 1250, y: 64, z: -890 }
-  },
-  {
-    id: "ciudad-spawn",
-    titulo: "Ciudad del Spawn",
-    descripcion: "Centro urbano principal del servidor con tiendas y servicios",
-    imagen: "/logo.svg",
-    etiquetas: ["Ciudad", "Spawn", "Comercio"],
-    dimension: "Overworld",
-    coordenadas: { x: 0, y: 70, z: 0 }
-  },
-  {
-    id: "granja-enderman",
-    titulo: "Granja de Enderman",
-    descripcion: "Granja automática de enderman para obtener perlas del End",
-    imagen: "/logo.svg",
-    etiquetas: ["Granja", "Enderman", "End"],
-    dimension: "End",
-    coordenadas: { x: 100, y: 50, z: 0 }
-  },
-  {
-    id: "fortaleza-nether",
-    titulo: "Fortaleza del Nether",
-    descripcion: "Base fortificada en el Nether con hub de transporte",
-    imagen: "/logo.svg",
-    etiquetas: ["Base", "Nether", "Transporte"],
-    dimension: "Nether",
-    coordenadas: { x: 156, y: 64, z: -111 }
-  },
-  {
-    id: "granja-guardian",
-    titulo: "Granja de Guardianes",
-    descripcion: "Monumento oceánico convertido en granja de guardianes",
-    imagen: "/logo.svg",
-    etiquetas: ["Granja", "Guardian", "Oceano"],
-    dimension: "Overworld",
-    coordenadas: { x: -2340, y: 40, z: 1560 }
-  },
-  {
-    id: "distrito-redstone",
-    titulo: "Distrito de Redstone",
-    descripcion: "Área dedicada a experimentos y construcciones de redstone",
-    imagen: "/logo.svg",
-    etiquetas: ["Redstone", "Tecnico", "Experimental"],
-    dimension: "Overworld",
-    coordenadas: { x: 800, y: 64, z: 1200 }
-  }
-];
+// Obtener todos los proyectos desde los archivos Markdown
+const proyectos = await getCollection('proyectos');
 
-const todasLasEtiquetas = [...new Set(proyectos.flatMap(p => p.etiquetas))];
+// Transformar los datos para mantener compatibilidad con el frontend
+const proyectosData = proyectos.map(proyecto => ({
+  id: proyecto.slug,
+  titulo: proyecto.data.titulo,
+  descripcion: proyecto.data.descripcion,
+  imagen: proyecto.data.imagen,
+  etiquetas: proyecto.data.etiquetas,
+  dimension: proyecto.data.dimension,
+  coordenadas: proyecto.data.coordenadas
+}));
+
+const todasLasEtiquetas = [...new Set(proyectosData.flatMap(p => p.etiquetas))];
 ---
 
 <Layout
@@ -120,7 +77,7 @@ const todasLasEtiquetas = [...new Set(proyectos.flatMap(p => p.etiquetas))];
 
         <!-- Grid de Proyectos -->
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="proyectos-grid">
-          {proyectos.map(proyecto => (
+          {proyectosData.map(proyecto => (
             <div 
               class="overflow-hidden rounded-lg border shadow-sm transition-all duration-200 proyecto-card group bg-card border-border hover:shadow-md hover:border-primary/20"
               data-etiquetas={proyecto.etiquetas.join(',')}
@@ -132,10 +89,10 @@ const todasLasEtiquetas = [...new Set(proyectos.flatMap(p => p.etiquetas))];
                   class="object-cover w-full h-full transition-transform duration-200 group-hover:scale-105"
                 />
                 <div class="absolute top-2 right-2">
-                  <span class={`px-2 py-1 text-xs font-medium rounded-full ${
-                    proyecto.dimension === 'Overworld' ? 'bg-green-500/20 text-green-400' :
-                    proyecto.dimension === 'Nether' ? 'bg-red-500/20 text-red-400' :
-                    'bg-purple-500/20 text-purple-400'
+                  <span class={`px-2 py-1 text-xs font-medium rounded-full border ${
+                    proyecto.dimension === 'Overworld' ? 'bg-green-600 text-white border-green-500' :
+                    proyecto.dimension === 'Nether' ? 'bg-red-600 text-white border-red-500' :
+                    'bg-purple-600 text-white border-purple-500'
                   }`}>
                     {proyecto.dimension}
                   </span>
