@@ -45,10 +45,10 @@ const getMinecraftHead = (nombre: string) => `https://minotar.net/avatar/${nombr
     <div class="container px-4 py-8 mx-auto">
       <div class="grid gap-8 lg:grid-cols-3">
         <!-- Columna Principal -->
-        <div class="lg:col-span-2 space-y-8">
+        <div class="space-y-8 lg:col-span-2">
           <!-- Header del Proyecto -->
           <div>
-            <div class="flex items-center gap-3 mb-4">
+            <div class="flex gap-3 items-center mb-4">
               <h1 class="text-3xl font-bold text-foreground">{proyecto.data.titulo}</h1>
               <span class={`px-3 py-1 text-sm font-medium rounded-full ${
                 proyecto.data.dimension === 'Overworld' ? 'bg-green-500/20 text-green-400' :
@@ -58,20 +58,20 @@ const getMinecraftHead = (nombre: string) => `https://minotar.net/avatar/${nombr
                 {proyecto.data.dimension}
               </span>
             </div>
-            <p class="text-lg text-muted-foreground leading-relaxed mb-6">
+            <p class="mb-6 text-lg leading-relaxed text-muted-foreground">
               {proyecto.data.descripcion}
             </p>
           </div>
 
           <!-- Contenido Markdown -->
-          <div class="bg-card border border-border rounded-lg p-6">
-            <div class="markdown-content space-y-4">
+          <div class="p-6 rounded-lg border bg-card border-border">
+            <div class="space-y-4 markdown-content">
               <Content />
             </div>
           </div>
 
           <!-- Mapa -->
-          <div class="bg-card border border-border rounded-lg overflow-hidden">
+          <div class="overflow-hidden rounded-lg border bg-card border-border">
             <div class="p-4 border-b border-border">
               <h2 class="text-xl font-semibold text-foreground">Ubicación en el Mapa</h2>
             </div>
@@ -86,9 +86,9 @@ const getMinecraftHead = (nombre: string) => `https://minotar.net/avatar/${nombr
                 ></iframe>
               </div>
             ) : (
-              <div class="aspect-video bg-muted flex items-center justify-center">
+              <div class="flex justify-center items-center aspect-video bg-muted">
                 <div class="text-center text-muted-foreground">
-                  <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="mx-auto mb-2 w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 4m0 13V4m0 0L9 7"></path>
                   </svg>
                   <p>Mapa no configurado</p>
@@ -100,7 +100,7 @@ const getMinecraftHead = (nombre: string) => `https://minotar.net/avatar/${nombr
 
           <!-- Video de YouTube (si existe) -->
           {proyecto.data.video && (
-            <div class="bg-card border border-border rounded-lg overflow-hidden">
+            <div class="overflow-hidden rounded-lg border bg-card border-border">
               <div class="p-4 border-b border-border">
                 <h2 class="text-xl font-semibold text-foreground">Video del Proyecto</h2>
               </div>
@@ -121,15 +121,15 @@ const getMinecraftHead = (nombre: string) => `https://minotar.net/avatar/${nombr
         <!-- Sidebar -->
         <div class="space-y-6">
           <!-- Coordenadas -->
-          <div class="bg-card border border-border rounded-lg p-4">
-            <h3 class="text-lg font-semibold text-foreground mb-3">Coordenadas</h3>
+          <div class="p-4 rounded-lg border bg-card border-border">
+            <h3 class="mb-3 text-lg font-semibold text-foreground">Coordenadas</h3>
             <div class="space-y-2">
-              <div class="flex items-center justify-between p-3 bg-muted rounded-md">
+              <div class="flex justify-between items-center p-3 rounded-md bg-muted">
                 <span class="font-mono text-sm">
                   {proyecto.data.coordenadas.x}, {proyecto.data.coordenadas.y}, {proyecto.data.coordenadas.z}
                 </span>
                 <button 
-                  class="copy-coords px-3 py-1 text-xs bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors"
+                  class="px-3 py-1 text-xs rounded transition-colors copy-coords bg-primary text-primary-foreground hover:bg-primary/90"
                   data-coords={`${proyecto.data.coordenadas.x} ${proyecto.data.coordenadas.y} ${proyecto.data.coordenadas.z}`}
                 >
                   Copiar
@@ -139,20 +139,20 @@ const getMinecraftHead = (nombre: string) => `https://minotar.net/avatar/${nombr
           </div>
 
           <!-- Constructores -->
-          <div class="bg-card border border-border rounded-lg p-4">
-            <h3 class="text-lg font-semibold text-foreground mb-3">Constructores</h3>
+          <div class="p-4 rounded-lg border bg-card border-border">
+            <h3 class="mb-3 text-lg font-semibold text-foreground">Constructores</h3>
             <div class="space-y-3">
               {proyecto.data.constructores.map((constructor: { nombre: string }) => (
                 <a 
-                  href={`/miembros/${constructor.nombre.toLowerCase()}`}
-                  class="flex items-center gap-3 p-2 rounded-md hover:bg-accent transition-colors group"
+                  href={`/miembros/${constructor.nombre}`}
+                  class="flex gap-3 items-center p-2 rounded-md transition-colors hover:bg-accent group"
                 >
                   <img 
                      src={getMinecraftHead(constructor.nombre)}
                      alt={`Avatar de ${constructor.nombre}`}
                      class="w-8 h-8 rounded"
                    />
-                  <span class="text-sm font-medium group-hover:text-primary transition-colors">
+                  <span class="text-sm font-medium transition-colors group-hover:text-primary">
                     {constructor.nombre}
                   </span>
                 </a>
@@ -162,8 +162,8 @@ const getMinecraftHead = (nombre: string) => `https://minotar.net/avatar/${nombr
 
           <!-- Información de Granja (si existe) -->
           {proyecto.data.granja && (
-            <div class="bg-card border border-border rounded-lg p-4">
-              <h3 class="text-lg font-semibold text-foreground mb-3">Uso de la Granja</h3>
+            <div class="p-4 rounded-lg border bg-card border-border">
+              <h3 class="mb-3 text-lg font-semibold text-foreground">Uso de la Granja</h3>
               
               <div class="space-y-4">
                 <p class="text-sm text-muted-foreground">
@@ -173,8 +173,8 @@ const getMinecraftHead = (nombre: string) => `https://minotar.net/avatar/${nombr
                 <div class="space-y-3">
                   <h4 class="text-sm font-medium text-foreground">Bots necesarios:</h4>
                   {proyecto.data.granja.bots.map((bot: { nombre: string; comando: string }) => (
-                     <div class="space-y-2 p-3 bg-muted rounded-md">
-                       <div class="flex items-center gap-2">
+                     <div class="p-3 space-y-2 rounded-md bg-muted">
+                       <div class="flex gap-2 items-center">
                          <img 
                          src={getMinecraftHead(bot.nombre)}
                          alt={`Avatar de ${bot.nombre}`}
@@ -182,12 +182,12 @@ const getMinecraftHead = (nombre: string) => `https://minotar.net/avatar/${nombr
                        />
                          <span class="text-sm font-medium">{bot.nombre}</span>
                        </div>
-                      <div class="flex items-center gap-2">
-                        <code class="flex-1 p-2 text-xs bg-background border rounded font-mono">
+                      <div class="flex gap-2 items-center">
+                        <code class="flex-1 p-2 font-mono text-xs rounded border bg-background">
                           {bot.comando}
                         </code>
                         <button 
-                          class="copy-command px-2 py-1 text-xs bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors"
+                          class="px-2 py-1 text-xs rounded transition-colors copy-command bg-primary text-primary-foreground hover:bg-primary/90"
                           data-command={bot.comando}
                         >
                           Copiar
