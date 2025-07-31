@@ -2,12 +2,19 @@
 import Layout from '../layouts/main.astro';
 import Navbar from '../components/Navbar';
 import DynamicTopsSelector from '../components/DynamicTopsSelector';
+import Breadcrumb from '../components/Breadcrumb.astro';
 ---
 
 <Layout content={{ title: 'Explorador - Cubusfera', description: 'Explora estadísticas detalladas y rankings personalizados de nuestro servidor de Minecraft. Analiza datos específicos de bloques, items, mobs y más.' }}>
   <Navbar client:load />
   
   <main class="min-h-screen bg-background">
+    <Breadcrumb items={[
+      { label: 'Inicio', href: '/' },
+      { label: 'Jugadores', nonClickable: true },
+      { label: 'Explorador' }
+    ]} />
+    
     <div class="container mx-auto px-4 py-8">
       <DynamicTopsSelector client:load />
     </div>

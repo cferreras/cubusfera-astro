@@ -1,0 +1,320 @@
+---
+export const prerender = true;
+import Layout from "../../layouts/main.astro";
+import Navbar from "../../components/Navbar.js";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+
+// Función requerida para rutas dinámicas
+export function getStaticPaths() {
+  return [
+    { params: { slug: "granja-hierro" } },
+    { params: { slug: "ciudad-spawn" } },
+    { params: { slug: "granja-enderman" } },
+    { params: { slug: "fortaleza-nether" } },
+    { params: { slug: "granja-guardian" } },
+    { params: { slug: "distrito-redstone" } }
+  ];
+}
+
+// Datos estáticos del proyecto (por ahora)
+const proyectoData = {
+  "granja-hierro": {
+    titulo: "Granja de Hierro Industrial",
+    descripcion: "Esta granja masiva de hierro es capaz de producir más de 2000 lingotes por hora utilizando un diseño optimizado de aldeanos y golems. La estructura cuenta con múltiples niveles de spawning y un sistema de recolección automático que garantiza la máxima eficiencia.",
+    coordenadas: { x: 1250, y: 64, z: -890 },
+    dimension: "Overworld",
+    constructores: [
+      { nombre: "TechMaster", uuid: "069a79f4-44e9-4726-a5be-fca90e38aaf5" },
+      { nombre: "RedstoneGuru", uuid: "853c80ef-3c37-49fd-aa49-938b674adae6" }
+    ],
+    granja: {
+      bots: [
+        { 
+          nombre: "IronBot01", 
+          uuid: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+          comando: "/bot spawn IronBot01 1250 64 -890"
+        },
+        { 
+          nombre: "CollectorBot", 
+          uuid: "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+          comando: "/bot spawn CollectorBot 1245 64 -885"
+        }
+      ],
+      instrucciones: "Para usar la granja, simplemente spawea los bots en las coordenadas indicadas. IronBot01 se encarga de mantener a los aldeanos, mientras que CollectorBot recolecta los items automáticamente."
+    },
+    video: "dQw4w9WgXcQ" // ID de YouTube
+  },
+  "ciudad-spawn": {
+    titulo: "Ciudad del Spawn",
+    descripcion: "El corazón del servidor, una ciudad bulliciosa que sirve como punto de encuentro para todos los jugadores. Incluye tiendas, servicios públicos, y una arquitectura impresionante que combina estilos medievales y modernos.",
+    coordenadas: { x: 0, y: 70, z: 0 },
+    dimension: "Overworld",
+    constructores: [
+      { nombre: "ArchitectPro", uuid: "550e8400-e29b-41d4-a716-446655440000" },
+      { nombre: "CityPlanner", uuid: "6ba7b811-9dad-11d1-80b4-00c04fd430c8" },
+      { nombre: "DetailMaster", uuid: "f47ac10b-58cc-4372-a567-0e02b2c3d480" }
+    ]
+  },
+  "granja-enderman": {
+    titulo: "Granja de Enderman",
+    descripcion: "Una granja automática de enderman ubicada en el End que aprovecha la mecánica de spawning natural para generar grandes cantidades de perlas del End y experiencia.",
+    coordenadas: { x: 100, y: 50, z: 0 },
+    dimension: "End",
+    constructores: [
+      { nombre: "EndExplorer", uuid: "123e4567-e89b-12d3-a456-426614174000" }
+    ],
+    granja: {
+      bots: [
+        { 
+          nombre: "EndBot", 
+          uuid: "987fcdeb-51a2-43d1-9c4b-123456789abc",
+          comando: "/bot spawn EndBot 100 50 0"
+        }
+      ],
+      instrucciones: "Spawea EndBot en las coordenadas exactas. El bot se encargará de atraer y eliminar enderman automáticamente."
+    }
+  },
+  "fortaleza-nether": {
+    titulo: "Fortaleza del Nether",
+    descripcion: "Una imponente fortaleza construida en el Nether que sirve como hub de transporte principal. Conecta múltiples túneles de hielo y proporciona acceso rápido a diferentes áreas del servidor.",
+    coordenadas: { x: 156, y: 64, z: -111 },
+    dimension: "Nether",
+    constructores: [
+      { nombre: "NetherKing", uuid: "456789ab-cdef-1234-5678-90abcdef1234" },
+      { nombre: "TunnelDigger", uuid: "fedcba09-8765-4321-0fed-cba987654321" }
+    ]
+  },
+  "granja-guardian": {
+    titulo: "Granja de Guardianes",
+    descripcion: "Un monumento oceánico completamente drenado y convertido en una eficiente granja de guardianes. Produce prismarinas, cristales de prismarinas y pescado de forma automática.",
+    coordenadas: { x: -2340, y: 40, z: 1560 },
+    dimension: "Overworld",
+    constructores: [
+      { nombre: "OceanMaster", uuid: "abcdef12-3456-789a-bcde-f123456789ab" }
+    ],
+    granja: {
+      bots: [
+        { 
+          nombre: "GuardianBot", 
+          uuid: "13579bdf-2468-ace0-1357-9bdf2468ace0",
+          comando: "/bot spawn GuardianBot -2340 40 1560"
+        }
+      ],
+      instrucciones: "El bot debe ser spawneado en el centro del monumento para máxima eficiencia."
+    }
+  },
+  "distrito-redstone": {
+    titulo: "Distrito de Redstone",
+    descripcion: "Un área dedicada exclusivamente a experimentos y construcciones de redstone. Aquí se prueban nuevas mecánicas, se desarrollan prototipos y se enseñan técnicas avanzadas de redstone.",
+    coordenadas: { x: 800, y: 64, z: 1200 },
+    dimension: "Overworld",
+    constructores: [
+      { nombre: "RedstoneWizard", uuid: "24681357-9bdf-0ace-2468-1357bdf0ace2" },
+      { nombre: "CircuitMaster", uuid: "97531bdf-8642-0ace-9753-1bdf8642ace0" }
+    ]
+  }
+};
+
+const { slug } = Astro.params;
+const proyecto = proyectoData[slug];
+
+if (!proyecto) {
+  return Astro.redirect('/proyectos');
+}
+
+// Función para obtener avatar de Minecraft
+const getMinecraftAvatar = (uuid: string) => `https://crafatar.com/avatars/${uuid}?size=64&overlay`;
+---
+
+<Layout
+  content={{
+    title: `${proyecto.titulo} - Proyectos - Cubusfera`,
+    description: proyecto.descripcion,
+  }}
+>
+  <Navbar client:load />
+  <main class="flex-1 bg-background">
+    <Breadcrumb items={[
+      { label: 'Inicio', href: '/' },
+      { label: 'Servidor', nonClickable: true },
+      { label: 'Proyectos', href: '/proyectos' },
+      { label: proyecto.titulo }
+    ]} />
+
+    <!-- Contenido Principal -->
+    <div class="container px-4 py-8 mx-auto">
+      <div class="grid gap-8 lg:grid-cols-3">
+        <!-- Columna Principal -->
+        <div class="lg:col-span-2 space-y-8">
+          <!-- Header del Proyecto -->
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <h1 class="text-3xl font-bold text-foreground">{proyecto.titulo}</h1>
+              <span class={`px-3 py-1 text-sm font-medium rounded-full ${
+                proyecto.dimension === 'Overworld' ? 'bg-green-500/20 text-green-400' :
+                proyecto.dimension === 'Nether' ? 'bg-red-500/20 text-red-400' :
+                'bg-purple-500/20 text-purple-400'
+              }`}>
+                {proyecto.dimension}
+              </span>
+            </div>
+            <p class="text-lg text-muted-foreground leading-relaxed">
+              {proyecto.descripcion}
+            </p>
+          </div>
+
+          <!-- Mapa -->
+          <div class="bg-card border border-border rounded-lg overflow-hidden">
+            <div class="p-4 border-b border-border">
+              <h2 class="text-xl font-semibold text-foreground">Ubicación en el Mapa</h2>
+            </div>
+            <div class="aspect-video bg-muted flex items-center justify-center">
+              <div class="text-center text-muted-foreground">
+                <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 4m0 13V4m0 0L9 7"></path>
+                </svg>
+                <p>Iframe del mapa será configurado manualmente</p>
+                <p class="text-sm">Coordenadas: {proyecto.coordenadas.x}, {proyecto.coordenadas.y}, {proyecto.coordenadas.z}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Video de YouTube (si existe) -->
+          {proyecto.video && (
+            <div class="bg-card border border-border rounded-lg overflow-hidden">
+              <div class="p-4 border-b border-border">
+                <h2 class="text-xl font-semibold text-foreground">Video del Proyecto</h2>
+              </div>
+              <div class="aspect-video">
+                <iframe
+                  src={`https://www.youtube.com/embed/${proyecto.video}`}
+                  title="Video del proyecto"
+                  class="w-full h-full"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+          <!-- Coordenadas -->
+          <div class="bg-card border border-border rounded-lg p-4">
+            <h3 class="text-lg font-semibold text-foreground mb-3">Coordenadas</h3>
+            <div class="space-y-2">
+              <div class="flex items-center justify-between p-3 bg-muted rounded-md">
+                <span class="font-mono text-sm">
+                  {proyecto.coordenadas.x}, {proyecto.coordenadas.y}, {proyecto.coordenadas.z}
+                </span>
+                <button 
+                  class="copy-coords px-3 py-1 text-xs bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors"
+                  data-coords={`${proyecto.coordenadas.x} ${proyecto.coordenadas.y} ${proyecto.coordenadas.z}`}
+                >
+                  Copiar
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Constructores -->
+          <div class="bg-card border border-border rounded-lg p-4">
+            <h3 class="text-lg font-semibold text-foreground mb-3">Constructores</h3>
+            <div class="space-y-3">
+              {proyecto.constructores.map(constructor => (
+                <a 
+                  href={`/miembros/${constructor.nombre.toLowerCase()}`}
+                  class="flex items-center gap-3 p-2 rounded-md hover:bg-accent transition-colors group"
+                >
+                  <img 
+                    src={getMinecraftAvatar(constructor.uuid)}
+                    alt={`Avatar de ${constructor.nombre}`}
+                    class="w-8 h-8 rounded"
+                  />
+                  <span class="text-sm font-medium group-hover:text-primary transition-colors">
+                    {constructor.nombre}
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <!-- Información de Granja (si existe) -->
+          {proyecto.granja && (
+            <div class="bg-card border border-border rounded-lg p-4">
+              <h3 class="text-lg font-semibold text-foreground mb-3">Uso de la Granja</h3>
+              
+              <div class="space-y-4">
+                <p class="text-sm text-muted-foreground">
+                  {proyecto.granja.instrucciones}
+                </p>
+                
+                <div class="space-y-3">
+                  <h4 class="text-sm font-medium text-foreground">Bots necesarios:</h4>
+                  {proyecto.granja.bots.map(bot => (
+                    <div class="space-y-2 p-3 bg-muted rounded-md">
+                      <div class="flex items-center gap-2">
+                        <img 
+                          src={getMinecraftAvatar(bot.uuid)}
+                          alt={`Avatar de ${bot.nombre}`}
+                          class="w-6 h-6 rounded"
+                        />
+                        <span class="text-sm font-medium">{bot.nombre}</span>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <code class="flex-1 p-2 text-xs bg-background border rounded font-mono">
+                          {bot.comando}
+                        </code>
+                        <button 
+                          class="copy-command px-2 py-1 text-xs bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors"
+                          data-command={bot.comando}
+                        >
+                          Copiar
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Funcionalidad para copiar coordenadas
+    document.addEventListener('DOMContentLoaded', function() {
+      // Copiar coordenadas
+      document.querySelectorAll('.copy-coords').forEach(button => {
+        button.addEventListener('click', function() {
+          const coords = this.getAttribute('data-coords');
+          navigator.clipboard.writeText(coords).then(() => {
+            const originalText = this.textContent;
+            this.textContent = '¡Copiado!';
+            setTimeout(() => {
+              this.textContent = originalText;
+            }, 2000);
+          });
+        });
+      });
+
+      // Copiar comandos
+      document.querySelectorAll('.copy-command').forEach(button => {
+        button.addEventListener('click', function() {
+          const command = this.getAttribute('data-command');
+          navigator.clipboard.writeText(command).then(() => {
+            const originalText = this.textContent;
+            this.textContent = '¡Copiado!';
+            setTimeout(() => {
+              this.textContent = originalText;
+            }, 2000);
+          });
+        });
+      });
+    });
+  </script>
+</Layout>

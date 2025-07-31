@@ -3,6 +3,7 @@ export const prerender = true;
 import Layout from '../layouts/main.astro';
 // Component Imports
 import Navbar from '../components/Navbar.js';
+import Breadcrumb from '../components/Breadcrumb.astro';
 
 // Full Astro Component Syntax:
 // https://docs.astro.build/basics/astro-components/
@@ -11,6 +12,12 @@ import Navbar from '../components/Navbar.js';
 <Layout content={{ title: 'Cubusfera - Reglas', description: 'Lee las reglas y normas de convivencia del servidor Cubusfera. Conoce nuestras políticas para mantener un ambiente seguro y divertido para todos los jugadores.' }}>
 		<Navbar client:load />
 		<main class="flex-1 bg-background">
+			<Breadcrumb items={[
+				{ label: 'Inicio', href: '/' },
+				{ label: 'Servidor', nonClickable: true },
+				{ label: 'Normas' }
+			]} />
+			
 			<!-- Hero Section -->
 			<div class="container px-4 py-16 mx-auto">
 				<div class="space-y-8 text-center">

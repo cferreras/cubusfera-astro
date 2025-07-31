@@ -2,6 +2,7 @@
 export const prerender = true;
 import Layout from '../layouts/main.astro';
 import Navbar from '../components/Navbar';
+import Breadcrumb from '../components/Breadcrumb.astro';
 ---
 
 <Layout content={{ title: 'Cubusfera - Mapa', description: 'Explora el mundo de Cubusfera con nuestro mapa interactivo en tiempo real. Descubre ubicaciones, estructuras y puntos de interés en nuestro servidor de Minecraft.' }}>
@@ -33,6 +34,12 @@ import Navbar from '../components/Navbar';
 
   <Navbar client:load />
     <main class="min-h-screen bg-background">
+      <Breadcrumb items={[
+        { label: 'Inicio', href: '/' },
+        { label: 'Servidor', nonClickable: true },
+        { label: 'Mapa' }
+      ]} />
+      
       <div class="container px-4 py-8 mx-auto">
         <div class="mb-8 space-y-6 text-center">
           <h1 class="text-3xl font-bold md:text-4xl text-foreground">

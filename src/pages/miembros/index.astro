@@ -4,11 +4,18 @@ import Layout from '../../layouts/main.astro';
 import Navbar from '../../components/Navbar';
 import MembersList from '../../components/MembersList.astro';
 import TopsSection from '../../components/TopsSection.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 ---
 
 <Layout content={{ title: 'Miembros - Cubusfera', description: 'Conoce a todos los miembros de la comunidad Cubusfera. Descubre quiénes forman parte de nuestro servidor de Minecraft y únete a nuestra familia de jugadores.' }}>
     <Navbar client:load />
     <main class="min-h-screen bg-background">
+      <Breadcrumb items={[
+         { label: 'Inicio', href: '/' },
+         { label: 'Jugadores', nonClickable: true },
+         { label: 'Miembros' }
+       ]} />
+      
       <!-- Hero Section -->
       <div class="relative bg-gradient-to-br border-b from-primary/5 via-background to-secondary/5">
         <div class="absolute inset-0 opacity-5 bg-grid-pattern"></div>

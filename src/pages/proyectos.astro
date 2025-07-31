@@ -1,0 +1,241 @@
+---
+export const prerender = true;
+import Layout from "../layouts/main.astro";
+import Navbar from "../components/Navbar.js";
+import Breadcrumb from "../components/Breadcrumb.astro";
+
+// Datos estáticos de proyectos (por ahora)
+const proyectos = [
+  {
+    id: "granja-hierro",
+    titulo: "Granja de Hierro Industrial",
+    descripcion: "Granja masiva de hierro con capacidad de 2000 lingotes por hora",
+    imagen: "/logo.svg", // Placeholder por ahora
+    etiquetas: ["Granja", "Hierro", "Industrial"],
+    dimension: "Overworld",
+    coordenadas: { x: 1250, y: 64, z: -890 }
+  },
+  {
+    id: "ciudad-spawn",
+    titulo: "Ciudad del Spawn",
+    descripcion: "Centro urbano principal del servidor con tiendas y servicios",
+    imagen: "/logo.svg",
+    etiquetas: ["Ciudad", "Spawn", "Comercio"],
+    dimension: "Overworld",
+    coordenadas: { x: 0, y: 70, z: 0 }
+  },
+  {
+    id: "granja-enderman",
+    titulo: "Granja de Enderman",
+    descripcion: "Granja automática de enderman para obtener perlas del End",
+    imagen: "/logo.svg",
+    etiquetas: ["Granja", "Enderman", "End"],
+    dimension: "End",
+    coordenadas: { x: 100, y: 50, z: 0 }
+  },
+  {
+    id: "fortaleza-nether",
+    titulo: "Fortaleza del Nether",
+    descripcion: "Base fortificada en el Nether con hub de transporte",
+    imagen: "/logo.svg",
+    etiquetas: ["Base", "Nether", "Transporte"],
+    dimension: "Nether",
+    coordenadas: { x: 156, y: 64, z: -111 }
+  },
+  {
+    id: "granja-guardian",
+    titulo: "Granja de Guardianes",
+    descripcion: "Monumento oceánico convertido en granja de guardianes",
+    imagen: "/logo.svg",
+    etiquetas: ["Granja", "Guardian", "Oceano"],
+    dimension: "Overworld",
+    coordenadas: { x: -2340, y: 40, z: 1560 }
+  },
+  {
+    id: "distrito-redstone",
+    titulo: "Distrito de Redstone",
+    descripcion: "Área dedicada a experimentos y construcciones de redstone",
+    imagen: "/logo.svg",
+    etiquetas: ["Redstone", "Tecnico", "Experimental"],
+    dimension: "Overworld",
+    coordenadas: { x: 800, y: 64, z: 1200 }
+  }
+];
+
+const todasLasEtiquetas = [...new Set(proyectos.flatMap(p => p.etiquetas))];
+---
+
+<Layout
+  content={{
+    title: "Proyectos - Cubusfera",
+    description: "Explora los increíbles proyectos construidos por la comunidad de Cubusfera. Desde granjas técnicas hasta ciudades impresionantes.",
+  }}
+>
+  <Navbar client:load />
+  <main class="min-h-screen bg-background">
+    <Breadcrumb items={[
+      { label: 'Inicio', href: '/' },
+      { label: 'Servidor', nonClickable: true },
+      { label: 'Proyectos' }
+    ]} />
+    
+    <!-- Hero Section -->
+    <div class="relative bg-gradient-to-br border-b from-primary/5 via-background to-secondary/5">
+      <div class="absolute inset-0 opacity-5 bg-grid-pattern"></div>
+      <div class="container relative px-4 py-16 mx-auto">
+        <div class="space-y-6 text-center">
+          <h1 class="text-4xl font-bold md:text-5xl text-foreground">
+            Proyectos de <span class="text-primary">Cubusfera</span>
+          </h1>
+          <p class="mx-auto max-w-2xl text-lg text-muted-foreground">
+            Descubre las increíbles construcciones y granjas técnicas creadas por nuestra comunidad
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filtros y Lista de Proyectos -->
+    <section class="py-12">
+      <div class="container px-4 mx-auto">
+        <!-- Filtros -->
+        <div class="mb-8">
+          <h2 class="mb-4 text-xl font-semibold text-foreground">Filtrar por etiqueta</h2>
+          <div class="flex flex-wrap gap-2" id="filtros">
+            <button 
+              class="px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 filter-btn bg-primary text-primary-foreground" 
+              data-filter="all"
+            >
+              Todos
+            </button>
+            {todasLasEtiquetas.map(etiqueta => (
+              <button 
+                class="px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 filter-btn bg-muted text-muted-foreground hover:bg-accent hover:text-accent-foreground" 
+                data-filter={etiqueta}
+              >
+                {etiqueta}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <!-- Grid de Proyectos -->
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="proyectos-grid">
+          {proyectos.map(proyecto => (
+            <div 
+              class="overflow-hidden rounded-lg border shadow-sm transition-all duration-200 proyecto-card group bg-card border-border hover:shadow-md hover:border-primary/20"
+              data-etiquetas={proyecto.etiquetas.join(',')}
+            >
+              <div class="overflow-hidden relative aspect-video bg-muted">
+                <img 
+                  src={proyecto.imagen} 
+                  alt={proyecto.titulo}
+                  class="object-cover w-full h-full transition-transform duration-200 group-hover:scale-105"
+                />
+                <div class="absolute top-2 right-2">
+                  <span class={`px-2 py-1 text-xs font-medium rounded-full ${
+                    proyecto.dimension === 'Overworld' ? 'bg-green-500/20 text-green-400' :
+                    proyecto.dimension === 'Nether' ? 'bg-red-500/20 text-red-400' :
+                    'bg-purple-500/20 text-purple-400'
+                  }`}>
+                    {proyecto.dimension}
+                  </span>
+                </div>
+              </div>
+              
+              <div class="p-4">
+                <h3 class="mb-2 text-lg font-semibold transition-colors text-foreground group-hover:text-primary">
+                  {proyecto.titulo}
+                </h3>
+                <p class="mb-3 text-sm text-muted-foreground line-clamp-2">
+                  {proyecto.descripcion}
+                </p>
+                
+                <div class="flex flex-wrap gap-1 mb-3">
+                  {proyecto.etiquetas.map(etiqueta => (
+                    <span class="px-2 py-1 text-xs rounded bg-secondary text-secondary-foreground">
+                      {etiqueta}
+                    </span>
+                  ))}
+                </div>
+                
+                <div class="flex justify-between items-center">
+                  <span class="text-xs text-muted-foreground">
+                    {proyecto.coordenadas.x}, {proyecto.coordenadas.y}, {proyecto.coordenadas.z}
+                  </span>
+                  <a 
+                    href={`/proyectos/${proyecto.id}`}
+                    class="inline-flex gap-1 items-center px-3 py-1.5 text-sm font-medium rounded-md transition-colors bg-primary text-primary-foreground hover:bg-primary/90"
+                  >
+                    Ver detalles
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Funcionalidad de filtrado
+    document.addEventListener('DOMContentLoaded', function() {
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      const projectCards = document.querySelectorAll('.proyecto-card');
+
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const filter = this.getAttribute('data-filter');
+          
+          // Actualizar botones activos
+          filterButtons.forEach(btn => {
+            btn.classList.remove('bg-primary', 'text-primary-foreground');
+            btn.classList.add('bg-muted', 'text-muted-foreground', 'hover:bg-accent', 'hover:text-accent-foreground');
+          });
+          
+          this.classList.remove('bg-muted', 'text-muted-foreground', 'hover:bg-accent', 'hover:text-accent-foreground');
+          this.classList.add('bg-primary', 'text-primary-foreground');
+          
+          // Filtrar proyectos
+          projectCards.forEach(card => {
+            const etiquetas = card.getAttribute('data-etiquetas').split(',');
+            
+            if (filter === 'all' || etiquetas.includes(filter)) {
+              card.style.display = 'block';
+              card.classList.add('animate-fade-in');
+            } else {
+              card.style.display = 'none';
+              card.classList.remove('animate-fade-in');
+            }
+          });
+        });
+      });
+    });
+  </script>
+
+  <style>
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .animate-fade-in {
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .bg-grid-pattern {
+      background-image: radial-gradient(circle, rgba(0,0,0,0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+  </style>
+</Layout>

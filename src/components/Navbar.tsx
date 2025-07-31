@@ -48,7 +48,7 @@ const Navbar = () => {
       children: [
         { name: 'Mapa', href: '/mapa' },
         { name: 'Normas', href: '/normas' },
-        { name: 'Proyectos', href: '/proyectos', disabled: true },
+        { name: 'Proyectos', href: '/proyectos' },
       ]
     },
     {

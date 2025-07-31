@@ -2,6 +2,7 @@
 import Layout from '../../layouts/main.astro';
 import Navbar from '../../components/Navbar';
 import PlayerStats from '../../components/PlayerStats.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 
 // Función requerida para rutas dinámicas en Astro
 export async function getStaticPaths() {
@@ -89,6 +90,13 @@ const content = {
 <Layout content={content}>
   <Navbar client:load />
   <main class="min-h-screen bg-background">
+    <Breadcrumb items={[
+      { label: 'Inicio', href: '/' },
+      { label: 'Jugadores', nonClickable: true },
+      { label: 'Miembros', href: '/miembros' },
+      { label: member }
+    ]} />
+
     <div class="container px-4 py-8 mx-auto">
       <!-- Header del jugador -->
       <div class="mb-12 space-y-6 text-center">
