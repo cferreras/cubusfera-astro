@@ -64,19 +64,22 @@ try {
 function getGroupColor(group: string): string {
   switch (group.toLowerCase()) {
     case 'owner':
-      return 'bg-gradient-to-r from-red-500 to-red-700 text-white border-red-800 dark:from-red-400 dark:to-red-600 dark:border-red-500';
+      return 'bg-destructive/10 text-destructive border-destructive/20';
     case 'admin':
-      return 'bg-red-500 text-white border-red-600 dark:bg-red-400 dark:border-red-500';
+      return 'bg-orange-500/10 text-orange-600 border-orange-500/20 dark:text-orange-400';
     case 'moderator':
+    case 'helper':
     case 'mod':
-      return 'bg-blue-500 text-white border-blue-600 dark:bg-blue-400 dark:border-blue-500';
+      return 'bg-blue-500/10 text-blue-600 border-blue-500/20 dark:text-blue-400';
+    case 'builder':
+      return 'bg-pink-500/10 text-pink-600 border-pink-500/20 dark:text-pink-400';
     case 'vip':
-      return 'bg-yellow-500 text-black border-yellow-600 dark:bg-yellow-400 dark:text-gray-900 dark:border-yellow-500';
+      return 'bg-yellow-500/10 text-yellow-600 border-yellow-500/20 dark:text-yellow-400';
     case 'premium':
-      return 'bg-purple-500 text-white border-purple-600 dark:bg-purple-400 dark:border-purple-500';
+      return 'bg-purple-500/10 text-purple-600 border-purple-500/20 dark:text-purple-400';
     case 'default':
     default:
-      return 'bg-gray-500 text-white border-gray-600 dark:bg-gray-400 dark:text-gray-900 dark:border-gray-500';
+      return 'bg-muted text-muted-foreground border-border';
   }
 }
 
@@ -131,7 +134,7 @@ const content = {
             
             <!-- Badge del grupo -->
             <div class="flex justify-center">
-              <span class={`capitalize px-3 py-1 text-sm font-medium rounded-full border-2 ${getGroupColor(playerGroup)}`}>
+              <span class={`capitalize inline-flex items-center px-3 py-1 text-xs font-medium rounded-full border ${getGroupColor(playerGroup)}`}>
                 {playerGroup}
               </span>
             </div>
