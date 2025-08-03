@@ -13,8 +13,8 @@ constructores:
   - nombre: "Cferreras"
 granja:
   bots:
-    - nombre: "Bot_Iron"
-      comando: "/player Bot_Iron spawn at -884.50 86 -282"
+    - nombre: "bot_iron"
+      comando: "/player bot_iron spawn at -884.50 86 -282"
   instrucciones: "Para usar la granja, simplemente spawea el bot en las coordenadas indicadas. Luego solo pasate a recoger los drops del almacenamiento en -947 54 -274"
 video: "_O6q53zmCMY"
 mapa: "https://mapa.cubusfera.com/#world:-880:58:-274:59:-0.74:0.8:0:0:perspective"

@@ -10,7 +10,6 @@ coordenadas:
   z: -355
 constructores:
   - nombre: "gsanchezdom"
-  - nombre: "Cferreras"
 granja:
   bots:
     - nombre: "bot_cobblestone"
