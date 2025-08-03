@@ -2,7 +2,7 @@
 titulo: "Granja de Cobblestone Automática"
 descripcion: "Granja completamente automática con TNT dupers que genera 75,000 cobblestone por hora - Perfecta para principiantes"
 imagen: "/granja-cobblestone.webp"
-etiquetas: ["Granja", "Cobblestone", "TNT", "Automática", "Principiantes"]
+etiquetas: ["Granja", "Cobblestone"]
 dimension: "Overworld"
 coordenadas:
   x: -395
