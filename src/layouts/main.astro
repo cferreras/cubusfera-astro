@@ -17,6 +17,9 @@ const { content } = Astro.props;
 		<meta name="author" content="Cubusfera" />
 		<meta name="robots" content="index, follow" />
 		
+		<!-- Canonical URL -->
+		<link rel="canonical" href={new URL(Astro.url.pathname, 'https://www.cubusfera.com').href} />
+		
 		<!-- Open Graph Meta Tags -->
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={content.title} />

@@ -31,10 +31,11 @@ sitemap({
          return true;
        },
        serialize: (item) => {
+         // Normalizar URL para sitemap - el servidor maneja las redirecciones
          const url = item.url;
          
          // Página principal - máxima prioridad
-         if (url === '/' || url === '') {
+         if (url.endsWith('/') && (url === 'https://www.cubusfera.com/' || url.match(/\/$/) && !url.includes('/', url.indexOf('/', 8) + 1))) {
            return {
              ...item,
              priority: 1.0,
@@ -43,7 +44,7 @@ sitemap({
          }
          
          // Página de miembros - alta prioridad por contenido dinámico
-         if (url.endsWith('/miembros/') || url.endsWith('/miembros')) {
+         if (url.includes('/miembros') && !url.match(/\/miembros\/[^/]+/)) {
            return {
              ...item,
              priority: 0.9,
@@ -51,8 +52,35 @@ sitemap({
            };
          }
          
+         // Página de proyectos - alta prioridad
+         if (url.includes('/proyectos') && !url.match(/\/proyectos\/[^/]+/)) {
+           return {
+             ...item,
+             priority: 0.8,
+             changefreq: 'weekly'
+           };
+         }
+         
+         // Páginas de proyectos individuales - prioridad media-alta
+         if (url.match(/\/proyectos\/[^/]+/)) {
+           return {
+             ...item,
+             priority: 0.7,
+             changefreq: 'monthly'
+           };
+         }
+         
+         // Página del explorador - prioridad media-alta
+         if (url.includes('/explorador')) {
+           return {
+             ...item,
+             priority: 0.7,
+             changefreq: 'daily'
+           };
+         }
+         
          // Página del mapa - prioridad media-alta
-         if (url.endsWith('/mapa/') || url.endsWith('/mapa')) {
+         if (url.includes('/mapa')) {
            return {
              ...item,
              priority: 0.7,
