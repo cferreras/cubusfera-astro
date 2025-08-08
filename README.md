@@ -13,6 +13,7 @@ Sitio web oficial del servidor de Minecraft **Cubusfera**, construido con Astro,
 - **🗺️ Mapa Interactivo**: Visualización en tiempo real del mundo del servidor
 - **👥 Lista de Miembros**: Directorio de la comunidad de jugadores
 - **📋 Sistema de Reglas**: Normativas claras y accesibles
+- **📧 Newsletter**: Sistema de suscripción con Resend integrado
 - **🎯 Componentes Reutilizables**: Arquitectura modular y mantenible
 
 ## 🛠️ Tecnologías Utilizadas
@@ -21,6 +22,7 @@ Sitio web oficial del servidor de Minecraft **Cubusfera**, construido con Astro,
 - **[React](https://reactjs.org/)** - Componentes interactivos
 - **[Tailwind CSS](https://tailwindcss.com/)** - Framework de CSS utilitario
 - **[TypeScript](https://www.typescriptlang.org/)** - Tipado estático
+- **[Resend](https://resend.com/)** - Servicio de email para newsletter
 - **[Lucide React](https://lucide.dev/)** - Iconos modernos
 - **[Canvas Confetti](https://github.com/catdad/canvas-confetti)** - Efectos visuales
 
@@ -48,6 +50,8 @@ cubusfera/
 │   │   ├── index.astro   # Página de inicio
 │   │   ├── mapa.astro    # Mapa interactivo
 │   │   ├── normas.astro  # Reglas del servidor
+│   │   ├── api/          # API Routes
+│   │   │   └── subscribe.ts # Endpoint para newsletter
 │   │   └── miembros/     # Directorio de miembros
 │   │       ├── index.astro
 │   │       └── [member].astro
@@ -86,7 +90,11 @@ cubusfera/
    Edita el archivo `.env` con tus configuraciones:
    ```env
    WHITELIST_API_URL=http://localhost:8080/whitelist
+   RESEND_API_KEY=your_resend_api_key_here
+   RESEND_AUDIENCE_ID=your_audience_id_here
    ```
+   
+   📧 **Para configurar el newsletter**, consulta: [**NEWSLETTER_SETUP.md**](./NEWSLETTER_SETUP.md)
 
 4. **Inicia el servidor de desarrollo**
    ```bash
@@ -113,6 +121,7 @@ pnpm astro        # Comandos de Astro CLI
 
 ### 🏠 Inicio (`/`)
 - Presentación del servidor
+- Formulario de suscripción al newsletter
 - Estadísticas en tiempo real
 - Sección de características
 - FAQ (Preguntas Frecuentes)
@@ -138,6 +147,18 @@ El sitio se integra con APIs del servidor de Minecraft:
 
 - **Whitelist API**: Para obtener la lista de miembros
 - **Mapa Dinámico**: Integración con sistema de mapas en tiempo real
+- **Newsletter API**: Endpoint `/api/subscribe` para suscripciones con Resend
+
+### 📧 Configuración del Newsletter
+
+Para configurar el sistema de newsletter, consulta la guía detallada:
+**[📄 NEWSLETTER_SETUP.md](./NEWSLETTER_SETUP.md)**
+
+Incluye:
+- Configuración de Resend
+- Variables de entorno necesarias
+- Despliegue en Vercel/Netlify
+- Troubleshooting común
 
 ## 🎨 Personalización
 

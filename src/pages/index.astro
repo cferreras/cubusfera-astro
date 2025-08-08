@@ -277,11 +277,12 @@ import FAQ from "../components/FAQ.astro";
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('newsletter-form');
+    const form = document.getElementById('newsletter-form') as HTMLFormElement;
     const emailInput = document.getElementById('email-input') as HTMLInputElement;
     const inputContainer = document.getElementById('input-container');
+    const submitButton = form?.querySelector('button[type="submit"]') as HTMLButtonElement;
     
-    if (form && emailInput && inputContainer) {
+    if (form && emailInput && inputContainer && submitButton) {
       // Función para aplicar/quitar estilo de error al contenedor
       function toggleErrorState(isError: boolean) {
         const elements = inputContainer!.querySelectorAll('div, input');
@@ -296,9 +297,50 @@ import FAQ from "../components/FAQ.astro";
           }
         });
       }
+
+      // Función para mostrar estado de carga
+      function setLoadingState(isLoading: boolean) {
+        if (isLoading) {
+          submitButton.disabled = true;
+          submitButton.innerHTML = '<span class="truncate">Enviando...</span>';
+          submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+        } else {
+          submitButton.disabled = false;
+          submitButton.innerHTML = '<span class="truncate">Subscribe</span>';
+          submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+      }
+
+      // Función para mostrar mensajes
+      function showMessage(message: string, isError: boolean = false) {
+        // Crear elemento de mensaje si no existe
+        let messageElement = document.getElementById('newsletter-message');
+        if (!messageElement) {
+          messageElement = document.createElement('div');
+          messageElement.id = 'newsletter-message';
+          messageElement.className = 'mt-2 text-sm text-center';
+          form.appendChild(messageElement);
+        }
+
+        // Configurar mensaje
+        messageElement.textContent = message;
+        messageElement.className = `mt-2 text-sm text-center ${
+          isError 
+            ? 'text-red-600 dark:text-red-400' 
+            : 'text-green-600 dark:text-green-400'
+        }`;
+
+        // Ocultar mensaje después de 5 segundos
+        setTimeout(() => {
+          if (messageElement) {
+            messageElement.textContent = '';
+            messageElement.className = 'mt-2 text-sm text-center';
+          }
+        }, 5000);
+      }
       
       // Manejar el envío del formulario
-      form.addEventListener('submit', function(e) {
+      form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
         // Verificar si el email es válido
@@ -307,26 +349,59 @@ import FAQ from "../components/FAQ.astro";
         
         if (!emailValue) {
           toggleErrorState(true);
-          alert('Por favor, introduce tu dirección de correo electrónico');
+          showMessage('Por favor, introduce tu dirección de correo electrónico', true);
           return;
         }
         
         if (!emailRegex.test(emailValue)) {
           toggleErrorState(true);
-          alert('Por favor, introduce una dirección de correo electrónico válida');
+          showMessage('Por favor, introduce una dirección de correo electrónico válida', true);
           return;
         }
         
         // Si llegamos aquí, el email es válido
         toggleErrorState(false);
-        alert('¡Gracias por suscribirte! Te mantendremos informado.');
-        emailInput.value = '';
+        setLoadingState(true);
+        
+        try {
+          // Crear FormData para enviar
+          const formData = new FormData();
+          formData.append('email', emailValue);
+          
+          // Enviar datos a la API
+          const response = await fetch('/api/subscribe', {
+            method: 'POST',
+            body: formData
+          });
+          
+          const data = await response.json();
+          
+          if (data.success) {
+            showMessage(data.message || '¡Te has suscrito exitosamente al newsletter!');
+            emailInput.value = '';
+          } else {
+            toggleErrorState(true);
+            showMessage(data.error || 'Error al procesar la suscripción', true);
+          }
+          
+        } catch (error) {
+          console.error('Error al enviar formulario:', error);
+          toggleErrorState(true);
+          showMessage('Error de conexión. Inténtalo de nuevo.', true);
+        } finally {
+          setLoadingState(false);
+        }
       });
       
       // Limpiar error cuando el usuario escriba
       emailInput.addEventListener('input', function() {
         if (emailInput.value.length > 0) {
           toggleErrorState(false);
+          // Limpiar mensaje si existe
+          const messageElement = document.getElementById('newsletter-message');
+          if (messageElement) {
+            messageElement.textContent = '';
+          }
         }
       });
       
