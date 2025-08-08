@@ -274,7 +274,7 @@ const Navbar = () => {
                 className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-green-600 dark:bg-[#38e07b] text-white dark:text-[#122118] text-sm font-bold leading-normal tracking-[0.015em]"
                 type="button"
               >
-                <span className="truncate">Únete a Discord</span>
+                <span className="truncate">Unirse a Discord</span>
               </button>
             </div>
 
@@ -331,7 +331,7 @@ const Navbar = () => {
               className="w-full flex items-center justify-center rounded-lg h-10 px-4 bg-green-600 dark:bg-[#38e07b] text-white dark:text-[#122118] text-sm font-bold"
               type="button"
             >
-              Join Discord
+              Unirse a Discord
             </button>
           </div>
         </div>
