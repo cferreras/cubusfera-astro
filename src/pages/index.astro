@@ -19,63 +19,63 @@ import FAQ from "../components/FAQ.astro";
   <Navbar client:load />
   <main class="flex-1 bg-background">
     <!-- Hero Section -->
-
-    <div
-      class="relative bg-gradient-to-br border-b from-primary/5 via-background to-secondary/5"
-    >
-      <div class="absolute inset-0 opacity-5 bg-grid-pattern"></div>
-      <div class="container relative px-4 py-20 mx-auto">
-        <div class="space-y-8 text-center">
-          <h1 class="text-4xl font-bold md:text-6xl text-foreground">
-            Bienvenido a <span class="text-primary">Cubusfera</span>
-          </h1>
-          <p class="mx-auto max-w-2xl text-xl text-muted-foreground">
-            El servidor técnico de Minecraft en español donde la comunidad, la
-            creatividad y el conocimiento se unen para crear experiencias
-            únicas.
-          </p>
-
-          <!-- Botones de acción -->
-          <div
-            class="flex flex-col gap-4 justify-center items-center mt-8 sm:flex-row"
-          >
-            <a
-              href="https://discord.gg/7uKEYACErc"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 px-6 py-3 bg-[#5865F2] hover:bg-[#4752C4] text-white rounded-lg font-medium transition-colors duration-200"
-            >
-              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path
-                  d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"
-                ></path>
-              </svg>
-              Únete a Discord
-            </a>
-
-            <a
-              href="/miembros"
-              class="inline-flex gap-2 items-center px-6 py-3 font-medium rounded-lg transition-colors duration-200 bg-primary text-primary-foreground hover:bg-primary/90"
-            >
-              <svg
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                ></path>
-              </svg>
-              Ver Miembros
-            </a>
+        <div class="flex justify-center flex-1 px-4 py-5 sm:px-8 md:px-16 lg:px-24 xl:px-40">
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <div class="@container">
+              <div class="p-2 sm:p-4">
+                <div
+                  class="flex min-h-[320px] sm:min-h-[400px] md:min-h-[480px] flex-col gap-4 sm:gap-6 md:gap-8 bg-cover bg-center bg-no-repeat rounded-lg items-center justify-center p-4 sm:p-6 md:p-8"
+                  style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBeGq9s8Z_fhgAlM33cs2VI63hG3dxF4Hxtt9yhK_kKzsOMr8MLb0ksqusbyoK5kvv9Pkwauj8TB_lISb46ipTiCDk03Wo-Qw_xwFrDiCA_yl6e0s2AfR5La9Le5aDCo6OtjHhTZLaY2MhusSVR5VVfjB6AT8hnD_Q-75-0wXoq3IY4RWax0zPh_rAfbbQECvBu7PymHgdU3VLSxvHgiYrweGq7aUmucxg_2lBdR-6m8Y68uTthPg1Y_FJwda-xLwqA8n1PSQb-TQE");'
+                >
+                  <div class="flex flex-col gap-2 px-4 text-center">
+                    <h1
+                      class="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-tight tracking-[-0.033em]"
+                    >
+                      Bienvenido a Cubusfera
+                    </h1>
+                    <h2 class="max-w-2xl mx-auto text-sm font-normal leading-normal text-white sm:text-base md:text-lg">
+                      El servidor técnico de Minecraft en español donde la comunidad, la creatividad y el conocimiento se unen para crear experiencias únicas.
+                    </h2>
+                  </div>
+                  <form class="flex flex-col min-w-40 h-12 sm:h-14 md:h-16 w-full max-w-[480px]" id="newsletter-form">
+                    <div class="flex items-stretch flex-1 w-full h-full rounded-lg" id="input-container">
+                      <div
+                        class="text-[#96c5a9] flex border border-[#366348] bg-[#1b3124] items-center justify-center pl-3 sm:pl-4 rounded-l-lg border-r-0"
+                        data-icon="Envelope"
+                        data-size="20px"
+                        data-weight="regular"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" class="sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 256 256">
+                          <path
+                            d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48ZM203.43,64,128,133.15,52.57,64ZM216,192H40V74.19l82.59,75.71a8,8,0,0,0,10.82,0L216,74.19V192Z"
+                          ></path>
+                        </svg>
+                      </div>
+                      <input
+                        type="email"
+                        name="email"
+                        id="email-input"
+                        placeholder="Suscribirse a noticias vía email"
+                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border border-[#366348] bg-[#1b3124] focus:border-[#366348] h-full placeholder:text-[#96c5a9] px-3 sm:px-4 rounded-r-none border-r-0 pr-2 rounded-l-none border-l-0 pl-2 text-sm sm:text-base font-normal leading-normal"
+                        required
+                        title="Por favor, introduce una dirección de correo electrónico válida"
+                        value=""
+                      />
+                      <div class="flex items-center justify-center rounded-r-lg border-l-0 border border-[#366348] bg-[#1b3124] pr-2">
+                        <button
+                          type="submit"
+                          class="flex min-w-[70px] sm:min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 sm:h-10 md:h-12 px-3 sm:px-4 md:px-5 bg-[#38e07b] text-[#122118] text-xs sm:text-sm md:text-base font-bold leading-normal tracking-[0.015em]"
+                        >
+                          <span class="truncate">Subscribe</span>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
     <!-- Características Section -->
     <section class="py-16 border-b">
       <div class="container px-4 mx-auto">
@@ -83,7 +83,7 @@ import FAQ from "../components/FAQ.astro";
           <h2 class="mb-4 text-3xl font-bold md:text-4xl text-foreground">
             Características
           </h2>
-          <p class="mx-auto max-w-2xl text-lg text-muted-foreground">
+          <p class="max-w-2xl mx-auto text-lg text-muted-foreground">
             Descubre lo que hace especial a nuestro servidor
           </p>
         </div>
@@ -91,10 +91,10 @@ import FAQ from "../components/FAQ.astro";
         <div class="grid gap-8 md:grid-cols-3">
           <!-- Técnico -->
           <div
-            class="p-6 rounded-lg border shadow-sm transition-shadow bg-card border-border hover:shadow-md"
+            class="p-6 transition-shadow border rounded-lg shadow-sm bg-card border-border hover:shadow-md"
           >
             <div
-              class="flex justify-center items-center mb-4 w-12 h-12 rounded-lg bg-primary/10"
+              class="flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-primary/10"
             >
               <svg
                 class="w-6 h-6 text-primary"
@@ -123,10 +123,10 @@ import FAQ from "../components/FAQ.astro";
 
           <!-- Vanilla -->
           <div
-            class="p-6 rounded-lg border shadow-sm transition-shadow bg-card border-border hover:shadow-md"
+            class="p-6 transition-shadow border rounded-lg shadow-sm bg-card border-border hover:shadow-md"
           >
             <div
-              class="flex justify-center items-center mb-4 w-12 h-12 rounded-lg bg-primary/10"
+              class="flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-primary/10"
             >
               <svg
                 class="w-6 h-6 text-primary"
@@ -150,10 +150,10 @@ import FAQ from "../components/FAQ.astro";
 
           <!-- Seguro -->
           <div
-            class="p-6 rounded-lg border shadow-sm transition-shadow bg-card border-border hover:shadow-md"
+            class="p-6 transition-shadow border rounded-lg shadow-sm bg-card border-border hover:shadow-md"
           >
             <div
-              class="flex justify-center items-center mb-4 w-12 h-12 rounded-lg bg-primary/10"
+              class="flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-primary/10"
             >
               <svg
                 class="w-6 h-6 text-primary"
@@ -185,7 +185,7 @@ import FAQ from "../components/FAQ.astro";
           <h2 class="mb-4 text-3xl font-bold md:text-4xl text-foreground">
             Números que importan
           </h2>
-          <p class="mx-auto max-w-2xl text-lg text-muted-foreground">
+          <p class="max-w-2xl mx-auto text-lg text-muted-foreground">
             Estadísticas que demuestran la calidad de nuestro servidor
           </p>
         </div>
@@ -194,7 +194,7 @@ import FAQ from "../components/FAQ.astro";
           <!-- Miembros en Discord -->
           <div class="text-center">
             <div
-              class="flex justify-center items-center mx-auto mb-4 w-16 h-16 rounded-full bg-primary/10"
+              class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10"
             >
               <svg
                 class="w-8 h-8 text-primary"
@@ -217,7 +217,7 @@ import FAQ from "../components/FAQ.astro";
 
           <div class="text-center">
             <div
-              class="flex justify-center items-center mx-auto mb-4 w-16 h-16 rounded-full bg-primary/10"
+              class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10"
             >
               <svg
                 class="w-8 h-8 text-primary"
@@ -243,7 +243,7 @@ import FAQ from "../components/FAQ.astro";
 
           <div class="text-center">
             <div
-              class="flex justify-center items-center mx-auto mb-4 w-16 h-16 rounded-full bg-primary/10"
+              class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10"
             >
               <svg
                 class="w-8 h-8 text-primary"
@@ -274,3 +274,66 @@ import FAQ from "../components/FAQ.astro";
     <FAQ />
   </main>
 </Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('newsletter-form');
+    const emailInput = document.getElementById('email-input') as HTMLInputElement;
+    const inputContainer = document.getElementById('input-container');
+    
+    if (form && emailInput && inputContainer) {
+      // Función para aplicar/quitar estilo de error al contenedor
+      function toggleErrorState(isError: boolean) {
+        const elements = inputContainer!.querySelectorAll('div, input');
+        
+        elements.forEach(element => {
+          if (isError) {
+            element.classList.remove('border-[#366348]');
+            element.classList.add('border-red-500');
+          } else {
+            element.classList.remove('border-red-500');
+            element.classList.add('border-[#366348]');
+          }
+        });
+      }
+      
+      // Manejar el envío del formulario
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Verificar si el email es válido
+        const emailValue = emailInput.value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
+        if (!emailValue) {
+          toggleErrorState(true);
+          alert('Por favor, introduce tu dirección de correo electrónico');
+          return;
+        }
+        
+        if (!emailRegex.test(emailValue)) {
+          toggleErrorState(true);
+          alert('Por favor, introduce una dirección de correo electrónico válida');
+          return;
+        }
+        
+        // Si llegamos aquí, el email es válido
+        toggleErrorState(false);
+        alert('¡Gracias por suscribirte! Te mantendremos informado.');
+        emailInput.value = '';
+      });
+      
+      // Limpiar error cuando el usuario escriba
+      emailInput.addEventListener('input', function() {
+        if (emailInput.value.length > 0) {
+          toggleErrorState(false);
+        }
+      });
+      
+      // Limpiar error cuando el campo gane foco
+      emailInput.addEventListener('focus', function() {
+        toggleErrorState(false);
+      });
+    }
+  });
+</script>
