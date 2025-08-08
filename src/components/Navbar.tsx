@@ -312,13 +312,6 @@ const Navbar = () => {
             >
               Join Discord
             </button>
-            <button
-              onClick={() => handleNavigation('/miembros', false)}
-              className="w-full flex items-center justify-center rounded-lg h-10 px-4 bg-gray-200 dark:bg-[#264532] text-gray-700 dark:text-white text-sm font-bold"
-              type="button"
-            >
-              Members
-            </button>
           </div>
         </div>
       </div>
