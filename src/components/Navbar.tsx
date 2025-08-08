@@ -83,7 +83,7 @@ const Navbar = () => {
       return (
         <div key={item.name} className="relative group">
           <button
-            className="flex items-center space-x-1 text-white hover:text-[#38e07b] text-sm font-medium transition-colors duration-200"
+            className="flex items-center space-x-1 text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-[#38e07b] text-sm font-medium transition-colors duration-200"
             type="button"
           >
             <span>{item.name}</span>
@@ -91,7 +91,7 @@ const Navbar = () => {
           </button>
           
           {/* Dropdown que aparece en hover */}
-          <div className="absolute left-0 mt-1 bg-[#1b3124] border border-[#366348] rounded-md shadow-lg min-w-[160px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+          <div className="absolute left-0 mt-1 bg-white dark:bg-[#1b3124] border border-gray-200 dark:border-[#366348] rounded-md shadow-lg min-w-[160px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
             {item.children.map((child) => (
               <button
                 key={child.name}
@@ -100,16 +100,16 @@ const Navbar = () => {
                 className={cn(
                   "w-full text-left block px-4 py-2 text-sm transition-colors duration-200 first:rounded-t-md last:rounded-b-md",
                   child.disabled 
-                    ? "text-[#96c5a9]/50 cursor-not-allowed" 
-                    : "text-white hover:text-[#38e07b] hover:bg-[#264532] cursor-pointer"
+                    ? "text-gray-400 dark:text-[#96c5a9]/50 cursor-not-allowed" 
+                    : "text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-[#38e07b] hover:bg-gray-100 dark:hover:bg-[#264532] cursor-pointer"
                 )}
                 type="button"
               >
                 {child.name}
                 {child.disabled && (
-                  <span className="ml-2 text-xs bg-[#264532] text-[#96c5a9] px-1.5 py-0.5 rounded">
-                    Próximamente
-                  </span>
+                              <span className="ml-2 text-xs bg-gray-200 dark:bg-[#264532] text-gray-600 dark:text-[#96c5a9] px-1.5 py-0.5 rounded">
+              Próximamente
+            </span>
                 )}
               </button>
             ))}
@@ -126,8 +126,8 @@ const Navbar = () => {
         className={cn(
           "text-sm font-medium transition-colors duration-200",
           item.disabled 
-            ? "text-[#96c5a9]/50 cursor-not-allowed" 
-            : "text-white hover:text-[#38e07b]"
+            ? "text-gray-400 dark:text-[#96c5a9]/50 cursor-not-allowed" 
+            : "text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-[#38e07b]"
         )}
         type="button"
       >
@@ -147,7 +147,7 @@ const Navbar = () => {
         <div key={item.name}>
           <button
             onClick={() => handleMobileDropdownToggle(item.name)}
-            className="w-full flex items-center justify-between text-white hover:text-[#38e07b] px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 hover:bg-[#264532]"
+            className="w-full flex items-center justify-between text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-[#38e07b] px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-[#264532]"
             type="button"
           >
             <span>{item.name}</span>
@@ -167,14 +167,14 @@ const Navbar = () => {
                   className={cn(
                     "w-full text-left block px-4 py-2 text-sm transition-colors duration-200 rounded-md",
                     child.disabled 
-                      ? "text-[#96c5a9]/50 cursor-not-allowed" 
-                      : "text-white hover:text-[#38e07b] hover:bg-[#264532] cursor-pointer"
+                      ? "text-gray-400 dark:text-[#96c5a9]/50 cursor-not-allowed" 
+                      : "text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-[#38e07b] hover:bg-gray-100 dark:hover:bg-[#264532] cursor-pointer"
                   )}
                   type="button"
                 >
                   {child.name}
                   {child.disabled && (
-                    <span className="ml-2 text-xs bg-[#264532] text-[#96c5a9] px-1.5 py-0.5 rounded">
+                    <span className="ml-2 text-xs bg-gray-200 dark:bg-[#264532] text-gray-600 dark:text-[#96c5a9] px-1.5 py-0.5 rounded">
                       Próximamente
                     </span>
                   )}
@@ -194,8 +194,8 @@ const Navbar = () => {
         className={cn(
           "w-full text-left block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200",
           item.disabled 
-            ? "text-[#96c5a9]/50 cursor-not-allowed" 
-            : "text-white hover:text-[#38e07b] hover:bg-[#264532]"
+            ? "text-gray-400 dark:text-[#96c5a9]/50 cursor-not-allowed" 
+            : "text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-[#38e07b] hover:bg-gray-100 dark:hover:bg-[#264532]"
         )}
         type="button"
       >
@@ -210,11 +210,11 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-[#122118] border-b border-[#264532] sticky top-0 z-50">
+    <nav className="bg-gray-50 dark:bg-[#122118] border-b border-gray-200 dark:border-[#264532] sticky top-0 z-50">
       <div className="px-10 py-3 mx-auto max-w-7xl">
         <div className="flex items-center justify-between h-auto">
           {/* Logo */}
-          <div className="flex items-center gap-4 text-white">
+          <div className="flex items-center gap-4 text-gray-800 dark:text-white">
             <div className="w-4 h-4">
               <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -223,7 +223,7 @@ const Navbar = () => {
                 />
               </svg>
             </div>
-            <h2 className="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Cubusfera</h2>
+            <h2 className="text-gray-800 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Cubusfera</h2>
           </div>
 
           <div className="flex justify-end flex-1 gap-8">
@@ -234,9 +234,23 @@ const Navbar = () => {
 
             {/* Action Buttons */}
             <div className="hidden gap-2 md:flex">
+              {/* Theme Toggle Button */}
+              <button
+                onClick={toggleTheme}
+                className="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-200 dark:bg-[#264532] hover:bg-gray-300 dark:hover:bg-[#366348] text-gray-700 dark:text-white transition-colors duration-200"
+                aria-label={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+                type="button"
+              >
+                {isDark ? (
+                  <Sun className="w-5 h-5" />
+                ) : (
+                  <Moon className="w-5 h-5" />
+                )}
+              </button>
+              
               <button
                 onClick={() => handleNavigation('https://discord.gg/7uKEYACErc', false)}
-                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#38e07b] text-[#122118] text-sm font-bold leading-normal tracking-[0.015em]"
+                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-green-600 dark:bg-[#38e07b] text-white dark:text-[#122118] text-sm font-bold leading-normal tracking-[0.015em]"
                 type="button"
               >
                 <span className="truncate">Únete a Discord</span>
@@ -247,7 +261,7 @@ const Navbar = () => {
             <div className="md:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2 rounded-md text-white hover:text-[#38e07b] hover:bg-[#264532] transition-colors duration-200"
+                className="p-2 rounded-md text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-[#38e07b] hover:bg-gray-100 dark:hover:bg-[#264532] transition-colors duration-200"
                 aria-label="Toggle menu"
                 type="button"
               >
@@ -267,21 +281,40 @@ const Navbar = () => {
         "md:hidden transition-all duration-300 ease-in-out overflow-hidden",
         isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
       )}>
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-[#122118] border-t border-[#264532]">
+        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-50 dark:bg-[#122118] border-t border-gray-200 dark:border-[#264532]">
           {navItems.map((item) => renderMobileNavItem(item))}
           
           {/* Mobile Action Buttons */}
           <div className="pt-4 space-y-2">
+            {/* Mobile Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="w-full flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-gray-200 dark:bg-[#264532] hover:bg-gray-300 dark:hover:bg-[#366348] text-gray-700 dark:text-white text-sm font-medium transition-colors duration-200"
+              type="button"
+            >
+              {isDark ? (
+                <>
+                  <Sun className="w-4 h-4" />
+                  <span>Modo Claro</span>
+                </>
+              ) : (
+                <>
+                  <Moon className="w-4 h-4" />
+                  <span>Modo Oscuro</span>
+                </>
+              )}
+            </button>
+            
             <button
               onClick={() => handleNavigation('https://discord.gg/7uKEYACErc', false)}
-              className="w-full flex items-center justify-center rounded-lg h-10 px-4 bg-[#38e07b] text-[#122118] text-sm font-bold"
+              className="w-full flex items-center justify-center rounded-lg h-10 px-4 bg-green-600 dark:bg-[#38e07b] text-white dark:text-[#122118] text-sm font-bold"
               type="button"
             >
               Join Discord
             </button>
             <button
               onClick={() => handleNavigation('/miembros', false)}
-              className="w-full flex items-center justify-center rounded-lg h-10 px-4 bg-[#264532] text-white text-sm font-bold"
+              className="w-full flex items-center justify-center rounded-lg h-10 px-4 bg-gray-200 dark:bg-[#264532] text-gray-700 dark:text-white text-sm font-bold"
               type="button"
             >
               Members

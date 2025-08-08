@@ -156,7 +156,7 @@ function getPositionColor(position: number): string {
     case 3:
       return 'text-amber-600 dark:text-amber-500'; // Bronce
     default:
-      return 'text-white/80';
+      return 'text-gray-800 dark:text-white/80';
   }
 }
 
@@ -188,16 +188,16 @@ function getPositionIcon(position: number): string {
   <div class="space-y-8">
     <!-- Título de la sección -->
     <div class="space-y-4 text-center">
-      <div class="inline-flex items-center px-4 py-2 mb-4 text-sm font-medium rounded-full border bg-[#264532] border-[#366348] text-[#38e07b]">
+      <div class="inline-flex items-center px-4 py-2 mb-4 text-sm font-medium rounded-full border bg-gray-200 dark:bg-[#264532] border-gray-300 dark:border-[#366348] text-green-600 dark:text-[#38e07b]">
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
         </svg>
         Rankings de la Comunidad
       </div>
-      <h2 class="text-3xl font-bold text-white md:text-4xl">
+      <h2 class="text-3xl font-bold text-gray-900 dark:text-white md:text-4xl">
         Tops de Jugadores
       </h2>
-      <p class="mx-auto max-w-2xl text-lg text-[#96c5a9]">
+      <p class="mx-auto max-w-2xl text-lg text-gray-600 dark:text-[#96c5a9]">
         Descubre quiénes lideran en diferentes categorías de nuestro servidor
       </p>
     </div>
@@ -205,16 +205,16 @@ function getPositionIcon(position: number): string {
     <!-- Grid de tops -->
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
       {topsData.map((category) => (
-        <div class="p-6 rounded-lg border bg-[#1b3124] border-[#366348] hover:border-[#38e07b] transition-colors duration-200">
+        <div class="p-6 rounded-lg border bg-gray-50 dark:bg-[#1b3124] border-gray-200 dark:border-[#366348] hover:border-green-600 dark:hover:border-[#38e07b] transition-colors duration-200">
           <div class="flex items-center mb-4 space-x-3">
             <span class="text-2xl">{category.icon}</span>
-            <h3 class="text-lg font-semibold text-white">{category.title}</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{category.title}</h3>
           </div>
           
           <div class="space-y-3">
             {category.players.length > 0 ? (
               category.players.map((player, index) => (
-                <div class="flex items-center justify-between p-3 rounded-lg bg-[#264532] hover:bg-[#366348] transition-colors duration-200">
+                <div class="flex items-center justify-between p-3 rounded-lg bg-gray-100 dark:bg-[#264532] hover:bg-gray-200 dark:hover:bg-[#366348] transition-colors duration-200">
                   <div class="flex items-center space-x-3">
                     <span class={`text-lg font-bold ${getPositionColor(index + 1)}`}>
                       {getPositionIcon(index + 1)}
@@ -229,18 +229,18 @@ function getPositionIcon(position: number): string {
                         class="w-6 h-6 transition-shadow duration-200 rounded group-hover:shadow-md"
                         loading="lazy"
                       />
-                      <span class="font-medium text-white group-hover:text-[#38e07b] transition-colors duration-200 cursor-pointer">
+                      <span class="font-medium text-gray-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-[#38e07b] transition-colors duration-200 cursor-pointer">
                         {player.name}
                       </span>
                     </a>
                   </div>
-                  <span class="text-sm font-semibold text-[#38e07b]">
+                  <span class="text-sm font-semibold text-green-600 dark:text-[#38e07b]">
                     {player.formattedValue}
                   </span>
                 </div>
               ))
             ) : (
-              <div class="p-4 text-center text-[#96c5a9]">
+              <div class="p-4 text-center text-gray-600 dark:text-[#96c5a9]">
                 <p class="text-sm">No hay datos disponibles</p>
               </div>
             )}
@@ -250,8 +250,8 @@ function getPositionIcon(position: number): string {
     </div>
 
     <!-- Nota sobre caché -->
-    <div class="p-4 text-center bg-[#264532] rounded-lg border border-[#366348]">
-      <p class="text-sm text-[#96c5a9]">
+    <div class="p-4 text-center bg-gray-100 dark:bg-[#264532] rounded-lg border border-gray-200 dark:border-[#366348]">
+      <p class="text-sm text-gray-600 dark:text-[#96c5a9]">
         📊 Los rankings se actualizan cada 15 minutos para optimizar el rendimiento
       </p>
     </div>

@@ -17,7 +17,7 @@ import FAQ from "../components/FAQ.astro";
   }}
 >
   <Navbar client:load />
-  <main class="flex-1 bg-[#122118]">
+  <main class="flex-1 bg-white dark:bg-[#122118]">
     <!-- Hero Section -->
         <div class="flex justify-center flex-1 px-4 py-5 sm:px-8 md:px-16 lg:px-24 xl:px-40">
           <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
@@ -40,7 +40,7 @@ import FAQ from "../components/FAQ.astro";
                   <form class="flex flex-col min-w-40 h-12 sm:h-14 md:h-16 w-full max-w-[480px]" id="newsletter-form">
                     <div class="flex items-stretch flex-1 w-full h-full rounded-lg" id="input-container">
                       <div
-                        class="text-[#96c5a9] flex border border-[#366348] bg-[#1b3124] items-center justify-center pl-3 sm:pl-4 rounded-l-lg border-r-0"
+                        class="text-gray-500 dark:text-[#96c5a9] flex border border-gray-300 dark:border-[#366348] bg-gray-100 dark:bg-[#1b3124] items-center justify-center pl-3 sm:pl-4 rounded-l-lg border-r-0"
                         data-icon="Envelope"
                         data-size="20px"
                         data-weight="regular"
@@ -56,15 +56,15 @@ import FAQ from "../components/FAQ.astro";
                         name="email"
                         id="email-input"
                         placeholder="Suscribirse a noticias vía email"
-                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border border-[#366348] bg-[#1b3124] focus:border-[#366348] h-full placeholder:text-[#96c5a9] px-3 sm:px-4 rounded-r-none border-r-0 pr-2 rounded-l-none border-l-0 pl-2 text-sm sm:text-base font-normal leading-normal"
+                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-gray-900 dark:text-white focus:outline-0 focus:ring-0 border border-gray-300 dark:border-[#366348] bg-gray-100 dark:bg-[#1b3124] focus:border-gray-300 dark:focus:border-[#366348] h-full placeholder:text-gray-500 dark:placeholder:text-[#96c5a9] px-3 sm:px-4 rounded-r-none border-r-0 pr-2 rounded-l-none border-l-0 pl-2 text-sm sm:text-base font-normal leading-normal"
                         required
                         title="Por favor, introduce una dirección de correo electrónico válida"
                         value=""
                       />
-                      <div class="flex items-center justify-center rounded-r-lg border-l-0 border border-[#366348] bg-[#1b3124] pr-2">
+                      <div class="flex items-center justify-center rounded-r-lg border-l-0 border border-gray-300 dark:border-[#366348] bg-gray-100 dark:bg-[#1b3124] pr-2">
                         <button
                           type="submit"
-                          class="flex min-w-[70px] sm:min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 sm:h-10 md:h-12 px-3 sm:px-4 md:px-5 bg-[#38e07b] text-[#122118] text-xs sm:text-sm md:text-base font-bold leading-normal tracking-[0.015em]"
+                          class="flex min-w-[70px] sm:min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 sm:h-10 md:h-12 px-3 sm:px-4 md:px-5 bg-green-600 dark:bg-[#38e07b] text-white dark:text-[#122118] text-xs sm:text-sm md:text-base font-bold leading-normal tracking-[0.015em]"
                         >
                           <span class="truncate">Subscribe</span>
                         </button>
@@ -77,13 +77,13 @@ import FAQ from "../components/FAQ.astro";
           </div>
         </div>
     <!-- Características Section -->
-    <section class="py-16 border-y border-[#264532]">
+    <section class="py-16 border-y border-gray-200 dark:border-[#264532]">
       <div class="container px-4 mx-auto">
         <div class="mb-12 text-center">
-          <h2 class="mb-4 text-3xl font-bold text-white md:text-4xl">
+          <h2 class="mb-4 text-3xl font-bold text-gray-900 dark:text-white md:text-4xl">
             Características
           </h2>
-          <p class="max-w-2xl mx-auto text-lg text-[#96c5a9]">
+          <p class="max-w-2xl mx-auto text-lg text-gray-600 dark:text-[#96c5a9]">
             Descubre lo que hace especial a nuestro servidor
           </p>
         </div>
@@ -91,13 +91,13 @@ import FAQ from "../components/FAQ.astro";
         <div class="grid gap-8 md:grid-cols-3">
           <!-- Técnico -->
           <div
-            class="p-6 transition-shadow border border-[#366348] rounded-lg shadow-sm bg-[#1b3124] hover:shadow-md hover:border-[#38e07b]"
+            class="p-6 transition-shadow border border-gray-200 dark:border-[#366348] rounded-lg shadow-sm bg-gray-50 dark:bg-[#1b3124] hover:shadow-md hover:border-green-400 dark:hover:border-[#38e07b]"
           >
             <div
-              class="flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-[#264532]"
+              class="flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-gray-100 dark:bg-[#264532]"
             >
               <svg
-                class="w-6 h-6 text-[#38e07b]"
+                class="w-6 h-6 text-green-600 dark:text-[#38e07b]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -115,21 +115,21 @@ import FAQ from "../components/FAQ.astro";
                   d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
               </svg>
             </div>
-            <h3 class="mb-2 text-xl font-semibold text-white">Técnico</h3>
-            <p class="text-[#96c5a9]">
+            <h3 class="mb-2 text-xl font-semibold text-gray-900 dark:text-white">Técnico</h3>
+            <p class="text-gray-600 dark:text-[#96c5a9]">
               Enfocado en la construcción técnica y la optimización de granjas.
             </p>
           </div>
 
           <!-- Vanilla -->
           <div
-            class="p-6 transition-shadow border border-[#366348] rounded-lg shadow-sm bg-[#1b3124] hover:shadow-md hover:border-[#38e07b]"
+            class="p-6 transition-shadow border border-gray-200 dark:border-[#366348] rounded-lg shadow-sm bg-gray-50 dark:bg-[#1b3124] hover:shadow-md hover:border-green-400 dark:hover:border-[#38e07b]"
           >
             <div
-              class="flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-[#264532]"
+              class="flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-gray-100 dark:bg-[#264532]"
             >
               <svg
-                class="w-6 h-6 text-[#38e07b]"
+                class="w-6 h-6 text-green-600 dark:text-[#38e07b]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -141,8 +141,8 @@ import FAQ from "../components/FAQ.astro";
                   d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
             </div>
-            <h3 class="mb-2 text-xl font-semibold text-white">Vanilla</h3>
-            <p class="text-[#96c5a9]">
+            <h3 class="mb-2 text-xl font-semibold text-gray-900 dark:text-white">Vanilla</h3>
+            <p class="text-gray-600 dark:text-[#96c5a9]">
               Jugabilidad pura de Minecraft sin modificaciones que alteren la
               experiencia original.
             </p>
@@ -150,13 +150,13 @@ import FAQ from "../components/FAQ.astro";
 
           <!-- Seguro -->
           <div
-            class="p-6 transition-shadow border border-[#366348] rounded-lg shadow-sm bg-[#1b3124] hover:shadow-md hover:border-[#38e07b]"
+            class="p-6 transition-shadow border border-gray-200 dark:border-[#366348] rounded-lg shadow-sm bg-gray-50 dark:bg-[#1b3124] hover:shadow-md hover:border-green-400 dark:hover:border-[#38e07b]"
           >
             <div
-              class="flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-[#264532]"
+              class="flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-gray-100 dark:bg-[#264532]"
             >
               <svg
-                class="w-6 h-6 text-[#38e07b]"
+                class="w-6 h-6 text-green-600 dark:text-[#38e07b]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -169,8 +169,8 @@ import FAQ from "../components/FAQ.astro";
                 ></path>
               </svg>
             </div>
-            <h3 class="mb-2 text-xl font-semibold text-white">Seguro</h3>
-            <p class="text-[#96c5a9]">
+            <h3 class="mb-2 text-xl font-semibold text-gray-900 dark:text-white">Seguro</h3>
+            <p class="text-gray-600 dark:text-[#96c5a9]">
               Backups automáticos y logs detallados para máxima seguridad.
             </p>
           </div>
@@ -179,13 +179,13 @@ import FAQ from "../components/FAQ.astro";
     </section>
 
     <!-- Números que importan Section -->
-    <section class="py-16 border-b border-[#264532]">
+    <section class="py-16 border-b border-gray-200 dark:border-[#264532]">
       <div class="container px-4 mx-auto">
         <div class="mb-12 text-center">
-          <h2 class="mb-4 text-3xl font-bold text-white md:text-4xl">
+          <h2 class="mb-4 text-3xl font-bold text-gray-900 dark:text-white md:text-4xl">
             Números que importan
           </h2>
-          <p class="max-w-2xl mx-auto text-lg text-[#96c5a9]">
+          <p class="max-w-2xl mx-auto text-lg text-gray-600 dark:text-[#96c5a9]">
             Estadísticas que demuestran la calidad de nuestro servidor
           </p>
         </div>
@@ -194,10 +194,10 @@ import FAQ from "../components/FAQ.astro";
           <!-- Miembros en Discord -->
           <div class="text-center">
             <div
-              class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-[#264532]"
+              class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-[#264532]"
             >
               <svg
-                class="w-8 h-8 text-[#38e07b]"
+                class="w-8 h-8 text-green-600 dark:text-[#38e07b]"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
@@ -206,21 +206,21 @@ import FAQ from "../components/FAQ.astro";
                 ></path>
               </svg>
             </div>
-            <div class="mb-2 text-4xl font-bold text-[#38e07b]">100+</div>
-            <div class="mb-1 text-lg font-medium text-white">
+            <div class="mb-2 text-4xl font-bold text-green-600 dark:text-[#38e07b]">100+</div>
+            <div class="mb-1 text-lg font-medium text-gray-900 dark:text-white">
               Miembros en Discord
             </div>
-            <div class="text-sm text-[#96c5a9]">
+            <div class="text-sm text-gray-600 dark:text-[#96c5a9]">
               Comunidad activa y creciente
             </div>
           </div>
 
           <div class="text-center">
             <div
-              class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-[#264532]"
+              class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-[#264532]"
             >
               <svg
-                class="w-8 h-8 text-[#38e07b]"
+                class="w-8 h-8 text-green-600 dark:text-[#38e07b]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -232,21 +232,21 @@ import FAQ from "../components/FAQ.astro";
                   d="M13 10V3L4 14h7v7l9-11h-7z"></path>
               </svg>
             </div>
-            <div class="mb-2 text-4xl font-bold text-[#38e07b]">20 TPS</div>
-            <div class="mb-1 text-lg font-medium text-white">
+            <div class="mb-2 text-4xl font-bold text-green-600 dark:text-[#38e07b]">20 TPS</div>
+            <div class="mb-1 text-lg font-medium text-gray-900 dark:text-white">
               Buen rendimiento
             </div>
-            <div class="text-sm text-[#96c5a9]">
+            <div class="text-sm text-gray-600 dark:text-[#96c5a9]">
               Experiencia fluida garantizada
             </div>
           </div>
 
           <div class="text-center">
             <div
-              class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-[#264532]"
+              class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-[#264532]"
             >
               <svg
-                class="w-8 h-8 text-[#38e07b]"
+                class="w-8 h-8 text-green-600 dark:text-[#38e07b]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -258,11 +258,11 @@ import FAQ from "../components/FAQ.astro";
                   d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
             </div>
-            <div class="mb-2 text-4xl font-bold text-[#38e07b]">24/7</div>
-            <div class="mb-1 text-lg font-medium text-white">
+            <div class="mb-2 text-4xl font-bold text-green-600 dark:text-[#38e07b]">24/7</div>
+            <div class="mb-1 text-lg font-medium text-gray-900 dark:text-white">
               Servidor disponible
             </div>
-            <div class="text-sm text-[#96c5a9]">
+            <div class="text-sm text-gray-600 dark:text-[#96c5a9]">
              	 Siempre online para ti
             </div>
           </div>
@@ -288,11 +288,11 @@ import FAQ from "../components/FAQ.astro";
         
         elements.forEach(element => {
           if (isError) {
-            element.classList.remove('border-[#366348]');
+            element.classList.remove('border-gray-300', 'dark:border-[#366348]');
             element.classList.add('border-red-500');
           } else {
             element.classList.remove('border-red-500');
-            element.classList.add('border-[#366348]');
+            element.classList.add('border-gray-300', 'dark:border-[#366348]');
           }
         });
       }
