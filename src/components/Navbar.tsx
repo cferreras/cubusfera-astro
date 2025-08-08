@@ -214,7 +214,11 @@ const Navbar = () => {
       <div className="px-10 py-3 mx-auto max-w-7xl">
         <div className="flex items-center justify-between h-auto">
           {/* Logo */}
-          <div className="flex items-center gap-4 text-gray-800 dark:text-white">
+          <button
+            onClick={() => handleNavigation('/', false)}
+            className="flex items-center gap-4 text-gray-800 dark:text-white hover:text-green-600 dark:hover:text-[#38e07b] transition-colors duration-200 cursor-pointer"
+            type="button"
+          >
             <div className="w-8 h-8">
               {isDark ? (
                 <svg xmlns="http://www.w3.org/2000/svg" style={{isolation: "isolate"}} viewBox="0 0 680 680" className="w-full h-full">
@@ -241,7 +245,7 @@ const Navbar = () => {
               )}
             </div>
             <h2 className="text-gray-800 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Cubusfera</h2>
-          </div>
+          </button>
 
           <div className="flex justify-end flex-1 gap-8">
             {/* Desktop Navigation */}
