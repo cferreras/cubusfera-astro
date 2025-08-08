@@ -592,7 +592,7 @@ export default function DynamicTopsSelector() {
       case 1: return 'text-yellow-500 dark:text-yellow-400';
       case 2: return 'text-gray-400 dark:text-gray-300';
       case 3: return 'text-amber-600 dark:text-amber-500';
-      default: return 'text-muted-foreground';
+      default: return 'text-white/80';
     }
   };
 
@@ -608,42 +608,42 @@ export default function DynamicTopsSelector() {
   return (
     <div className="space-y-6">
       {/* Header compacto */}
-      <div className="text-center space-y-3">
-        <div className="inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-full border bg-primary/10 border-primary/20 text-primary">
-          <svg className="mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="space-y-3 text-center">
+        <div className="inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-full border bg-[#264532] border-[#366348] text-[#38e07b]">
+          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
           </svg>
           Explorador de Estadísticas
         </div>
-        <h2 className="text-2xl font-bold text-foreground md:text-3xl">
+        <h2 className="text-2xl font-bold text-white md:text-3xl">
           Explorador
         </h2>
-        <p className="max-w-xl mx-auto text-muted-foreground">
+        <p className="max-w-xl mx-auto text-[#96c5a9]">
           Explora estadísticas detalladas y crea rankings personalizados
         </p>
       </div>
 
       {/* Panel de control con ancho expandido */}
-      <div className="max-w-6xl mx-auto bg-card border border-border rounded-lg p-6 shadow-sm">
-        <div className="grid md:grid-cols-2 gap-6">
+      <div className="max-w-6xl mx-auto bg-[#1b3124] border border-[#366348] rounded-lg p-6 shadow-sm">
+        <div className="grid gap-6 md:grid-cols-2">
           {/* Selector de categorías */}
           <div>
-            <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center">
-              <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2">1</span>
+            <h3 className="flex items-center mb-3 text-sm font-semibold text-white">
+              <span className="bg-[#38e07b] text-black rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2">1</span>
               Categoría
             </h3>
-            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-4">
               {TOP_CATEGORIES.map((category) => (
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category)}
                   className={`p-3 rounded-md border text-sm transition-all duration-200 hover:scale-105 ${
                     selectedCategory.id === category.id
-                      ? 'bg-primary text-primary-foreground border-primary shadow-md'
-                      : 'bg-background border-border hover:border-primary/50 hover:bg-muted/50'
+                      ? 'bg-[#38e07b] text-black border-[#38e07b] shadow-md'
+                      : 'bg-[#122118] border-[#366348] hover:border-[#38e07b] hover:bg-[#264532]'
                   }`}
                 >
-                  <div className="text-xl mb-2">{category.icon}</div>
+                  <div className="mb-2 text-xl">{category.icon}</div>
                   <div className="font-medium leading-tight">
                     {category.title}
                   </div>
@@ -654,11 +654,11 @@ export default function DynamicTopsSelector() {
               <button
                 onClick={selectRandomCategoryAndItem}
                 disabled={loadingItems || loading}
-                className="p-3 rounded-md border text-sm transition-all duration-200 hover:scale-105 bg-background border-border hover:border-primary/50 hover:bg-muted/50 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                className="p-3 rounded-md border text-sm transition-all duration-200 hover:scale-105 bg-[#122118] border-[#366348] hover:border-[#38e07b] hover:bg-[#264532] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
-                <div className="text-xl mb-2">
+                <div className="mb-2 text-xl">
                   {loadingItems || loading ? (
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary mx-auto"></div>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#38e07b] mx-auto"></div>
                   ) : (
                     "🎲"
                   )}
@@ -672,15 +672,15 @@ export default function DynamicTopsSelector() {
 
           {/* Selector de items */}
           <div>
-            <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center">
-              <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2">2</span>
+            <h3 className="flex items-center mb-3 text-sm font-semibold text-white">
+              <span className="bg-[#38e07b] text-black rounded-full w-5 h-5 flex items-center justify-center text-xs mr-2">2</span>
               Item Específico
             </h3>
             
             {loadingItems ? (
               <div className="flex items-center justify-center py-6">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-                <span className="ml-3 text-sm text-muted-foreground">Cargando...</span>
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#38e07b]"></div>
+                <span className="ml-3 text-sm text-[#96c5a9]">Cargando...</span>
               </div>
             ) : (
               <div className="space-y-3">
@@ -691,7 +691,7 @@ export default function DynamicTopsSelector() {
                       const item = availableItems.find(i => i.id === e.target.value);
                       setSelectedItem(item || null);
                     }}
-                    className="w-full p-4 pr-10 text-sm rounded-lg border-2 border-border bg-background text-foreground focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-200 appearance-none cursor-pointer hover:border-primary/50 shadow-sm"
+                    className="w-full p-4 pr-10 text-sm rounded-lg border-2 border-[#366348] bg-[#122118] text-white focus:border-[#38e07b] focus:ring-4 focus:ring-[#38e07b]/10 transition-all duration-200 appearance-none cursor-pointer hover:border-[#38e07b] shadow-sm"
                   >
                     {availableItems.map((item) => (
                       <option key={item.id} value={item.id} className="py-2">
@@ -702,32 +702,32 @@ export default function DynamicTopsSelector() {
                   
                   {/* Icono de flecha personalizado */}
                   <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                    <svg className="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#96c5a9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                   </div>
                 </div>
                 
                 {selectedItem && (
-                  <div className="bg-gradient-to-r from-primary/5 to-secondary/5 border border-primary/20 rounded-lg p-4 space-y-3">
+                  <div className="bg-gradient-to-r from-[#264532] to-[#1b3124] border border-[#366348] rounded-lg p-4 space-y-3">
                     <div className="flex items-center space-x-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span className="font-semibold text-foreground">{selectedCategory.title}</span>
+                      <div className="w-2 h-2 bg-[#38e07b] rounded-full"></div>
+                      <span className="font-semibold text-white">{selectedCategory.title}</span>
                       {selectedItem.id !== 'total' && (
                         <>
-                          <span className="text-muted-foreground">→</span>
-                          <span className="text-primary font-medium">{selectedItem.displayName}</span>
+                          <span className="text-[#96c5a9]">→</span>
+                          <span className="text-[#38e07b] font-medium">{selectedItem.displayName}</span>
                         </>
                       )}
                     </div>
                     
                     {selectedItem.formattedTotal && (
-                      <div className="flex items-center justify-between p-3 bg-background/50 rounded-md border border-border/50">
+                      <div className="flex items-center justify-between p-3 bg-[#122118]/50 rounded-md border border-[#366348]/50">
                         <div className="flex items-center space-x-2">
                           <span className="text-lg">📊</span>
-                          <span className="text-sm text-muted-foreground">Total del servidor:</span>
+                          <span className="text-sm text-[#96c5a9]">Total del servidor:</span>
                         </div>
-                        <span className="font-bold text-primary text-lg">{selectedItem.formattedTotal}</span>
+                        <span className="font-bold text-[#38e07b] text-lg">{selectedItem.formattedTotal}</span>
                       </div>
                     )}
                   </div>
@@ -741,36 +741,36 @@ export default function DynamicTopsSelector() {
       {/* Resultados con ancho expandido */}
       <div className="max-w-6xl mx-auto">
         {error ? (
-          <div className="p-6 text-center bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
-            <div className="text-red-600 dark:text-red-400 mb-3">
-              <svg className="mx-auto mb-3 w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="p-6 text-center border border-red-800 rounded-lg bg-red-900/20">
+            <div className="mb-3 text-red-400">
+              <svg className="w-8 h-8 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
             </div>
-            <h3 className="text-lg font-semibold text-red-800 dark:text-red-300 mb-2">Error al cargar ranking</h3>
-            <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+            <h3 className="mb-2 text-lg font-semibold text-red-300">Error al cargar ranking</h3>
+            <p className="text-sm text-red-400">{error}</p>
           </div>
         ) : loading ? (
           <div className="flex items-center justify-center py-16">
-            <div className="text-center space-y-4">
-              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mx-auto"></div>
-              <p className="text-sm text-muted-foreground">
+            <div className="space-y-4 text-center">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#38e07b] mx-auto"></div>
+              <p className="text-sm text-[#96c5a9]">
                 Cargando ranking...
               </p>
             </div>
           </div>
         ) : (
-          <div className="bg-card border border-border rounded-lg shadow-sm overflow-hidden">
+          <div className="bg-[#1b3124] border border-[#366348] rounded-lg shadow-sm overflow-hidden">
             {/* Header del ranking */}
-            <div className="bg-muted/30 px-6 py-4 border-b border-border">
+            <div className="bg-[#264532] px-6 py-4 border-b border-[#366348]">
               <div className="flex items-center space-x-4">
                 <span className="text-3xl">{selectedCategory.icon}</span>
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground">
+                  <h3 className="text-lg font-semibold text-white">
                     Top {selectedCategory.title}
                   </h3>
                   {selectedItem && (
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-[#96c5a9]">
                       {selectedItem.id === 'total' ? 'Total de todos los items' : selectedItem.displayName}
                     </p>
                   )}
@@ -779,35 +779,35 @@ export default function DynamicTopsSelector() {
             </div>
             
             {/* Lista de jugadores */}
-            <div className="divide-y divide-border">
+            <div className="divide-y divide-[#366348]">
               {topPlayers.length > 0 ? (
                 topPlayers.map((player, index) => (
-                  <div key={player.name} className="flex items-center justify-between p-4 hover:bg-muted/50 transition-colors duration-200">
+                  <div key={player.name} className="flex items-center justify-between p-4 hover:bg-[#264532] transition-colors duration-200">
                     <div className="flex items-center space-x-4">
                       <span className={`text-xl font-bold ${getPositionColor(index + 1)} min-w-[3rem]`}>
                         {getPositionIcon(index + 1)}
                       </span>
                       <a 
                         href={`/miembros/${player.name}`}
-                        className="flex items-center space-x-3 group hover:scale-105 transition-transform duration-200"
+                        className="flex items-center space-x-3 transition-transform duration-200 group hover:scale-105"
                       >
                         <img 
                           src={`https://mc-heads.net/avatar/${player.name}/32`}
                           alt={`Avatar de ${player.name}`}
-                          className="w-8 h-8 rounded group-hover:shadow-md transition-shadow duration-200"
+                          className="w-8 h-8 transition-shadow duration-200 rounded group-hover:shadow-md"
                           loading="lazy"
                         />
-                        <span className="text-lg font-medium text-foreground group-hover:text-primary transition-colors duration-200">
+                        <span className="text-lg font-medium text-white group-hover:text-[#38e07b] transition-colors duration-200">
                           {player.name}
                         </span>
                       </a>
                     </div>
                     <div className="text-right">
-                      <span className="text-lg font-semibold text-primary">
+                      <span className="text-lg font-semibold text-[#38e07b]">
                         {player.formattedValue}
                       </span>
                       {selectedItem?.total && selectedItem.total > 0 && (
-                        <div className="text-sm text-muted-foreground">
+                        <div className="text-sm text-[#96c5a9]">
                           {((player.value / selectedItem.total) * 100).toFixed(1)}%
                         </div>
                       )}
@@ -815,9 +815,9 @@ export default function DynamicTopsSelector() {
                   </div>
                 ))
               ) : (
-                <div className="p-12 text-center text-muted-foreground">
-                  <div className="text-4xl mb-4">📊</div>
-                  <p className="text-lg font-medium mb-2">No hay datos disponibles</p>
+                <div className="p-12 text-center text-[#96c5a9]">
+                  <div className="mb-4 text-4xl">📊</div>
+                  <p className="mb-2 text-lg font-medium">No hay datos disponibles</p>
                   <p className="text-sm">
                     No se encontraron estadísticas para {selectedItem?.displayName || 'esta selección'}
                   </p>
@@ -829,11 +829,11 @@ export default function DynamicTopsSelector() {
       </div>
 
       {/* Footer compacto con información de caché */}
-      <div className="text-center space-y-1">
-        <p className="text-xs text-muted-foreground">
+      <div className="space-y-1 text-center">
+        <p className="text-xs text-[#96c5a9]">
           📊 Rankings con caché inteligente y totales ordenados por popularidad
         </p>
-        <p className="text-xs text-muted-foreground/70">
+        <p className="text-xs text-[#96c5a9]/70">
           🔄 Miembros: 1h • 📊 Stats: 15min • 📦 Items: 30min
         </p>
       </div>

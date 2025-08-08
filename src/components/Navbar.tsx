@@ -239,14 +239,7 @@ const Navbar = () => {
                 className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#38e07b] text-[#122118] text-sm font-bold leading-normal tracking-[0.015em]"
                 type="button"
               >
-                <span className="truncate">Join Discord</span>
-              </button>
-              <button
-                onClick={() => handleNavigation('/miembros', false)}
-                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#264532] text-white text-sm font-bold leading-normal tracking-[0.015em]"
-                type="button"
-              >
-                <span className="truncate">Members</span>
+                <span className="truncate">Únete a Discord</span>
               </button>
             </div>
 

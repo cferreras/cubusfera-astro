@@ -12,19 +12,19 @@ export interface Props {
 const { items } = Astro.props;
 ---
 
-<div class="border-b bg-muted/30">
+<div class="border-b bg-[#1b3124] border-[#366348]">
   <div class="container px-4 py-3 mx-auto">
-    <nav class="flex items-center space-x-2 text-sm text-muted-foreground">
+    <nav class="flex items-center space-x-2 text-sm text-[#96c5a9]">
       {items.map((item, index) => (
         <>
           {item.href ? (
-            <a href={item.href} class="hover:text-foreground transition-colors">
+            <a href={item.href} class="hover:text-[#38e07b] transition-colors">
               {item.label}
             </a>
           ) : item.nonClickable ? (
-            <span class="text-muted-foreground/60">{item.label}</span>
+            <span class="text-[#96c5a9]/60">{item.label}</span>
           ) : (
-            <span class="text-foreground">{item.label}</span>
+            <span class="text-white">{item.label}</span>
           )}
           {index < items.length - 1 && <span>/</span>}
         </>

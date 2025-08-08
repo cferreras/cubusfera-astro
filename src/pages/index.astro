@@ -17,7 +17,7 @@ import FAQ from "../components/FAQ.astro";
   }}
 >
   <Navbar client:load />
-  <main class="flex-1 bg-background">
+  <main class="flex-1 bg-[#122118]">
     <!-- Hero Section -->
         <div class="flex justify-center flex-1 px-4 py-5 sm:px-8 md:px-16 lg:px-24 xl:px-40">
           <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
@@ -25,7 +25,7 @@ import FAQ from "../components/FAQ.astro";
               <div class="p-2 sm:p-4">
                 <div
                   class="flex min-h-[320px] sm:min-h-[400px] md:min-h-[480px] flex-col gap-4 sm:gap-6 md:gap-8 bg-cover bg-center bg-no-repeat rounded-lg items-center justify-center p-4 sm:p-6 md:p-8"
-                  style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBeGq9s8Z_fhgAlM33cs2VI63hG3dxF4Hxtt9yhK_kKzsOMr8MLb0ksqusbyoK5kvv9Pkwauj8TB_lISb46ipTiCDk03Wo-Qw_xwFrDiCA_yl6e0s2AfR5La9Le5aDCo6OtjHhTZLaY2MhusSVR5VVfjB6AT8hnD_Q-75-0wXoq3IY4RWax0zPh_rAfbbQECvBu7PymHgdU3VLSxvHgiYrweGq7aUmucxg_2lBdR-6m8Y68uTthPg1Y_FJwda-xLwqA8n1PSQb-TQE");'
+                  style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url("/panorama.webp");'
                 >
                   <div class="flex flex-col gap-2 px-4 text-center">
                     <h1
@@ -77,13 +77,13 @@ import FAQ from "../components/FAQ.astro";
           </div>
         </div>
     <!-- Características Section -->
-    <section class="py-16 border-b">
+    <section class="py-16 border-y border-[#264532]">
       <div class="container px-4 mx-auto">
         <div class="mb-12 text-center">
-          <h2 class="mb-4 text-3xl font-bold md:text-4xl text-foreground">
+          <h2 class="mb-4 text-3xl font-bold text-white md:text-4xl">
             Características
           </h2>
-          <p class="max-w-2xl mx-auto text-lg text-muted-foreground">
+          <p class="max-w-2xl mx-auto text-lg text-[#96c5a9]">
             Descubre lo que hace especial a nuestro servidor
           </p>
         </div>
@@ -91,13 +91,13 @@ import FAQ from "../components/FAQ.astro";
         <div class="grid gap-8 md:grid-cols-3">
           <!-- Técnico -->
           <div
-            class="p-6 transition-shadow border rounded-lg shadow-sm bg-card border-border hover:shadow-md"
+            class="p-6 transition-shadow border border-[#366348] rounded-lg shadow-sm bg-[#1b3124] hover:shadow-md hover:border-[#38e07b]"
           >
             <div
-              class="flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-primary/10"
+              class="flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-[#264532]"
             >
               <svg
-                class="w-6 h-6 text-primary"
+                class="w-6 h-6 text-[#38e07b]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -115,21 +115,21 @@ import FAQ from "../components/FAQ.astro";
                   d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
               </svg>
             </div>
-            <h3 class="mb-2 text-xl font-semibold text-foreground">Técnico</h3>
-            <p class="text-muted-foreground">
+            <h3 class="mb-2 text-xl font-semibold text-white">Técnico</h3>
+            <p class="text-[#96c5a9]">
               Enfocado en la construcción técnica y la optimización de granjas.
             </p>
           </div>
 
           <!-- Vanilla -->
           <div
-            class="p-6 transition-shadow border rounded-lg shadow-sm bg-card border-border hover:shadow-md"
+            class="p-6 transition-shadow border border-[#366348] rounded-lg shadow-sm bg-[#1b3124] hover:shadow-md hover:border-[#38e07b]"
           >
             <div
-              class="flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-primary/10"
+              class="flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-[#264532]"
             >
               <svg
-                class="w-6 h-6 text-primary"
+                class="w-6 h-6 text-[#38e07b]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -141,8 +141,8 @@ import FAQ from "../components/FAQ.astro";
                   d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
             </div>
-            <h3 class="mb-2 text-xl font-semibold text-foreground">Vanilla</h3>
-            <p class="text-muted-foreground">
+            <h3 class="mb-2 text-xl font-semibold text-white">Vanilla</h3>
+            <p class="text-[#96c5a9]">
               Jugabilidad pura de Minecraft sin modificaciones que alteren la
               experiencia original.
             </p>
@@ -150,13 +150,13 @@ import FAQ from "../components/FAQ.astro";
 
           <!-- Seguro -->
           <div
-            class="p-6 transition-shadow border rounded-lg shadow-sm bg-card border-border hover:shadow-md"
+            class="p-6 transition-shadow border border-[#366348] rounded-lg shadow-sm bg-[#1b3124] hover:shadow-md hover:border-[#38e07b]"
           >
             <div
-              class="flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-primary/10"
+              class="flex items-center justify-center w-12 h-12 mb-4 rounded-lg bg-[#264532]"
             >
               <svg
-                class="w-6 h-6 text-primary"
+                class="w-6 h-6 text-[#38e07b]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -169,8 +169,8 @@ import FAQ from "../components/FAQ.astro";
                 ></path>
               </svg>
             </div>
-            <h3 class="mb-2 text-xl font-semibold text-foreground">Seguro</h3>
-            <p class="text-muted-foreground">
+            <h3 class="mb-2 text-xl font-semibold text-white">Seguro</h3>
+            <p class="text-[#96c5a9]">
               Backups automáticos y logs detallados para máxima seguridad.
             </p>
           </div>
@@ -179,13 +179,13 @@ import FAQ from "../components/FAQ.astro";
     </section>
 
     <!-- Números que importan Section -->
-    <section class="py-16 border-b">
+    <section class="py-16 border-b border-[#264532]">
       <div class="container px-4 mx-auto">
         <div class="mb-12 text-center">
-          <h2 class="mb-4 text-3xl font-bold md:text-4xl text-foreground">
+          <h2 class="mb-4 text-3xl font-bold text-white md:text-4xl">
             Números que importan
           </h2>
-          <p class="max-w-2xl mx-auto text-lg text-muted-foreground">
+          <p class="max-w-2xl mx-auto text-lg text-[#96c5a9]">
             Estadísticas que demuestran la calidad de nuestro servidor
           </p>
         </div>
@@ -194,10 +194,10 @@ import FAQ from "../components/FAQ.astro";
           <!-- Miembros en Discord -->
           <div class="text-center">
             <div
-              class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10"
+              class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-[#264532]"
             >
               <svg
-                class="w-8 h-8 text-primary"
+                class="w-8 h-8 text-[#38e07b]"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
@@ -206,21 +206,21 @@ import FAQ from "../components/FAQ.astro";
                 ></path>
               </svg>
             </div>
-            <div class="mb-2 text-4xl font-bold text-primary">100+</div>
-            <div class="mb-1 text-lg font-medium text-foreground">
+            <div class="mb-2 text-4xl font-bold text-[#38e07b]">100+</div>
+            <div class="mb-1 text-lg font-medium text-white">
               Miembros en Discord
             </div>
-            <div class="text-sm text-muted-foreground">
+            <div class="text-sm text-[#96c5a9]">
               Comunidad activa y creciente
             </div>
           </div>
 
           <div class="text-center">
             <div
-              class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10"
+              class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-[#264532]"
             >
               <svg
-                class="w-8 h-8 text-primary"
+                class="w-8 h-8 text-[#38e07b]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -232,21 +232,21 @@ import FAQ from "../components/FAQ.astro";
                   d="M13 10V3L4 14h7v7l9-11h-7z"></path>
               </svg>
             </div>
-            <div class="mb-2 text-4xl font-bold text-primary">20 TPS</div>
-            <div class="mb-1 text-lg font-medium text-foreground">
+            <div class="mb-2 text-4xl font-bold text-[#38e07b]">20 TPS</div>
+            <div class="mb-1 text-lg font-medium text-white">
               Buen rendimiento
             </div>
-            <div class="text-sm text-muted-foreground">
+            <div class="text-sm text-[#96c5a9]">
               Experiencia fluida garantizada
             </div>
           </div>
 
           <div class="text-center">
             <div
-              class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10"
+              class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-[#264532]"
             >
               <svg
-                class="w-8 h-8 text-primary"
+                class="w-8 h-8 text-[#38e07b]"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -258,11 +258,11 @@ import FAQ from "../components/FAQ.astro";
                   d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
               </svg>
             </div>
-            <div class="mb-2 text-4xl font-bold text-primary">24/7</div>
-            <div class="mb-1 text-lg font-medium text-foreground">
+            <div class="mb-2 text-4xl font-bold text-[#38e07b]">24/7</div>
+            <div class="mb-1 text-lg font-medium text-white">
               Servidor disponible
             </div>
-            <div class="text-sm text-muted-foreground">
+            <div class="text-sm text-[#96c5a9]">
              	 Siempre online para ti
             </div>
           </div>
