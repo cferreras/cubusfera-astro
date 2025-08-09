@@ -29,7 +29,7 @@ const todasLasEtiquetas = [...new Set(proyectosData.flatMap(p => p.etiquetas))];
   }}
 >
   <Navbar client:load />
-  <main class="min-h-screen bg-white dark:bg-[#122118]">
+  <main class="min-h-screen bg-white dark:bg-brand-bg-2">
     <Breadcrumb items={[
       { label: 'Inicio', href: '/' },
       { label: 'Servidor', nonClickable: true },
@@ -37,14 +37,14 @@ const todasLasEtiquetas = [...new Set(proyectosData.flatMap(p => p.etiquetas))];
     ]} />
     
     <!-- Hero Section -->
-    <div class="relative bg-gradient-to-br border-b from-gray-100 via-gray-50 to-gray-100 dark:from-[#264532] dark:via-[#122118] dark:to-[#1b3124] border-gray-200 dark:border-[#366348]">
+  <div class="relative bg-gradient-to-br border-b from-gray-100 via-gray-50 to-gray-100 dark:from-brand-accent-1 dark:via-brand-bg-2 dark:to-brand-bg-1 border-gray-200 dark:border-brand-border">
       <div class="absolute inset-0 opacity-5 bg-grid-pattern"></div>
       <div class="container relative px-4 py-16 mx-auto">
         <div class="space-y-6 text-center">
           <h1 class="text-4xl font-bold md:text-5xl text-gray-900 dark:text-white">
-            Proyectos de <span class="text-green-600 dark:text-[#38e07b]">Cubusfera</span>
+            Proyectos de <span class="text-green-600 dark:text-brand-green">Cubusfera</span>
           </h1>
-          <p class="mx-auto max-w-2xl text-lg text-gray-600 dark:text-[#96c5a9]">
+          <p class="mx-auto max-w-2xl text-lg text-gray-600 dark:text-brand-muted">
             Descubre las increíbles construcciones y granjas técnicas creadas por nuestra comunidad
           </p>
         </div>
@@ -59,14 +59,14 @@ const todasLasEtiquetas = [...new Set(proyectosData.flatMap(p => p.etiquetas))];
           <h2 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Filtrar por etiqueta</h2>
           <div class="flex flex-wrap gap-2" id="filtros">
             <button 
-              class="px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 filter-btn bg-green-600 dark:bg-[#38e07b] text-white dark:text-black" 
+              class="px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 filter-btn bg-green-600 dark:bg-brand-green text-white dark:text-brand-green-fg" 
               data-filter="all"
             >
               Todos
             </button>
             {todasLasEtiquetas.map(etiqueta => (
               <button 
-                class="px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 filter-btn bg-gray-100 dark:bg-[#1b3124] text-gray-600 dark:text-[#96c5a9] hover:bg-gray-200 dark:hover:bg-[#264532] hover:text-gray-900 dark:hover:text-white border border-gray-300 dark:border-[#366348]" 
+                class="px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 filter-btn bg-gray-100 dark:bg-brand-bg-1 text-gray-600 dark:text-brand-muted hover:bg-gray-200 dark:hover:bg-brand-accent-1 hover:text-gray-900 dark:hover:text-white border border-gray-300 dark:border-brand-border" 
                 data-filter={etiqueta}
               >
                 {etiqueta}
@@ -79,10 +79,10 @@ const todasLasEtiquetas = [...new Set(proyectosData.flatMap(p => p.etiquetas))];
         <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="proyectos-grid">
           {proyectosData.map(proyecto => (
             <div 
-              class="overflow-hidden rounded-lg border shadow-sm transition-all duration-200 proyecto-card group bg-gray-50 dark:bg-[#1b3124] border-gray-200 dark:border-[#366348] hover:shadow-md hover:border-green-400 dark:hover:border-[#38e07b]"
+              class="overflow-hidden rounded-lg border shadow-sm transition-all duration-200 proyecto-card group bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border hover:shadow-md hover:border-green-400 dark:hover:border-brand-green"
               data-etiquetas={proyecto.etiquetas.join(',')}
             >
-              <div class="overflow-hidden relative aspect-video bg-gray-200 dark:bg-[#264532]">
+              <div class="overflow-hidden relative aspect-video bg-gray-200 dark:bg-brand-accent-1">
                 <img 
                   src={proyecto.imagen} 
                   alt={proyecto.titulo}
@@ -100,28 +100,28 @@ const todasLasEtiquetas = [...new Set(proyectosData.flatMap(p => p.etiquetas))];
               </div>
               
               <div class="p-4">
-                <h3 class="mb-2 text-lg font-semibold transition-colors text-gray-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-[#38e07b]">
+                <h3 class="mb-2 text-lg font-semibold transition-colors text-gray-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-brand-green">
                   {proyecto.titulo}
                 </h3>
-                <p class="mb-3 text-sm text-gray-600 dark:text-[#96c5a9] line-clamp-2">
+                <p class="mb-3 text-sm text-gray-600 dark:text-brand-muted line-clamp-2">
                   {proyecto.descripcion}
                 </p>
                 
                 <div class="flex flex-wrap gap-1 mb-3">
                   {proyecto.etiquetas.map(etiqueta => (
-                    <span class="px-2 py-1 text-xs rounded bg-gray-200 dark:bg-[#264532] text-gray-600 dark:text-[#96c5a9]">
+                    <span class="px-2 py-1 text-xs rounded bg-gray-200 dark:bg-brand-accent-1 text-gray-600 dark:text-brand-muted">
                       {etiqueta}
                     </span>
                   ))}
                 </div>
                 
                 <div class="flex justify-between items-center">
-                  <span class="text-xs text-gray-500 dark:text-[#96c5a9]">
+                  <span class="text-xs text-gray-500 dark:text-brand-muted">
                     {proyecto.coordenadas.x}, {proyecto.coordenadas.y}, {proyecto.coordenadas.z}
                   </span>
                   <a 
                     href={`/proyectos/${proyecto.id}`}
-                    class="inline-flex gap-1 items-center px-3 py-1.5 text-sm font-medium rounded-md transition-colors bg-green-600 dark:bg-[#38e07b] text-white dark:text-black hover:bg-green-700 dark:hover:bg-[#264532] dark:hover:text-white"
+                    class="inline-flex gap-1 items-center px-3 py-1.5 text-sm font-medium rounded-md transition-colors bg-green-600 dark:bg-brand-green text-white dark:text-brand-green-fg hover:bg-green-700 dark:hover:bg-brand-accent-1 dark:hover:text-white"
                   >
                     Ver detalles
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -148,13 +148,13 @@ const todasLasEtiquetas = [...new Set(proyectosData.flatMap(p => p.etiquetas))];
           const filter = this.getAttribute('data-filter');
           
           // Actualizar botones activos
-          filterButtons.forEach(btn => {
-            btn.classList.remove('bg-green-600', 'dark:bg-[#38e07b]', 'text-white', 'dark:text-black');
-            btn.classList.add('bg-gray-100', 'dark:bg-[#1b3124]', 'text-gray-600', 'dark:text-[#96c5a9]', 'hover:bg-gray-200', 'dark:hover:bg-[#264532]', 'hover:text-gray-900', 'dark:hover:text-white', 'border', 'border-gray-300', 'dark:border-[#366348]');
+      filterButtons.forEach(btn => {
+        btn.classList.remove('bg-green-600', 'dark:bg-brand-green', 'text-white', 'dark:text-brand-green-fg');
+        btn.classList.add('bg-gray-100', 'dark:bg-brand-bg-1', 'text-gray-600', 'dark:text-brand-muted', 'hover:bg-gray-200', 'dark:hover:bg-brand-accent-1', 'hover:text-gray-900', 'dark:hover:text-white', 'border', 'border-gray-300', 'dark:border-brand-border');
           });
           
-          this.classList.remove('bg-gray-100', 'dark:bg-[#1b3124]', 'text-gray-600', 'dark:text-[#96c5a9]', 'hover:bg-gray-200', 'dark:hover:bg-[#264532]', 'hover:text-gray-900', 'dark:hover:text-white', 'border', 'border-gray-300', 'dark:border-[#366348]');
-          this.classList.add('bg-green-600', 'dark:bg-[#38e07b]', 'text-white', 'dark:text-black');
+          this.classList.remove('bg-gray-100', 'dark:bg-brand-bg-1', 'text-gray-600', 'dark:text-brand-muted', 'hover:bg-gray-200', 'dark:hover:bg-brand-accent-1', 'hover:text-gray-900', 'dark:hover:text-white', 'border', 'border-gray-300', 'dark:border-brand-border');
+          this.classList.add('bg-green-600', 'dark:bg-brand-green', 'text-white', 'dark:text-brand-green-fg');
           
           // Filtrar proyectos
           projectCards.forEach(card => {

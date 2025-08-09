@@ -83,7 +83,7 @@ const Navbar = () => {
       return (
         <div key={item.name} className="relative group">
           <button
-            className="flex items-center space-x-1 text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-[#38e07b] text-sm font-medium transition-colors duration-200"
+            className="flex items-center space-x-1 text-sm font-medium text-gray-700 transition-colors duration-200 dark:text-white hover:text-green-600 dark:hover:text-brand-green"
             type="button"
           >
             <span>{item.name}</span>
@@ -91,7 +91,7 @@ const Navbar = () => {
           </button>
           
           {/* Dropdown que aparece en hover */}
-          <div className="absolute left-0 mt-1 bg-white dark:bg-[#1b3124] border border-gray-200 dark:border-[#366348] rounded-md shadow-lg min-w-[160px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+          <div className="absolute left-0 mt-1 bg-white dark:bg-brand-bg-1 border border-gray-200 dark:border-brand-border rounded-md shadow-lg min-w-[160px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
             {item.children.map((child) => (
               <button
                 key={child.name}
@@ -100,14 +100,14 @@ const Navbar = () => {
                 className={cn(
                   "w-full text-left block px-4 py-2 text-sm transition-colors duration-200 first:rounded-t-md last:rounded-b-md",
                   child.disabled 
-                    ? "text-gray-400 dark:text-[#96c5a9]/50 cursor-not-allowed" 
-                    : "text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-[#38e07b] hover:bg-gray-100 dark:hover:bg-[#264532] cursor-pointer"
+                    ? "text-gray-400 dark:text-brand-muted/50 cursor-not-allowed" 
+                    : "text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-brand-green hover:bg-gray-100 dark:hover:bg-brand-accent-1 cursor-pointer"
                 )}
                 type="button"
               >
                 {child.name}
                 {child.disabled && (
-                              <span className="ml-2 text-xs bg-gray-200 dark:bg-[#264532] text-gray-600 dark:text-[#96c5a9] px-1.5 py-0.5 rounded">
+                              <span className="ml-2 text-xs bg-gray-200 dark:bg-brand-accent-1 text-gray-600 dark:text-brand-muted px-1.5 py-0.5 rounded">
               Próximamente
             </span>
                 )}
@@ -126,14 +126,14 @@ const Navbar = () => {
         className={cn(
           "text-sm font-medium transition-colors duration-200",
           item.disabled 
-            ? "text-gray-400 dark:text-[#96c5a9]/50 cursor-not-allowed" 
-            : "text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-[#38e07b]"
+            ? "text-gray-400 dark:text-brand-muted/50 cursor-not-allowed" 
+            : "text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-brand-green"
         )}
         type="button"
       >
         {item.name}
         {item.disabled && (
-          <span className="ml-2 text-xs bg-[#264532] text-[#96c5a9] px-1.5 py-0.5 rounded">
+          <span className="ml-2 text-xs bg-brand-accent-1 text-brand-muted px-1.5 py-0.5 rounded">
             Próximamente
           </span>
         )}
@@ -147,7 +147,7 @@ const Navbar = () => {
         <div key={item.name}>
           <button
             onClick={() => handleMobileDropdownToggle(item.name)}
-            className="w-full flex items-center justify-between text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-[#38e07b] px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-[#264532]"
+            className="flex items-center justify-between w-full px-3 py-2 text-base font-medium text-gray-700 transition-colors duration-200 rounded-md dark:text-white hover:text-green-600 dark:hover:text-brand-green hover:bg-gray-100 dark:hover:bg-brand-accent-1"
             type="button"
           >
             <span>{item.name}</span>
@@ -167,14 +167,14 @@ const Navbar = () => {
                   className={cn(
                     "w-full text-left block px-4 py-2 text-sm transition-colors duration-200 rounded-md",
                     child.disabled 
-                      ? "text-gray-400 dark:text-[#96c5a9]/50 cursor-not-allowed" 
-                      : "text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-[#38e07b] hover:bg-gray-100 dark:hover:bg-[#264532] cursor-pointer"
+                      ? "text-gray-400 dark:text-brand-muted/50 cursor-not-allowed" 
+                      : "text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-brand-green hover:bg-gray-100 dark:hover:bg-brand-accent-1 cursor-pointer"
                   )}
                   type="button"
                 >
                   {child.name}
                   {child.disabled && (
-                    <span className="ml-2 text-xs bg-gray-200 dark:bg-[#264532] text-gray-600 dark:text-[#96c5a9] px-1.5 py-0.5 rounded">
+                    <span className="ml-2 text-xs bg-gray-200 dark:bg-brand-accent-1 text-gray-600 dark:text-brand-muted px-1.5 py-0.5 rounded">
                       Próximamente
                     </span>
                   )}
@@ -194,14 +194,14 @@ const Navbar = () => {
         className={cn(
           "w-full text-left block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200",
           item.disabled 
-            ? "text-gray-400 dark:text-[#96c5a9]/50 cursor-not-allowed" 
-            : "text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-[#38e07b] hover:bg-gray-100 dark:hover:bg-[#264532]"
+            ? "text-gray-400 dark:text-brand-muted/50 cursor-not-allowed" 
+            : "text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-brand-green hover:bg-gray-100 dark:hover:bg-brand-accent-1"
         )}
         type="button"
       >
         {item.name}
         {item.disabled && (
-          <span className="ml-2 text-xs bg-[#264532] text-[#96c5a9] px-1.5 py-0.5 rounded">
+          <span className="ml-2 text-xs bg-brand-accent-1 text-brand-muted px-1.5 py-0.5 rounded">
             Próximamente
           </span>
         )}
@@ -210,13 +210,13 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gray-50 dark:bg-[#122118] border-b border-gray-200 dark:border-[#264532] sticky top-0 z-50">
+  <nav className="sticky top-0 z-50 border-b border-gray-200 bg-gray-50 dark:bg-brand-bg-2 dark:border-brand-accent-1">
       <div className="px-10 py-3 mx-auto max-w-7xl">
         <div className="flex items-center justify-between h-auto">
           {/* Logo */}
           <button
             onClick={() => handleNavigation('/', false)}
-            className="flex items-center gap-4 text-gray-800 dark:text-white hover:text-green-600 dark:hover:text-[#38e07b] transition-colors duration-200 cursor-pointer"
+            className="flex items-center gap-4 text-gray-800 transition-colors duration-200 cursor-pointer dark:text-white hover:text-green-600 dark:hover:text-brand-green"
             type="button"
           >
             <div className="w-8 h-8">
@@ -258,7 +258,7 @@ const Navbar = () => {
               {/* Theme Toggle Button */}
               <button
                 onClick={toggleTheme}
-                className="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-200 dark:bg-[#264532] hover:bg-gray-300 dark:hover:bg-[#366348] text-gray-700 dark:text-white transition-colors duration-200"
+                className="flex items-center justify-center w-10 h-10 text-gray-700 transition-colors duration-200 bg-gray-200 rounded-lg dark:bg-brand-accent-1 hover:bg-gray-300 dark:hover:bg-brand-border dark:text-white"
                 aria-label={isDark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
                 type="button"
               >
@@ -271,7 +271,7 @@ const Navbar = () => {
               
               <button
                 onClick={() => handleNavigation('https://discord.gg/7uKEYACErc', false)}
-                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-green-600 dark:bg-[#38e07b] text-white dark:text-[#122118] text-sm font-bold leading-normal tracking-[0.015em]"
+                className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-green-600 dark:bg-brand-green text-white dark:text-brand-green-fg text-sm font-bold leading-normal tracking-[0.015em]"
                 type="button"
               >
                 <span className="truncate">Unirse a Discord</span>
@@ -282,7 +282,7 @@ const Navbar = () => {
             <div className="md:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="p-2 rounded-md text-gray-700 dark:text-white hover:text-green-600 dark:hover:text-[#38e07b] hover:bg-gray-100 dark:hover:bg-[#264532] transition-colors duration-200"
+                className="p-2 text-gray-700 transition-colors duration-200 rounded-md dark:text-white hover:text-green-600 dark:hover:text-brand-green hover:bg-gray-100 dark:hover:bg-brand-accent-1"
                 aria-label="Toggle menu"
                 type="button"
               >
@@ -302,7 +302,7 @@ const Navbar = () => {
         "md:hidden transition-all duration-300 ease-in-out overflow-hidden",
         isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
       )}>
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-50 dark:bg-[#122118] border-t border-gray-200 dark:border-[#264532]">
+  <div className="px-2 pt-2 pb-3 space-y-1 border-t border-gray-200 sm:px-3 bg-gray-50 dark:bg-brand-bg-2 dark:border-brand-accent-1">
           {navItems.map((item) => renderMobileNavItem(item))}
           
           {/* Mobile Action Buttons */}
@@ -310,7 +310,7 @@ const Navbar = () => {
             {/* Mobile Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="w-full flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-gray-200 dark:bg-[#264532] hover:bg-gray-300 dark:hover:bg-[#366348] text-gray-700 dark:text-white text-sm font-medium transition-colors duration-200"
+              className="flex items-center justify-center w-full h-10 gap-2 px-4 text-sm font-medium text-gray-700 transition-colors duration-200 bg-gray-200 rounded-lg dark:bg-brand-accent-1 hover:bg-gray-300 dark:hover:bg-brand-border dark:text-white"
               type="button"
             >
               {isDark ? (
@@ -328,7 +328,7 @@ const Navbar = () => {
             
             <button
               onClick={() => handleNavigation('https://discord.gg/7uKEYACErc', false)}
-              className="w-full flex items-center justify-center rounded-lg h-10 px-4 bg-green-600 dark:bg-[#38e07b] text-white dark:text-[#122118] text-sm font-bold"
+              className="flex items-center justify-center w-full h-10 px-4 text-sm font-bold text-white bg-green-600 rounded-lg dark:bg-brand-green dark:text-brand-green-fg"
               type="button"
             >
               Unirse a Discord

@@ -34,7 +34,7 @@ const getMinecraftHead = (nombre: string) =>
   }}
 >
   <Navbar client:load />
-  <main class="flex-1 bg-white dark:bg-[#122118]">
+  <main class="flex-1 bg-white dark:bg-brand-bg-2">
     <Breadcrumb
       items={[
         { label: "Inicio", href: "/" },
@@ -67,13 +67,13 @@ const getMinecraftHead = (nombre: string) =>
                 {proyecto.data.dimension}
               </span>
             </div>
-            <p class="mb-6 text-lg leading-relaxed text-gray-600 dark:text-[#96c5a9]">
+            <p class="mb-6 text-lg leading-relaxed text-gray-600 dark:text-brand-muted">
               {proyecto.data.descripcion}
             </p>
           </div>
 
           <!-- Contenido Markdown -->
-          <div class="p-6 rounded-lg border bg-gray-50 dark:bg-[#1b3124] border-gray-200 dark:border-[#366348]">
+          <div class="p-6 rounded-lg border bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border">
             <div class="space-y-4 markdown-content">
               <Content />
             </div>
@@ -81,9 +81,9 @@ const getMinecraftHead = (nombre: string) =>
 
           <!-- Mapa -->
           <div
-            class="overflow-hidden rounded-lg border bg-gray-50 dark:bg-[#1b3124] border-gray-200 dark:border-[#366348]"
+            class="overflow-hidden rounded-lg border bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border"
           >
-            <div class="p-4 border-b border-gray-200 dark:border-[#366348]">
+            <div class="p-4 border-b border-gray-200 dark:border-brand-border">
               <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
                 Ubicación en el Mapa
               </h2>
@@ -100,8 +100,8 @@ const getMinecraftHead = (nombre: string) =>
                   />
                 </div>
               ) : (
-                <div class="flex justify-center items-center aspect-video bg-gray-100 dark:bg-[#264532]">
-                  <div class="text-center text-gray-600 dark:text-[#96c5a9]">
+                <div class="flex justify-center items-center aspect-video bg-gray-100 dark:bg-brand-accent-1">
+                  <div class="text-center text-gray-600 dark:text-brand-muted">
                     <svg
                       class="w-12 h-12 mx-auto mb-2"
                       fill="none"
@@ -130,8 +130,8 @@ const getMinecraftHead = (nombre: string) =>
           <!-- Video de YouTube (si existe) -->
           {
             proyecto.data.video && (
-              <div class="overflow-hidden rounded-lg border bg-gray-50 dark:bg-[#1b3124] border-gray-200 dark:border-[#366348]">
-                <div class="p-4 border-b border-gray-200 dark:border-[#366348]">
+              <div class="overflow-hidden rounded-lg border bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border">
+                <div class="p-4 border-b border-gray-200 dark:border-brand-border">
                   <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
                     Video del Proyecto
                   </h2>
@@ -154,19 +154,19 @@ const getMinecraftHead = (nombre: string) =>
         <!-- Sidebar -->
         <div class="space-y-6">
           <!-- Coordenadas -->
-          <div class="p-4 rounded-lg border bg-gray-50 dark:bg-[#1b3124] border-gray-200 dark:border-[#366348]">
+          <div class="p-4 rounded-lg border bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border">
             <h3 class="mb-3 text-lg font-semibold text-gray-900 dark:text-white">Coordenadas</h3>
             <div class="space-y-2">
               <div
-                class="flex justify-between items-center p-3 rounded-md bg-gray-100 dark:bg-[#264532]"
+                class="flex justify-between items-center p-3 rounded-md bg-gray-100 dark:bg-brand-accent-1"
               >
-                <span class="font-mono text-sm text-gray-600 dark:text-[#96c5a9]">
+                <span class="font-mono text-sm text-gray-600 dark:text-brand-muted">
                   {proyecto.data.coordenadas.x}, {proyecto.data.coordenadas.y}, {
                     proyecto.data.coordenadas.z
                   }
                 </span>
                 <button
-                  class="px-3 py-1 text-xs rounded transition-colors copy-coords bg-green-600 dark:bg-[#38e07b] text-white dark:text-black hover:bg-green-700 dark:hover:bg-[#264532] dark:hover:text-white"
+                  class="px-3 py-1 text-xs rounded transition-colors copy-coords bg-green-600 dark:bg-brand-green text-white dark:text-brand-green-fg hover:bg-green-700 dark:hover:bg-brand-accent-1 dark:hover:text-white"
                   data-coords={`${proyecto.data.coordenadas.x} ${proyecto.data.coordenadas.y} ${proyecto.data.coordenadas.z}`}
                 >
                   Copiar
@@ -176,7 +176,7 @@ const getMinecraftHead = (nombre: string) =>
           </div>
 
           <!-- Constructores -->
-          <div class="p-4 rounded-lg border bg-gray-50 dark:bg-[#1b3124] border-gray-200 dark:border-[#366348]">
+          <div class="p-4 rounded-lg border bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border">
             <h3 class="mb-3 text-lg font-semibold text-gray-900 dark:text-white">Constructores</h3>
             <div class="space-y-3">
               {
@@ -191,7 +191,7 @@ const getMinecraftHead = (nombre: string) =>
                         alt={`Avatar de ${constructor.nombre}`}
                         class="w-8 h-8 rounded"
                       />
-                      <span class="text-sm font-medium transition-colors group-hover:text-green-600 dark:group-hover:text-[#38e07b] text-gray-600 dark:text-[#96c5a9]">
+                      <span class="text-sm font-medium transition-colors group-hover:text-green-600 dark:group-hover:text-brand-green text-gray-600 dark:text-brand-muted">
                         {constructor.nombre}
                       </span>
                     </a>
@@ -204,13 +204,13 @@ const getMinecraftHead = (nombre: string) =>
           <!-- Información de Granja (si existe) -->
           {
             proyecto.data.granja && (
-              <div class="p-4 rounded-lg border bg-gray-50 dark:bg-[#1b3124] border-gray-200 dark:border-[#366348]">
+              <div class="p-4 rounded-lg border bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border">
                 <h3 class="mb-3 text-lg font-semibold text-gray-900 dark:text-white">
                   Uso de la Granja
                 </h3>
 
                 <div class="space-y-4">
-                  <p class="text-sm text-gray-600 dark:text-[#96c5a9]">
+                  <p class="text-sm text-gray-600 dark:text-brand-muted">
                     {proyecto.data.granja.instrucciones}
                   </p>
 
@@ -220,23 +220,23 @@ const getMinecraftHead = (nombre: string) =>
                     </h4>
                     {proyecto.data.granja.bots.map(
                       (bot: { nombre: string; comando: string }) => (
-                        <div class="p-3 space-y-2 rounded-md bg-gray-100 dark:bg-[#264532]">
+                        <div class="p-3 space-y-2 rounded-md bg-gray-100 dark:bg-brand-accent-1">
                           <div class="flex items-center gap-2">
                             <img
                               src={getMinecraftHead(bot.nombre)}
                               alt={`Avatar de ${bot.nombre}`}
                               class="w-6 h-6 rounded"
                             />
-                            <span class="text-sm font-medium text-gray-600 dark:text-[#96c5a9]">
+                            <span class="text-sm font-medium text-gray-600 dark:text-brand-muted">
                               {bot.nombre}
                             </span>
                           </div>
                           <div class="flex items-center gap-2">
-                            <code class="flex-1 p-2 font-mono text-xs rounded border bg-white dark:bg-[#122118] border-gray-300 dark:border-[#366348] text-gray-700 dark:text-[#96c5a9]">
+                            <code class="flex-1 p-2 font-mono text-xs rounded border bg-white dark:bg-brand-bg-2 border-gray-300 dark:border-brand-border text-gray-700 dark:text-brand-muted">
                               {bot.comando}
                             </code>
                             <button
-                              class="px-2 py-1 text-xs rounded transition-colors copy-command bg-green-600 dark:bg-[#38e07b] text-white dark:text-black hover:bg-green-700 dark:hover:bg-[#264532] dark:hover:text-white"
+                              class="px-2 py-1 text-xs rounded transition-colors copy-command bg-green-600 dark:bg-brand-green text-white dark:text-brand-green-fg hover:bg-green-700 dark:hover:bg-brand-accent-1 dark:hover:text-white"
                               data-command={bot.comando}
                             >
                               Copiar
