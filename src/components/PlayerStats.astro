@@ -1,6 +1,5 @@
 ---
 import { mapPlayerStats, getTopStats, type PlayerStats } from '../lib/statsMapper';
-import { analyzePlayerStats, getPersonalizedTip, type PlayerAnalysis } from '../lib/aiAnalyzer';
 
 interface Props {
   member: string;
@@ -18,8 +17,7 @@ let playerStats: PlayerStats | null = null;
 let topMined: { item: string; count: number; }[] = [];
 let topCrafted: { item: string; count: number; }[] = [];
 let topUsed: { item: string; count: number; }[] = [];
-let playerAnalysis: PlayerAnalysis | null = null;
-let personalizedTip: string | null = null;
+// Se eliminó análisis avanzado
 let error = null;
 
 try {
@@ -30,8 +28,8 @@ try {
     topMined = getTopStats(rawPlayerData, 'mined', 5);
     topCrafted = getTopStats(rawPlayerData, 'crafted', 5);
     topUsed = getTopStats(rawPlayerData, 'used', 5);
-    playerAnalysis = await analyzePlayerStats(playerStats, member);
-    personalizedTip = getPersonalizedTip(playerStats);
+    
+  // Llamada a análisis avanzado eliminada
   } else if (response.status === 404) {
     error = 'Jugador no encontrado';
   } else {
@@ -43,9 +41,9 @@ try {
 ---
 
 {error ? (
-  <div class="mx-auto max-w-2xl">
-    <div class="p-8 text-center rounded-lg border bg-red-900/20 border-red-800">
-      <div class="flex justify-center items-center mx-auto mb-4 w-16 h-16 rounded-full bg-red-900/30">
+  <div class="max-w-2xl mx-auto">
+    <div class="p-8 text-center border border-red-800 rounded-lg bg-red-900/20">
+      <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-red-900/30">
         <svg class="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
         </svg>
@@ -55,7 +53,7 @@ try {
     </div>
   </div>
 ) : playerStats ? (
-  <div class="mx-auto space-y-8 max-w-6xl">
+  <div class="max-w-6xl mx-auto space-y-8">
     <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
       <div class="p-6 rounded-lg border bg-gray-50 dark:bg-[#1b3124] border-gray-200 dark:border-[#366348]">
         <div class="flex items-center space-x-3">
@@ -73,7 +71,7 @@ try {
       
       <div class="p-6 rounded-lg border bg-gray-50 dark:bg-[#1b3124] border-gray-200 dark:border-[#366348]">
         <div class="flex items-center space-x-3">
-          <div class="flex justify-center items-center w-10 h-10 rounded-lg bg-red-500/20">
+          <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-red-500/20">
             <svg class="w-5 h-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
             </svg>
@@ -87,7 +85,7 @@ try {
       
       <div class="p-6 rounded-lg border bg-gray-50 dark:bg-[#1b3124] border-gray-200 dark:border-[#366348]">
         <div class="flex items-center space-x-3">
-          <div class="flex justify-center items-center w-10 h-10 rounded-lg bg-blue-500/20">
+          <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-500/20">
             <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -102,7 +100,7 @@ try {
 
       <div class="p-6 rounded-lg border bg-gray-50 dark:bg-[#1b3124] border-gray-200 dark:border-[#366348]">
         <div class="flex items-center space-x-3">
-          <div class="flex justify-center items-center w-10 h-10 rounded-lg bg-green-500/20">
+          <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-green-500/20">
              <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
              </svg>
@@ -115,45 +113,7 @@ try {
       </div>
     </div>
 
-    <!-- Análisis de IA -->
-    {playerAnalysis && (
-      <div class="bg-gradient-to-br from-gray-100 to-gray-50 dark:from-[#264532] dark:to-[#1b3124] rounded-lg border border-gray-200 dark:border-[#366348]">
-        <div class="p-6 bg-gradient-to-r rounded-t-lg border-b border-gray-200 dark:border-[#366348] from-gray-200/50 to-gray-300/50 dark:from-[#264532]/50 dark:to-[#366348]/50">
-          <h3 class="flex items-center space-x-2 text-lg font-semibold text-gray-900 dark:text-white">
-            <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-            </svg>
-            <span>Análisis de IA</span>
-            <span class="px-2 py-1 text-xs font-medium text-purple-600 dark:text-purple-300 bg-purple-100 dark:bg-purple-900/30 rounded-full">Beta</span>
-          </h3>
-        </div>
-        <div class="p-6 space-y-6">
-          <div class="text-center">
-            <h4 class="mb-2 text-xl font-bold text-purple-600 dark:text-purple-300">{playerAnalysis.playerType}</h4>
-            <p class="leading-relaxed text-gray-600 dark:text-[#96c5a9]">{playerAnalysis.description}</p>
-          </div>
-          
-          <div class="flex flex-wrap gap-2 justify-center">
-            {playerAnalysis.traits.map((trait) => (
-              <span class="px-3 py-1 text-sm font-medium text-blue-600 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/30 rounded-full">
-                {trait}
-              </span>
-            ))}
-          </div>
-          
-          {personalizedTip && (
-            <div class="p-4 bg-amber-50 dark:bg-amber-950/20 rounded-lg border border-amber-200 dark:border-amber-800/30">
-              <div class="flex items-start space-x-3">
-                <svg class="flex-shrink-0 mt-0.5 w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3l1.09 3.26L16 8l-2.91 1.74L12 13l-1.09-3.26L8 8l2.91-1.74L12 3z"></path>
-                </svg>
-                <p class="text-sm text-amber-700 dark:text-amber-300">{personalizedTip}</p>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    )}
+  <!-- Se eliminó bloque de Análisis avanzado -->
 
     <!-- Secciones Detalladas -->
     <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
@@ -168,19 +128,19 @@ try {
           </h3>
         </div>
         <div class="p-6 space-y-4">
-          <div class="flex justify-between items-center">
+          <div class="flex items-center justify-between">
             <span class="text-gray-600 dark:text-[#96c5a9]">Mobs Eliminados</span>
             <span class="font-semibold text-gray-900 dark:text-white">{playerStats?.mobKills || 0}</span>
           </div>
-          <div class="flex justify-between items-center">
+          <div class="flex items-center justify-between">
             <span class="text-gray-600 dark:text-[#96c5a9]">Jugadores Eliminados</span>
             <span class="font-semibold text-gray-900 dark:text-white">{playerStats?.playerKills || 0}</span>
           </div>
-          <div class="flex justify-between items-center">
+          <div class="flex items-center justify-between">
             <span class="text-gray-600 dark:text-[#96c5a9]">Daño Infligido</span>
             <span class="font-semibold text-gray-900 dark:text-white">{playerStats?.damageDealt || 0}</span>
           </div>
-          <div class="flex justify-between items-center">
+          <div class="flex items-center justify-between">
             <span class="text-gray-600 dark:text-[#96c5a9]">Daño Recibido</span>
             <span class="font-semibold text-gray-900 dark:text-white">{playerStats?.damageTaken || 0}</span>
           </div>
@@ -198,19 +158,19 @@ try {
           </h3>
         </div>
         <div class="p-6 space-y-4">
-          <div class="flex justify-between items-center">
+          <div class="flex items-center justify-between">
             <span class="text-gray-600 dark:text-[#96c5a9]">Bloques colocados</span>
             <span class="font-semibold text-gray-900 dark:text-white">{playerStats?.blocksPlaced || 0}</span>
           </div>
-          <div class="flex justify-between items-center">
+          <div class="flex items-center justify-between">
             <span class="text-gray-600 dark:text-[#96c5a9]">Bloques rotos</span>
             <span class="font-semibold text-gray-900 dark:text-white">{playerStats?.blocksBroken || 0}</span>
           </div>
-          <div class="flex justify-between items-center">
+          <div class="flex items-center justify-between">
             <span class="text-gray-600 dark:text-[#96c5a9]">Items crafteados</span>
             <span class="font-semibold text-gray-900 dark:text-white">{playerStats?.itemsCrafted || 0}</span>
           </div>
-          <div class="flex justify-between items-center">
+          <div class="flex items-center justify-between">
             <span class="text-gray-600 dark:text-[#96c5a9]">Items usados</span>
             <span class="font-semibold text-gray-900 dark:text-white">{playerStats?.itemsUsed || 0}</span>
           </div>
@@ -233,7 +193,7 @@ try {
         <div class="p-6 space-y-4">
           {topMined.length > 0 ? (
             topMined.map((item: { item: string; count: number; }) => (
-              <div class="flex justify-between items-center">
+              <div class="flex items-center justify-between">
                 <span class="capitalize text-gray-600 dark:text-[#96c5a9]">{item.item}</span>
                 <span class="font-semibold text-gray-900 dark:text-white">{item.count.toLocaleString()}</span>
               </div>
@@ -257,7 +217,7 @@ try {
         <div class="p-6 space-y-4">
           {topCrafted.length > 0 ? (
             topCrafted.map((item, index) => (
-              <div class="flex justify-between items-center">
+              <div class="flex items-center justify-between">
                 <span class="capitalize text-gray-600 dark:text-[#96c5a9]">{item.item}</span>
                 <span class="font-semibold text-gray-900 dark:text-white">{item.count.toLocaleString()}</span>
               </div>
@@ -281,7 +241,7 @@ try {
         <div class="p-6 space-y-4">
           {topUsed.length > 0 ? (
             topUsed.map((item, index) => (
-              <div class="flex justify-between items-center">
+              <div class="flex items-center justify-between">
                 <span class="capitalize text-gray-600 dark:text-[#96c5a9]">{item.item}</span>
                 <span class="font-semibold text-gray-900 dark:text-white">{item.count.toLocaleString()}</span>
               </div>
@@ -316,7 +276,7 @@ try {
     </div>
   </div>
 ) : (
-  <div class="mx-auto max-w-2xl">
+  <div class="max-w-2xl mx-auto">
     <div class="p-8 text-center rounded-lg bg-gray-50 dark:bg-[#1b3124] border border-gray-200 dark:border-[#366348]">
       <div class="flex justify-center items-center mx-auto mb-4 w-16 h-16 rounded-full animate-pulse bg-gray-200 dark:bg-[#264532]">
         <svg class="w-8 h-8 text-green-600 dark:text-[#38e07b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
