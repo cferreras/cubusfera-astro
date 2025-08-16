@@ -20,9 +20,6 @@ importers:
       '@astrojs/sitemap':
         specifier: ^3.4.1
         version: 3.4.1
-      '@mistralai/mistralai':
-        specifier: ^1.7.3
-        version: 1.7.3(zod@3.25.75)
       '@tailwindcss/typography':
         specifier: ^0.5.16
         version: 0.5.16(tailwindcss@4.1.11)
@@ -491,11 +488,6 @@ packages:
 
   '@mdx-js/mdx@3.1.0':
     resolution: {integrity: sha512-/QxEhPAvGwbQmy1Px8F899L5Uc2KZ6JtXwlCgJmjSTBedwOZkByYcBG4GceIGPXRDsmfxhHazuS+hlOShRLeDw==}
-
-  '@mistralai/mistralai@1.7.3':
-    resolution: {integrity: sha512-80OtFgy7ibbasYjupwnSpNv0nzY/OZdJ1+dsQZ/jWLLRDg4+81WXe8Hbvr1CxF67J00ZDYRhTdVpJkhcxdnW9g==}
-    peerDependencies:
-      zod: '>= 3'
 
   '@oslojs/encoding@1.1.0':
     resolution: {integrity: sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ==}
@@ -2645,11 +2637,6 @@ snapshots:
     transitivePeerDependencies:
       - acorn
       - supports-color
-
-  '@mistralai/mistralai@1.7.3(zod@3.25.75)':
-    dependencies:
-      zod: 3.25.75
-      zod-to-json-schema: 3.24.6(zod@3.25.75)
 
   '@oslojs/encoding@1.1.0': {}
 
