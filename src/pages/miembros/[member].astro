@@ -2,6 +2,7 @@
 import Layout from '../../layouts/main.astro';
 import Navbar from '../../components/Navbar';
 import PlayerStats from '../../components/PlayerStats.astro';
+import PlayerProfile from '../../components/PlayerProfile.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 
 // Función requerida para rutas dinámicas en Astro
@@ -163,6 +164,9 @@ const content = {
           </a>
         </div>
       </div>
+
+      <!-- Perfil del jugador (biografía y redes sociales) -->
+      <PlayerProfile member={member} />
 
       <!-- Server Islands aquí -->
       <PlayerStats server:defer member={member}>
