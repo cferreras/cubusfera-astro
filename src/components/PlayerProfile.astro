@@ -145,79 +145,6 @@ function formatRelativeTime(lastPlayedISO: string): string {
   </div>
 ) : profileData && (profileData.bio || hasSocialContent(profileData.social) || profileData.lastPlayed || profileData.totalPlayTime) ? (
   <div class="max-w-6xl mx-auto mb-8 space-y-6">
-    {/* Sección informativa cuando no hay contenido personal */}
-    {profileData && !profileData.bio && !hasSocialContent(profileData.social) && (
-      <div class="rounded-lg border bg-gray-50 dark:bg-[#1b3124] border-gray-200 dark:border-[#366348]">
-        <div class="p-6">
-          <div class="flex items-start justify-between">
-            <div class="flex items-start flex-1 space-x-3">
-              <svg class="w-6 h-6 text-green-600 dark:text-[#38e07b] mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-              <div class="flex-1">
-                <h3 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
-                  Personaliza tu perfil
-                </h3>
-                <p class="text-gray-600 dark:text-[#96c5a9]">
-                  ¡Haz que tu perfil sea más personal! Puedes añadir una biografía y enlaces a tus redes sociales.
-                </p>
-              </div>
-            </div>
-            <button 
-              class="ml-4 text-gray-400 dark:text-gray-300 hover:text-green-600 dark:hover:text-[#38e07b] transition-colors p-2 rounded-full hover:bg-green-50 dark:hover:bg-[#38e07b]/10"
-              data-expand="profile-help"
-              aria-label="Mostrar/ocultar información de comandos"
-            >
-              <svg class="w-5 h-5 transition-transform transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-              </svg>
-            </button>
-          </div>
-          
-          <!-- Contenido expandible -->
-          <div id="profile-help" class="hidden mt-4 pt-4 border-t border-gray-200 dark:border-[#366348]">
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div class="bg-white dark:bg-[#264532] rounded-lg p-4 border border-gray-200 dark:border-[#366348]">
-                <h4 class="flex items-center mb-2 font-semibold text-gray-900 dark:text-white">
-                  <svg class="w-4 h-4 mr-2 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                  </svg>
-                  Biografía
-                </h4>
-                <p class="text-sm text-gray-600 dark:text-[#96c5a9] mb-2">Comparte algo sobre ti:</p>
-                <code class="text-xs bg-gray-100 dark:bg-[#1b3124] text-gray-800 dark:text-[#96c5a9] p-2 rounded block border border-gray-200 dark:border-[#366348]">
-                  /bio &lt;tu biografía&gt;
-                </code>
-              </div>
-              <div class="bg-white dark:bg-[#264532] rounded-lg p-4 border border-gray-200 dark:border-[#366348]">
-                <h4 class="flex items-center mb-2 font-semibold text-gray-900 dark:text-white">
-                  <svg class="w-4 h-4 mr-2 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
-                  </svg>
-                  Redes Sociales
-                </h4>
-                <p class="text-sm text-gray-600 dark:text-[#96c5a9] mb-2">Conecta tus redes:</p>
-                <div class="space-y-1 text-xs">
-                  <code class="bg-gray-100 dark:bg-[#1b3124] text-gray-800 dark:text-[#96c5a9] p-1 rounded block border border-gray-200 dark:border-[#366348]">
-                    /social discord &lt;usuario&gt;
-                  </code>
-                  <code class="bg-gray-100 dark:bg-[#1b3124] text-gray-800 dark:text-[#96c5a9] p-1 rounded block border border-gray-200 dark:border-[#366348]">
-                    /social twitter &lt;enlace&gt;
-                  </code>
-                  <code class="bg-gray-100 dark:bg-[#1b3124] text-gray-800 dark:text-[#96c5a9] p-1 rounded block border border-gray-200 dark:border-[#366348]">
-                    /social youtube &lt;enlace&gt;
-                  </code>
-                  <code class="bg-gray-100 dark:bg-[#1b3124] text-gray-800 dark:text-[#96c5a9] p-1 rounded block border border-gray-200 dark:border-[#366348]">
-                    /social instagram &lt;enlace&gt;
-                  </code>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )}
-
     {/* Sección de Biografía */}
     {profileData.bio && (
       <div class="rounded-lg border bg-gray-50 dark:bg-[#1b3124] border-gray-200 dark:border-[#366348]">
@@ -493,17 +420,6 @@ document.addEventListener('DOMContentLoaded', function() {
       const tooltipId = this.getAttribute('data-tooltip');
       if (tooltipId) {
         toggleTooltip(tooltipId);
-      }
-    });
-  });
-
-  // Agregar event listeners a los botones de expansión en PlayerProfile
-  const expandButtons = document.querySelectorAll('[data-expand="profile-help"]');
-  expandButtons.forEach(button => {
-    button.addEventListener('click', function(this: HTMLElement) {
-      const expandId = this.getAttribute('data-expand');
-      if (expandId) {
-        toggleExpand(expandId, this);
       }
     });
   });

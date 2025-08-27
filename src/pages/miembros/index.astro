@@ -64,11 +64,55 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
             <p class="text-gray-600 dark:text-[#96c5a9]">Obteniendo la lista de miembros de la comunidad</p>
           </div>
         </MembersList>
+      </div>
+
+      <!-- Divider decorativo -->
+      <div class="container px-4 mx-auto">
+        <div class="max-w-6xl mx-auto my-8">
+          <div class="relative">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-gray-300 dark:border-[#366348]"></div>
+            </div>
+            <div class="relative flex justify-center">
+              <div class="px-6 bg-white dark:bg-[#122118]">
+                <div class="flex items-center space-x-3">
+                  <div class="w-3 h-3 rounded-full bg-green-600 dark:bg-[#38e07b] opacity-60"></div>
+                  <svg class="w-6 h-6 text-green-600 dark:text-[#38e07b] opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                  </svg>
+                  <span class="text-sm font-medium text-gray-600 dark:text-[#96c5a9] select-none">Clasificaciones y Estadísticas</span>
+                  <svg class="w-6 h-6 text-green-600 dark:text-[#38e07b] opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                  </svg>
+                  <div class="w-3 h-3 rounded-full bg-green-600 dark:bg-[#38e07b] opacity-60"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <hr class="border-gray-200 dark:border-[#366348]">
-            <!-- Statistics Section -->
+      </div>
+
+      <!-- Statistics Section -->
       <div class="container px-4 py-16 mx-auto">
         <TopsSection />
+      </div>
+
+      <!-- Simple call to action -->
+      <div class="container px-4 pb-16 mx-auto">
+        <div class="max-w-2xl mx-auto text-center">
+          <p class="text-lg text-gray-600 dark:text-[#96c5a9] mb-4">
+            ¿Quieres ver estadísticas más detalladas?
+          </p>
+          <a 
+            href="/explorador"
+            class="inline-flex items-center text-green-600 dark:text-[#38e07b] hover:text-green-700 dark:hover:text-green-400 font-medium transition-colors"
+          >
+            Visita el explorador
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+            </svg>
+          </a>
+        </div>
       </div>
     </main>
 </Layout>
