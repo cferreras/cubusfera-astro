@@ -249,13 +249,18 @@ function formatRelativeTime(lastPlayedISO: string): string {
         </div>
 
         <div class="p-6">
-          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {profileData.social?.discord && (
-              <div class={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${getSocialColor('discord')}`}>
-                <div set:html={getSocialIcon('discord')}></div>
-                <div>
-                  <p class="text-sm font-medium">{getPlatformDisplayName('discord')}</p>
-                  <p class="text-xs opacity-75">@{profileData.social.discord}</p>
+              <div class="flex items-center space-x-4 p-4 rounded-lg bg-white dark:bg-[#264532] border border-gray-200 dark:border-[#366348]">
+                <div class="flex-shrink-0">
+                  <div class="w-12 h-12 rounded-full bg-indigo-100 dark:bg-indigo-900/20 flex items-center justify-center">
+                    <div class="text-indigo-600 dark:text-indigo-400" set:html={getSocialIcon('discord')}></div>
+                  </div>
+                </div>
+                <div class="flex-1">
+                  <h4 class="font-semibold text-gray-900 dark:text-white">{getPlatformDisplayName('discord')}</h4>
+                  <p class="text-sm text-gray-600 dark:text-[#96c5a9]">@{profileData.social.discord}</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">Usuario de Discord</p>
                 </div>
               </div>
             )}
@@ -265,12 +270,17 @@ function formatRelativeTime(lastPlayedISO: string): string {
                 href={profileData.social.twitter}
                 target="_blank"
                 rel="noopener noreferrer"
-                class={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${getSocialColor('twitter')}`}
+                class="flex items-center space-x-4 p-4 rounded-lg bg-white dark:bg-[#264532] border border-gray-200 dark:border-[#366348] hover:bg-gray-50 dark:hover:bg-[#1b3124] transition-colors group"
               >
-                <div set:html={getSocialIcon('twitter')}></div>
-                <div>
-                  <p class="text-sm font-medium">{getPlatformDisplayName('twitter')}</p>
-                  <p class="text-xs opacity-75">Visitar perfil</p>
+                <div class="flex-shrink-0">
+                  <div class="w-12 h-12 rounded-full bg-sky-100 dark:bg-sky-900/20 flex items-center justify-center">
+                    <div class="text-sky-600 dark:text-sky-400" set:html={getSocialIcon('twitter')}></div>
+                  </div>
+                </div>
+                <div class="flex-1">
+                  <h4 class="font-semibold text-gray-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">{getPlatformDisplayName('twitter')}</h4>
+                  <p class="text-sm text-gray-600 dark:text-[#96c5a9]">Visitar perfil</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">Sígueme en X</p>
                 </div>
               </a>
             )}
@@ -280,12 +290,17 @@ function formatRelativeTime(lastPlayedISO: string): string {
                 href={profileData.social.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
-                class={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${getSocialColor('youtube')}`}
+                class="flex items-center space-x-4 p-4 rounded-lg bg-white dark:bg-[#264532] border border-gray-200 dark:border-[#366348] hover:bg-gray-50 dark:hover:bg-[#1b3124] transition-colors group"
               >
-                <div set:html={getSocialIcon('youtube')}></div>
-                <div>
-                  <p class="text-sm font-medium">{getPlatformDisplayName('youtube')}</p>
-                  <p class="text-xs opacity-75">Ver canal</p>
+                <div class="flex-shrink-0">
+                  <div class="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/20 flex items-center justify-center">
+                    <div class="text-red-600 dark:text-red-400" set:html={getSocialIcon('youtube')}></div>
+                  </div>
+                </div>
+                <div class="flex-1">
+                  <h4 class="font-semibold text-gray-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">{getPlatformDisplayName('youtube')}</h4>
+                  <p class="text-sm text-gray-600 dark:text-[#96c5a9]">Ver canal</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">Contenido y videos</p>
                 </div>
               </a>
             )}
@@ -295,12 +310,17 @@ function formatRelativeTime(lastPlayedISO: string): string {
                 href={profileData.social.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                class={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${getSocialColor('instagram')}`}
+                class="flex items-center space-x-4 p-4 rounded-lg bg-white dark:bg-[#264532] border border-gray-200 dark:border-[#366348] hover:bg-gray-50 dark:hover:bg-[#1b3124] transition-colors group"
               >
-                <div set:html={getSocialIcon('instagram')}></div>
-                <div>
-                  <p class="text-sm font-medium">{getPlatformDisplayName('instagram')}</p>
-                  <p class="text-xs opacity-75">Ver perfil</p>
+                <div class="flex-shrink-0">
+                  <div class="w-12 h-12 rounded-full bg-pink-100 dark:bg-pink-900/20 flex items-center justify-center">
+                    <div class="text-pink-600 dark:text-pink-400" set:html={getSocialIcon('instagram')}></div>
+                  </div>
+                </div>
+                <div class="flex-1">
+                  <h4 class="font-semibold text-gray-900 dark:text-white group-hover:text-pink-600 dark:group-hover:text-pink-400 transition-colors">{getPlatformDisplayName('instagram')}</h4>
+                  <p class="text-sm text-gray-600 dark:text-[#96c5a9]">Ver perfil</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">Fotos y contenido</p>
                 </div>
               </a>
             )}
