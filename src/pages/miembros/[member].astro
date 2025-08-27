@@ -87,7 +87,7 @@ function getGroupColor(group: string): string {
 // Configuración del contenido para el layout
 const content = {
   title: `Cubusfera - ${member}`,
-  description: `Estadísticas del jugador ${member} en el servidor Cubusfera de Minecraft.`
+  description: `Perfil del jugador ${member} en el servidor Cubusfera de Minecraft.`
 };
 ---
 
@@ -130,7 +130,7 @@ const content = {
           </div>
           <div class="space-y-3">
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white md:text-4xl">
-              Estadísticas de <span class="text-green-600 dark:text-[#38e07b]">{member}</span>
+              Perfil de <span class="text-green-600 dark:text-[#38e07b]">{member}</span>
             </h1>
             
             <!-- Badge del grupo -->
@@ -165,8 +165,50 @@ const content = {
         </div>
       </div>
 
+      <!-- Divider sutil -->
+      <div class="max-w-6xl mx-auto mb-8">
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-200 dark:border-[#366348] opacity-50"></div>
+          </div>
+          <div class="relative flex justify-center">
+            <div class="px-4 bg-white dark:bg-[#122118]">
+              <div class="flex items-center space-x-2">
+                <div class="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-600"></div>
+                <div class="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-600"></div>
+                <div class="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-600"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Perfil del jugador (biografía y redes sociales) -->
       <PlayerProfile member={member} />
+
+      <!-- Divider decorativo -->
+      <div class="max-w-6xl mx-auto my-12">
+        <div class="relative">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-300 dark:border-[#366348]"></div>
+          </div>
+          <div class="relative flex justify-center">
+            <div class="px-6 bg-white dark:bg-[#122118]">
+              <div class="flex items-center space-x-3">
+                <div class="w-3 h-3 rounded-full bg-green-600 dark:bg-[#38e07b] opacity-60"></div>
+                <svg class="w-6 h-6 text-green-600 dark:text-[#38e07b] opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                <span class="text-sm font-medium text-gray-600 dark:text-[#96c5a9] select-none">Estadísticas del Servidor</span>
+                <svg class="w-6 h-6 text-green-600 dark:text-[#38e07b] opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                <div class="w-3 h-3 rounded-full bg-green-600 dark:bg-[#38e07b] opacity-60"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Server Islands aquí -->
       <PlayerStats server:defer member={member}>
@@ -177,8 +219,8 @@ const content = {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
               </svg>
             </div>
-            <h2 class="mb-2 text-xl font-semibold text-gray-900 dark:text-white">Cargando estadísticas de {member}...</h2>
-            <p class="text-gray-600 dark:text-[#96c5a9]">Obteniendo datos del servidor de forma asíncrona</p>
+            <h2 class="mb-2 text-xl font-semibold text-gray-900 dark:text-white">Cargando datos de {member}...</h2>
+            <p class="text-gray-600 dark:text-[#96c5a9]">Obteniendo información del servidor de forma asíncrona</p>
           </div>
         </div>
       </PlayerStats>
