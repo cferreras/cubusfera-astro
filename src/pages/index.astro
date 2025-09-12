@@ -19,28 +19,29 @@ import FAQ from "../components/FAQ.astro";
   <Navbar client:load />
   <main class="flex-1 bg-white dark:bg-[#122118]">
     <!-- Hero Section -->
-        <div class="flex justify-center flex-1 px-4 py-5 sm:px-8 md:px-16 lg:px-24 xl:px-40">
+        <div class="flex justify-center flex-1 px-4 bg-center bg-no-repeat bg-cover py-5sm:px-8 md:px-16 lg:px-24 xl:px-40  bg-[linear-gradient(to_top,rgba(255,255,255,1)_0%,rgba(255,255,255,0.6)_50%,rgba(255,255,255,0)_100%),url('/panorama.webp')]
+     dark:bg-[linear-gradient(to_top,rgba(18,33,24,1)_0%,rgba(18,33,24,0.6)_50%,rgba(18,33,24,0)_100%),url('/panorama.webp')]" >
           <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
             <div class="@container">
               <div class="p-2 sm:p-4">
                 <div
-                  class="flex min-h-[320px] sm:min-h-[400px] md:min-h-[480px] flex-col gap-4 sm:gap-6 md:gap-8 bg-cover bg-center bg-no-repeat rounded-lg items-center justify-center p-4 sm:p-6 md:p-8"
-                  style='background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url("/panorama.webp");'
+                  class="flex min-h-[320px] sm:min-h-[400px] md:min-h-[480px] flex-col gap-4 sm:gap-6 md:gap-8   items-center justify-center p-4 sm:p-6 md:p-8"
+                  
                 >
                   <div class="flex flex-col gap-2 px-4 text-center">
                     <h1
-                      class="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-tight tracking-[-0.033em]"
+                      class="text-gray-900 dark:text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-tight tracking-[-0.033em]"
                     >
                       Bienvenido a Cubusfera
                     </h1>
-                    <h2 class="max-w-2xl mx-auto text-sm font-normal leading-normal text-white sm:text-base md:text-lg">
+                    <h2 class="max-w-2xl mx-auto text-sm font-normal leading-normal text-gray-900 dark:text-white sm:text-base md:text-lg">
                       El servidor técnico de Minecraft en español donde la comunidad, la creatividad y el conocimiento se unen para crear experiencias únicas.
                     </h2>
                   </div>
                   <form class="flex flex-col min-w-40 h-12 sm:h-14 md:h-16 w-full max-w-[480px]" id="newsletter-form">
                     <div class="flex items-stretch flex-1 w-full h-full rounded-lg" id="input-container">
                       <div
-                        class="text-gray-500 dark:text-[#96c5a9] flex border border-gray-300 dark:border-[#366348] bg-gray-100 dark:bg-[#1b3124] items-center justify-center pl-3 sm:pl-4 rounded-l-lg border-r-0"
+                        class="text-gray-500 dark:text-[#96c5a9] flex border-2 border-gray-900 dark:border-[#96c5a9] bg-gray-100 dark:bg-[#1b3124] items-center justify-center pl-3 sm:pl-4 rounded-l-lg border-r-0"
                         data-icon="Envelope"
                         data-size="20px"
                         data-weight="regular"
@@ -56,12 +57,12 @@ import FAQ from "../components/FAQ.astro";
                         name="email"
                         id="email-input"
                         placeholder="Suscribirse a noticias vía email"
-                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-gray-900 dark:text-white focus:outline-0 focus:ring-0 border border-gray-300 dark:border-[#366348] bg-gray-100 dark:bg-[#1b3124] focus:border-gray-300 dark:focus:border-[#366348] h-full placeholder:text-gray-500 dark:placeholder:text-[#96c5a9] px-3 sm:px-4 rounded-r-none border-r-0 pr-2 rounded-l-none border-l-0 pl-2 text-sm sm:text-base font-normal leading-normal"
+                        class="form-input flex w-full min-w-0 flex-1 resize-none text-ellipsis overflow-hidden rounded-lg text-gray-900 dark:text-white focus:outline-0 focus:ring-0 border-2 border-gray-900 dark:border-[#96c5a9] bg-gray-100 dark:bg-[#1b3124] focus-2:border-gray-900  h-full placeholder:text-gray-500 dark:placeholder:text-[#96c5a9] px-3 sm:px-4 rounded-r-none border-r-0 pr-2 rounded-l-none border-l-0 pl-2 text-sm sm:text-base font-normal leading-normal"
                         required
                         title="Por favor, introduce una dirección de correo electrónico válida"
                         value=""
                       />
-                      <div class="flex items-center justify-center rounded-r-lg border-l-0 border border-gray-300 dark:border-[#366348] bg-gray-100 dark:bg-[#1b3124] pr-2">
+                      <div class="flex items-center justify-center rounded-r-lg border-l-0 border-2 border-gray-900 dark:border-[#96c5a9] bg-gray-100 dark:bg-[#1b3124] pr-2">
                         <button
                           type="submit"
                           class="flex min-w-[70px] sm:min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 sm:h-10 md:h-12 px-3 sm:px-4 md:px-5 bg-green-600 dark:bg-[#38e07b] text-white dark:text-[#122118] text-xs sm:text-sm md:text-base font-bold leading-normal tracking-[0.015em]"
@@ -77,7 +78,7 @@ import FAQ from "../components/FAQ.astro";
           </div>
         </div>
     <!-- Características Section -->
-    <section class="py-16 border-y border-gray-200 dark:border-[#264532]">
+    <section class="py-16 border-b border-gray-200 dark:border-[#264532]">
       <div class="container px-4 mx-auto">
         <div class="mb-12 text-center">
           <h2 class="mb-4 text-3xl font-bold text-gray-900 dark:text-white md:text-4xl">
