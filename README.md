@@ -1,224 +1,258 @@
-# 🎮 Cubusfera - Sitio Web del Servidor de Minecraft
+# Cubusfera
 
-![Cubusfera Logo](./public/logo.svg)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/cferreras/cubusfera-astro)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/cferreras/cubusfera-astro/build.yml?style=flat-square&label=Build)](https://github.com/cferreras/cubusfera-astro/actions)
+[![Node version](https://img.shields.io/badge/Node.js->=18-3c873a?style=flat-square)](https://nodejs.org)
+[![Astro](https://img.shields.io/badge/Astro-5.x-ff7000?style=flat-square&logo=astro)](https://astro.build)
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
-Sitio web oficial del servidor de Minecraft **Cubusfera**, construido con Astro, React y Tailwind CSS. Una plataforma moderna y responsiva para la comunidad de jugadores.
+<div align="center">
+  <img src="./public/logo.svg" alt="Cubusfera Logo" width="128" height="128">
+</div>
 
-## 🌟 Características
+Official website for **Cubusfera**, a technical Minecraft server focused on redstone, automated farms, and game optimization. Built with modern web technologies for optimal performance and user experience.
 
-- **🎨 Diseño Moderno**: Interfaz limpia y atractiva con modo oscuro/claro
-- **📱 Totalmente Responsivo**: Optimizado para todos los dispositivos
-- **⚡ Alto Rendimiento**: Construido con Astro para máxima velocidad
-- **🔍 SEO Optimizado**: Meta tags completas y Open Graph para redes sociales
-- **🗺️ Mapa Interactivo**: Visualización en tiempo real del mundo del servidor
-- **👥 Lista de Miembros**: Directorio de la comunidad de jugadores
-- **📋 Sistema de Reglas**: Normativas claras y accesibles
-- **📧 Newsletter**: Sistema de suscripción con Resend integrado
-- **🎯 Componentes Reutilizables**: Arquitectura modular y mantenible
+## Overview
 
-## 🛠️ Tecnologías Utilizadas
+Cubusfera is a Spanish-speaking Minecraft technical server where players collaborate on complex redstone contraptions, automated farms, and game mechanics optimization. This website serves as the community hub, featuring player profiles, project showcases, server rules, and an interactive map.
 
-- **[Astro](https://astro.build/)** - Framework web moderno
-- **[React](https://reactjs.org/)** - Componentes interactivos
-- **[Tailwind CSS](https://tailwindcss.com/)** - Framework de CSS utilitario
-- **[TypeScript](https://www.typescriptlang.org/)** - Tipado estático
-- **[Resend](https://resend.com/)** - Servicio de email para newsletter
-- **[Lucide React](https://lucide.dev/)** - Iconos modernos
-- **[Canvas Confetti](https://github.com/catdad/canvas-confetti)** - Efectos visuales
+The site is built with **Astro** for maximum performance, **React** for interactive components, and **Tailwind CSS** for modern styling. It includes server integration for real-time player data, a newsletter system, and comprehensive project documentation.
 
-## 📁 Estructura del Proyecto
+## Features
 
-```
-cubusfera/
-├── public/                 # Archivos estáticos
-│   ├── favicon.svg
-│   ├── logo.svg
-│   ├── logo-dark.svg
-│   └── og-image.png       # Imagen para redes sociales
-├── src/
-│   ├── components/        # Componentes reutilizables
-│   │   ├── Button.astro
-│   │   ├── FAQ.astro
-│   │   ├── Footer.astro
-│   │   └── Navbar.tsx
-│   ├── layouts/           # Layouts de página
-│   │   └── main.astro
-│   ├── lib/              # Utilidades y helpers
-│   │   ├── statsMapper.ts
-│   │   └── utils.ts
-│   ├── pages/            # Páginas del sitio
-│   │   ├── index.astro   # Página de inicio
-│   │   ├── mapa.astro    # Mapa interactivo
-│   │   ├── normas.astro  # Reglas del servidor
-│   │   ├── api/          # API Routes
-│   │   │   └── subscribe.ts # Endpoint para newsletter
-│   │   └── miembros/     # Directorio de miembros
-│   │       ├── index.astro
-│   │       └── [member].astro
-│   └── styles/
-│       └── global.css    # Estilos globales
-├── astro.config.mjs      # Configuración de Astro
-├── tailwind.config.js    # Configuración de Tailwind
-└── package.json
-```
+- **High Performance**: Built with Astro's static site generation for lightning-fast loading
+- **Server Integration**: Real-time player data and whitelist management via REST API
+- **Interactive Map**: Live server world visualization with Dynmap integration
+- **Player Profiles**: Individual member pages with stats and achievements
+- **Project Showcase**: Detailed documentation of community builds and farms
+- **Newsletter System**: Email subscription powered by Resend API
+- **Responsive Design**: Mobile-first approach with dark/light theme support
+- **SEO Optimized**: Complete meta tags, Open Graph, and sitemap generation
 
-## 🚀 Instalación y Desarrollo
+## Tech Stack
 
-### Prerrequisitos
+- **[Astro](https://astro.build/)** - Modern web framework with server-side rendering
+- **[React](https://reactjs.org/)** - Interactive UI components
+- **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework
+- **[TypeScript](https://www.typescriptlang.org/)** - Type-safe development
+- **[Resend](https://resend.com/)** - Transactional email service
+- **[Lucide React](https://lucide.dev/)** - Beautiful icon library
 
-- Node.js 18+ 
-- pnpm (recomendado) o npm
+## Getting Started
 
-### Configuración
+### Prerequisites
 
-1. **Clona el repositorio**
+- Node.js 18 or later
+- pnpm (recommended) or npm
+- Git
+
+### Installation
+
+1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd cubusfera
+   git clone https://github.com/cferreras/cubusfera-astro.git
+   cd cubusfera-astro
    ```
 
-2. **Instala las dependencias**
+2. **Install dependencies**
    ```bash
    pnpm install
    ```
 
-3. **Configura las variables de entorno**
+3. **Set up environment variables**
    ```bash
    cp .env.example .env
    ```
    
-   Edita el archivo `.env` con tus configuraciones:
+   Configure your `.env` file:
    ```env
+   # Minecraft Server API
    WHITELIST_API_URL=http://localhost:8080/whitelist
+   
+   # Newsletter (Resend)
    RESEND_API_KEY=your_resend_api_key_here
    RESEND_AUDIENCE_ID=your_audience_id_here
    ```
-   
-   📧 **Para configurar el newsletter**, consulta: [**NEWSLETTER_SETUP.md**](./NEWSLETTER_SETUP.md)
 
-4. **Inicia el servidor de desarrollo**
+4. **Start development server**
    ```bash
    pnpm dev
    ```
 
-   El sitio estará disponible en `http://localhost:4321`
+The site will be available at `http://localhost:4321`
 
-## 📜 Scripts Disponibles
+## Project Structure
 
-```bash
-# Desarrollo
-pnpm dev          # Inicia el servidor de desarrollo
-
-# Construcción
-pnpm build        # Construye el sitio para producción
-pnpm preview      # Previsualiza la construcción local
-
-# Utilidades
-pnpm astro        # Comandos de Astro CLI
+```
+src/
+├── components/          # Reusable UI components
+│   ├── Button.astro
+│   ├── FAQ.astro
+│   ├── Footer.astro
+│   ├── Navbar.tsx
+│   ├── PlayerProfile.astro
+│   └── TopsSection.astro
+├── content/            # Content collections
+│   ├── config.ts
+│   └── proyectos/      # Project documentation
+├── layouts/            # Page layouts
+│   └── main.astro
+├── lib/               # Utilities and helpers
+│   ├── statsMapper.ts
+│   └── utils.ts
+├── pages/             # Site pages
+│   ├── index.astro    # Homepage
+│   ├── explorador.astro
+│   ├── mapa.astro
+│   ├── normas.astro
+│   ├── proyectos.astro
+│   ├── api/           # API routes
+│   │   └── subscribe.ts
+│   ├── miembros/      # Member pages
+│   └── proyectos/     # Project pages
+└── styles/
+    └── global.css
 ```
 
-## 🎯 Páginas Principales
-
-### 🏠 Inicio (`/`)
-- Presentación del servidor
-- Formulario de suscripción al newsletter
-- Estadísticas en tiempo real
-- Sección de características
-- FAQ (Preguntas Frecuentes)
-
-### 👥 Miembros (`/miembros`)
-- Lista de jugadores de la whitelist
-- Perfiles individuales de miembros
-- Integración con API del servidor
-
-### 🗺️ Mapa (`/mapa`)
-- Mapa interactivo del mundo
-- Visualización en tiempo real
-- Enlace a pantalla completa
-
-### 📋 Reglas (`/normas`)
-- Normativas del servidor
-- Políticas de convivencia
-- Información de moderación
-
-## 🔧 Configuración de APIs
-
-El sitio se integra con APIs del servidor de Minecraft:
-
-- **Whitelist API**: Para obtener la lista de miembros
-- **Mapa Dinámico**: Integración con sistema de mapas en tiempo real
-- **Newsletter API**: Endpoint `/api/subscribe` para suscripciones con Resend
-
-### 📧 Configuración del Newsletter
-
-Para configurar el sistema de newsletter, consulta la guía detallada:
-**[📄 NEWSLETTER_SETUP.md](./NEWSLETTER_SETUP.md)**
-
-Incluye:
-- Configuración de Resend
-- Variables de entorno necesarias
-- Despliegue en Vercel/Netlify
-- Troubleshooting común
-
-## 🎨 Personalización
-
-### Temas
-El sitio incluye soporte para modo oscuro/claro automático basado en:
-- Preferencias del sistema
-- Configuración guardada del usuario
-
-### Colores
-Los colores se definen en `tailwind.config.js` y pueden personalizarse fácilmente.
-
-## 📱 Características Responsivas
-
-- **Mobile First**: Diseño optimizado para móviles
-- **Breakpoints**: Adaptación fluida a diferentes tamaños
-- **Touch Friendly**: Interfaz táctil optimizada
-
-## 🔍 SEO y Redes Sociales
-
-- Meta tags optimizadas para cada página
-- Open Graph para Facebook/LinkedIn
-- Twitter Cards para mejor compartición
-- Sitemap automático
-- Robots.txt configurado
-
-## 🚀 Despliegue
-
-### Construcción para Producción
+## Scripts
 
 ```bash
+# Development
+pnpm dev            # Start dev server
+pnpm build          # Build for production
+pnpm preview        # Preview production build
+
+# Utilities
+pnpm astro          # Run Astro CLI commands
+```
+
+## Key Pages
+
+### Homepage (`/`)
+- Server overview and community highlights
+- Newsletter subscription form
+- Featured projects and statistics
+- Frequently asked questions
+
+### Members (`/miembros`)
+- Complete player directory from server whitelist
+- Individual player profiles with statistics
+- Dynamic content from Minecraft server API
+
+### Projects (`/proyectos`)
+- Showcase of community builds and farms
+- Detailed documentation with coordinates
+- Video tutorials and build instructions
+- Interactive map locations
+
+### Explorer (`/explorador`)
+- Real-time server statistics
+- Top players leaderboards
+- Dynamic data visualization
+
+### Map (`/mapa`)
+- Live world map integration
+- Full-screen viewing option
+- Real-time player positions
+
+## Configuration
+
+### Newsletter Setup
+
+The newsletter system uses Resend for email delivery. For detailed setup instructions, see [`NEWSLETTER_SETUP.md`](./NEWSLETTER_SETUP.md).
+
+Key features:
+- Email validation and error handling
+- Duplicate subscription prevention
+- Responsive subscription form
+- Admin dashboard integration
+
+### Server Integration
+
+The site integrates with the Minecraft server through REST APIs:
+
+- **Whitelist API**: Fetches player list and statistics
+- **Map Integration**: Connects to Dynmap for live world view
+- **Real-time Data**: Updates player information dynamically
+
+### Content Management
+
+Projects are managed through Astro's content collections:
+
+```typescript
+// src/content/config.ts
+export const collections = {
+  proyectos: defineCollection({
+    type: 'content',
+    schema: z.object({
+      titulo: z.string(),
+      descripcion: z.string(),
+      imagen: z.string(),
+      constructores: z.array(z.object({
+        nombre: z.string()
+      })),
+      // ... more fields
+    })
+  })
+};
+```
+
+## Deployment
+
+### Vercel (Recommended)
+
+1. **Connect your repository** to Vercel
+2. **Configure environment variables** in the Vercel dashboard
+3. **Deploy** automatically on push to main branch
+
+### Manual Deployment
+
+```bash
+# Build the project
 pnpm build
+
+# Deploy the dist/ folder to your hosting provider
 ```
 
-Los archivos se generarán en la carpeta `dist/`.
+## Performance
 
-### Opciones de Hosting
+The site is optimized for performance with:
 
-- **Vercel** (recomendado)
-- **Netlify**
-- **GitHub Pages**
-- **Servidor propio**
+- **Static Generation**: Most pages are pre-rendered at build time
+- **Image Optimization**: Automatic WebP conversion and responsive images
+- **Code Splitting**: JavaScript is loaded only when needed
+- **CSS Optimization**: Unused styles are purged automatically
 
-## 🤝 Contribución
+## Contributing
 
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/nueva-caracteristica`)
-3. Commit tus cambios (`git commit -m 'Agrega nueva característica'`)
-4. Push a la rama (`git push origin feature/nueva-caracteristica`)
-5. Abre un Pull Request
+We welcome contributions! Please follow these steps:
 
-## 📄 Licencia
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+## Community
 
-## 📞 Contacto
+- **Server**: Cubusfera Minecraft Server
+- **Website**: [cubusfera.com](https://cubusfera.com)
+- **Map**: [mapa.cubusfera.com](https://mapa.cubusfera.com)
 
-- **Servidor**: Cubusfera
-- **Sitio Web**: [cubusfera.com](https://cubusfera.com)
-- **Mapa**: [mapa.cubusfera.com](https://mapa.cubusfera.com)
+## Troubleshooting
 
----
+### Common Issues
 
-**¡Únete a la aventura en Cubusfera!** 🎮✨
+**Newsletter not working**
+- Verify `RESEND_API_KEY` and `RESEND_AUDIENCE_ID` are set correctly
+- Check the [Newsletter Setup Guide](./NEWSLETTER_SETUP.md)
+
+**Player data not loading**
+- Ensure `WHITELIST_API_URL` points to your Minecraft server API
+- Verify the server API is accessible and returns valid JSON
+
+**Build failures**
+- Clear node_modules and reinstall dependencies
+- Check Node.js version compatibility (requires 18+)
+
+For more detailed troubleshooting, please check our [issues](https://github.com/cferreras/cubusfera-astro/issues) or create a new one.
