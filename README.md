@@ -16,7 +16,7 @@ Official website for **Cubusfera**, a technical Minecraft server focused on reds
 
 Cubusfera is a Spanish-speaking Minecraft technical server where players collaborate on complex redstone contraptions, automated farms, and game mechanics optimization. This website serves as the community hub, featuring player profiles, project showcases, server rules, and an interactive map.
 
-The site is built with **Astro** for maximum performance, **React** for interactive components, and **Tailwind CSS** for modern styling. It includes server integration for real-time player data, a newsletter system, and comprehensive project documentation.
+The site is built with **Astro** for maximum performance, **React** for interactive components, and **Tailwind CSS** for modern styling. It includes server integration for real-time player data and comprehensive project documentation.
 
 ## Features
 
@@ -25,7 +25,6 @@ The site is built with **Astro** for maximum performance, **React** for interact
 - **Interactive Map**: Live server world visualization with Dynmap integration
 - **Player Profiles**: Individual member pages with stats and achievements
 - **Project Showcase**: Detailed documentation of community builds and farms
-- **Newsletter System**: Email subscription powered by Resend API
 - **Responsive Design**: Mobile-first approach with dark/light theme support
 - **SEO Optimized**: Complete meta tags, Open Graph, and sitemap generation
 
@@ -35,7 +34,6 @@ The site is built with **Astro** for maximum performance, **React** for interact
 - **[React](https://reactjs.org/)** - Interactive UI components
 - **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework
 - **[TypeScript](https://www.typescriptlang.org/)** - Type-safe development
-- **[Resend](https://resend.com/)** - Transactional email service
 - **[Lucide React](https://lucide.dev/)** - Beautiful icon library
 
 ## Getting Started
@@ -68,10 +66,6 @@ The site is built with **Astro** for maximum performance, **React** for interact
    ```env
    # Minecraft Server API
    WHITELIST_API_URL=http://localhost:8080/whitelist
-   
-   # Newsletter (Resend)
-   RESEND_API_KEY=your_resend_api_key_here
-   RESEND_AUDIENCE_ID=your_audience_id_here
    ```
 
 4. **Start development server**
@@ -106,8 +100,6 @@ src/
 │   ├── mapa.astro
 │   ├── normas.astro
 │   ├── proyectos.astro
-│   ├── api/           # API routes
-│   │   └── subscribe.ts
 │   ├── miembros/      # Member pages
 │   └── proyectos/     # Project pages
 └── styles/
@@ -130,7 +122,6 @@ pnpm astro          # Run Astro CLI commands
 
 ### Homepage (`/`)
 - Server overview and community highlights
-- Newsletter subscription form
 - Featured projects and statistics
 - Frequently asked questions
 
@@ -156,16 +147,6 @@ pnpm astro          # Run Astro CLI commands
 - Real-time player positions
 
 ## Configuration
-
-### Newsletter Setup
-
-The newsletter system uses Resend for email delivery. For detailed setup instructions, see [`NEWSLETTER_SETUP.md`](./NEWSLETTER_SETUP.md).
-
-Key features:
-- Email validation and error handling
-- Duplicate subscription prevention
-- Responsive subscription form
-- Admin dashboard integration
 
 ### Server Integration
 
@@ -242,10 +223,6 @@ We welcome contributions! Please follow these steps:
 ## Troubleshooting
 
 ### Common Issues
-
-**Newsletter not working**
-- Verify `RESEND_API_KEY` and `RESEND_AUDIENCE_ID` are set correctly
-- Check the [Newsletter Setup Guide](./NEWSLETTER_SETUP.md)
 
 **Player data not loading**
 - Ensure `WHITELIST_API_URL` points to your Minecraft server API
