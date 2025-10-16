@@ -191,7 +191,7 @@ export default function ServerStatus() {
             {humanPlayers.map((player, index) => (
               <a
                 key={index}
-                href={`/miembros/${player.toLowerCase()}`}
+                href={`/miembros/${player}`}
                 className="inline-flex items-center gap-1 lg:gap-1.5 font-medium text-green-700 transition-colors dark:text-green-400 hover:text-green-800 dark:hover:text-green-300 hover:underline"
                 title={`Ver perfil de ${player}`}
               >
