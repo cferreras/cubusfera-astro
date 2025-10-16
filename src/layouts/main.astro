@@ -12,8 +12,8 @@ const { content } = Astro.props;
 		
 		<!-- SEO Meta Tags -->
 		<title>{content.title}</title>
-		<meta name="description" content={content.description || "Cubusfera - Servidor de Minecraft con una comunidad activa. Únete a nosotros para vivir aventuras épicas en nuestro mundo personalizado."} />
-		<meta name="keywords" content="minecraft, servidor, cubusfera, comunidad, aventuras, mundo personalizado, juegos" />
+		<meta name="description" content={content.description || "Explora Cubusfera, un servidor técnico de Minecraft en español dedicado a la redstone, las granjas automáticas y la optimización. Únete a una comunidad apasionada por la mecánica del juego."} />
+		<meta name="keywords" content="minecraft, servidor, cubusfera, técnico, redstone, granjas automáticas, optimización, vanilla, comunidad, español, TPS" />
 		<meta name="author" content="Cubusfera" />
 		<meta name="robots" content="index, follow" />
 		
@@ -23,7 +23,7 @@ const { content } = Astro.props;
 		<!-- Open Graph Meta Tags -->
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={content.title} />
-		<meta property="og:description" content={content.description || "Cubusfera - Servidor de Minecraft con una comunidad activa. Únete a nosotros para vivir aventuras épicas en nuestro mundo personalizado."} />
+		<meta property="og:description" content={content.description || "Explora Cubusfera, un servidor técnico de Minecraft en español dedicado a la redstone, las granjas automáticas y la optimización. Únete a una comunidad apasionada por la mecánica del juego."} />
 		<meta property="og:image" content={new URL('/og-image.png', Astro.site || Astro.url).href} />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
@@ -35,7 +35,7 @@ const { content } = Astro.props;
 		<!-- Twitter Card Meta Tags -->
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={content.title} />
-		<meta name="twitter:description" content={content.description || "Cubusfera - Servidor de Minecraft con una comunidad activa. Únete a nosotros para vivir aventuras épicas en nuestro mundo personalizado."} />
+		<meta name="twitter:description" content={content.description || "Explora Cubusfera, un servidor técnico de Minecraft en español dedicado a la redstone, las granjas automáticas y la optimización. Únete a una comunidad apasionada por la mecánica del juego."} />
 		<meta name="twitter:image" content={"https://www.cubusfera.com/og-image.png"} />
 		<meta name="twitter:image:alt" content="Cubusfera - Servidor de Minecraft" />
 		
