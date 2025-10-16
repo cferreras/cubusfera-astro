@@ -105,94 +105,103 @@ export default function ServerStatus() {
   }
 
   return (
-    <div className="flex justify-center">
+    <div className="flex flex-col items-center w-full px-2">
       {/* Pill grande con toda la información */}
-      <div className="inline-flex flex-wrap items-center gap-3 px-6 py-3 text-sm md:text-base border border-gray-200 rounded-full shadow-lg bg-white/90 backdrop-blur-sm dark:bg-[#1b3124]/90 dark:border-[#366348]">
+      <div className="inline-flex flex-col lg:flex-row lg:flex-wrap items-center gap-2 lg:gap-3 px-4 lg:px-6 py-3 text-xs sm:text-sm lg:text-base border border-gray-200 rounded-2xl lg:rounded-full shadow-lg bg-white/90 backdrop-blur-sm dark:bg-[#1b3124]/90 dark:border-[#366348] w-full lg:w-auto max-w-full">
         
-        {/* Estado Online/Offline */}
-        <div className="flex items-center gap-2">
-          <div className={`w-3 h-3 rounded-full ${status?.online ? 'bg-green-500 animate-pulse shadow-lg shadow-green-500/50' : 'bg-red-500'}`}></div>
-          <span className={`font-semibold ${status?.online ? 'text-green-600 dark:text-[#38e07b]' : 'text-red-600 dark:text-red-400'}`}>
-            {status?.online ? 'Online' : 'Offline'}
-          </span>
-        </div>
-        
-        {/* Separador */}
-        <div className="w-px h-5 bg-gray-300 dark:bg-[#366348]"></div>
-        
-        {/* IP del Servidor */}
-        <div className="flex items-center gap-2">
-          <svg className="w-4 h-4 text-gray-600 dark:text-[#96c5a9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path>
-          </svg>
-          <span className="font-semibold text-gray-900 dark:text-white">{serverIP}</span>
-          <button
-            onClick={() => navigator.clipboard.writeText(serverIP)}
-            className="p-1 transition-colors rounded hover:bg-gray-100 dark:hover:bg-[#264532]"
-            title="Copiar IP"
-          >
-            <svg className="w-3.5 h-3.5 text-green-600 dark:text-[#38e07b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+        {/* Primera fila en móvil: Estado + IP */}
+        <div className="flex flex-wrap items-center justify-center w-full gap-2 lg:w-auto lg:gap-3">
+          {/* Estado Online/Offline */}
+          <div className="flex items-center gap-1.5 lg:gap-2">
+            <div className={`w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full ${status?.online ? 'bg-green-500 animate-pulse shadow-lg shadow-green-500/50' : 'bg-red-500'}`}></div>
+            <span className={`font-semibold ${status?.online ? 'text-green-600 dark:text-[#38e07b]' : 'text-red-600 dark:text-red-400'}`}>
+              {status?.online ? 'Online' : 'Offline'}
+            </span>
+          </div>
+          
+          {/* Separador - oculto en móvil */}
+          <div className="hidden w-px h-5 lg:block bg-gray-300 dark:bg-[#366348]"></div>
+          
+          {/* IP del Servidor */}
+          <div className="flex items-center gap-1.5 lg:gap-2">
+            <svg className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-gray-600 dark:text-[#96c5a9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path>
             </svg>
-          </button>
-        </div>
-        
-        {/* Separador */}
-        <div className="w-px h-5 bg-gray-300 dark:bg-[#366348]"></div>
-        
-        {/* Jugadores Online */}
-        <div className="flex items-center gap-2">
-          <svg className="w-4 h-4 text-gray-600 dark:text-[#96c5a9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-          </svg>
-          <span className="text-gray-700 dark:text-[#96c5a9]">
-            <strong className="text-gray-900 dark:text-white">{totalOnline}</strong> online
-          </span>
-          {botsCount > 0 && (
-            <>
-              <svg className="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+            <span className="font-semibold text-gray-900 dark:text-white">{serverIP}</span>
+            <button
+              onClick={() => navigator.clipboard.writeText(serverIP)}
+              className="p-1 transition-colors rounded hover:bg-gray-100 dark:hover:bg-[#264532]"
+              title="Copiar IP"
+            >
+              <svg className="w-3 h-3 lg:w-3.5 lg:h-3.5 text-green-600 dark:text-[#38e07b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
               </svg>
-              <span className="text-blue-600 dark:text-blue-400">
-                <strong>{botsCount}</strong> bot{botsCount !== 1 ? 's' : ''}
-              </span>
-            </>
-          )}
+            </button>
+          </div>
         </div>
         
-        {/* Separador */}
-        <div className="w-px h-5 bg-gray-300 dark:bg-[#366348]"></div>
+        {/* Separador horizontal en móvil */}
+        <div className="w-full h-px lg:hidden bg-gray-300 dark:bg-[#366348]"></div>
         
-        {/* Whitelist */}
-        <div className="flex items-center gap-2">
-          <svg className="w-4 h-4 text-gray-600 dark:text-[#96c5a9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-          </svg>
-          <span className={`font-medium ${status?.whitelist ? 'text-green-600 dark:text-[#38e07b]' : 'text-gray-600'}`}>
-            Whitelist
-          </span>
+        {/* Separador vertical en desktop */}
+        <div className="hidden w-px h-5 lg:block bg-gray-300 dark:bg-[#366348]"></div>
+        
+        {/* Segunda fila en móvil: Jugadores + Whitelist */}
+        <div className="flex flex-wrap items-center justify-center w-full gap-2 lg:w-auto lg:gap-3">
+          {/* Jugadores Online */}
+          <div className="flex flex-wrap items-center justify-center gap-1.5 lg:gap-2">
+            <svg className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-gray-600 dark:text-[#96c5a9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+            <span className="text-gray-700 dark:text-[#96c5a9]">
+              <strong className="text-gray-900 dark:text-white">{totalOnline}</strong> online
+            </span>
+            {botsCount > 0 && (
+              <>
+                <svg className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                </svg>
+                <span className="text-blue-600 dark:text-blue-400">
+                  <strong>{botsCount}</strong> bot{botsCount !== 1 ? 's' : ''}
+                </span>
+              </>
+            )}
+          </div>
+          
+          {/* Separador */}
+          <div className="hidden w-px h-5 lg:block bg-gray-300 dark:bg-[#366348]"></div>
+          
+          {/* Whitelist */}
+          <div className="flex items-center gap-1.5 lg:gap-2">
+            <svg className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-gray-600 dark:text-[#96c5a9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+            <span className={`font-medium ${status?.whitelist ? 'text-green-600 dark:text-[#38e07b]' : 'text-gray-600'}`}>
+              Whitelist
+            </span>
+          </div>
         </div>
         
       </div>
       
       {/* Lista de jugadores debajo del pill (si hay) */}
       {status?.online && humanPlayers.length > 0 && (
-        <div className="absolute mt-16 transform -translate-x-1/2 left-1/2">
-          <div className="inline-flex flex-wrap items-center justify-center gap-2 px-4 py-2 text-xs border border-gray-200 rounded-full shadow-md bg-white/80 backdrop-blur-sm dark:bg-[#1b3124]/80 dark:border-[#366348]">
+        <div className="flex justify-center w-full mt-3 lg:mt-4">
+          <div className="inline-flex flex-wrap items-center justify-center gap-1.5 lg:gap-2 px-3 lg:px-4 py-2 text-xs border border-gray-200 rounded-xl lg:rounded-full shadow-md bg-white/80 backdrop-blur-sm dark:bg-[#1b3124]/80 dark:border-[#366348] max-w-full sm:max-w-2xl lg:max-w-3xl">
             {humanPlayers.map((player, index) => (
               <a
                 key={index}
                 href={`/miembros/${player.toLowerCase()}`}
-                className="inline-flex items-center gap-1.5 font-medium text-green-700 transition-colors dark:text-green-400 hover:text-green-800 dark:hover:text-green-300 hover:underline"
+                className="inline-flex items-center gap-1 lg:gap-1.5 font-medium text-green-700 transition-colors dark:text-green-400 hover:text-green-800 dark:hover:text-green-300 hover:underline"
                 title={`Ver perfil de ${player}`}
               >
                 <img
                   src={`https://minotar.net/avatar/${player}/20`}
                   alt={player}
-                  className="w-5 h-5 rounded"
+                  className="w-4 h-4 rounded lg:w-5 lg:h-5"
                   loading="lazy"
                 />
-                {player}
+                <span className="text-xs sm:text-sm">{player}</span>
               </a>
             ))}
           </div>
