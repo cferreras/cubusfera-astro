@@ -1,9 +1,10 @@
 ---
-export const prerender = true;
+export const prerender = false;
 import Layout from "../layouts/main.astro";
 // Component Imports
 import Navbar from "../components/Navbar.js";
 import FAQ from "../components/FAQ.astro";
+import ServerStatus from "../components/ServerStatus";
 
 // Full Astro Component Syntax:
 // https://docs.astro.build/basics/astro-components/
@@ -19,43 +20,42 @@ import FAQ from "../components/FAQ.astro";
   <Navbar client:load />
   <main class="flex-1 bg-white dark:bg-[#122118]">
     <!-- Hero Section -->
-        <div class="flex justify-center flex-1 px-4 bg-center bg-no-repeat bg-cover py-5sm:px-8 md:px-16 lg:px-24 xl:px-40  bg-[linear-gradient(to_top,rgba(255,255,255,1)_0%,rgba(255,255,255,0.6)_50%,rgba(255,255,255,0)_100%),url('/panorama.webp')]
-     dark:bg-[linear-gradient(to_top,rgba(18,33,24,1)_0%,rgba(18,33,24,0.6)_50%,rgba(18,33,24,0)_100%),url('/panorama.webp')]" >
-          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <div class="@container">
-              <div class="p-2 sm:p-4">
-                <div
-                  class="flex min-h-[320px] sm:min-h-[400px] md:min-h-[480px] flex-col gap-4 sm:gap-6 md:gap-8   items-center justify-center p-4 sm:p-6 md:p-8"
-                  
-                >
-                  <div class="flex flex-col gap-2 px-4 text-center">
-                    <h1
-                      class="text-gray-900 dark:text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-tight tracking-[-0.033em]"
-                    >
-                      Bienvenido a Cubusfera
-                    </h1>
-                    <h2 class="max-w-2xl mx-auto text-sm font-normal leading-normal text-gray-900 dark:text-white sm:text-base md:text-lg">
-                      El servidor técnico de Minecraft en español donde la comunidad, la creatividad y el conocimiento se unen para crear experiencias únicas.
-                    </h2>
-                  </div>
-                </div>
-              </div>
+    <div class="flex justify-center flex-1 px-4 bg-center bg-no-repeat bg-cover py-12 sm:py-16 md:py-20 lg:py-24 sm:px-8 md:px-16 lg:px-24 xl:px-40 bg-[linear-gradient(to_top,rgba(255,255,255,1)_0%,rgba(255,255,255,0.6)_50%,rgba(255,255,255,0)_100%),url('/panorama.webp')] dark:bg-[linear-gradient(to_top,rgba(18,33,24,1)_0%,rgba(18,33,24,0.6)_50%,rgba(18,33,24,0)_100%),url('/panorama.webp')]">
+      <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+        <div class="@container">
+          <div class="flex flex-col items-center justify-center gap-6 sm:gap-8 md:gap-10 p-4 sm:p-6">
+            <!-- Título y descripción -->
+            <div class="flex flex-col gap-3 sm:gap-4 px-4 text-center">
+              <h1 class="text-gray-900 dark:text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-[-0.033em]">
+                Bienvenido a Cubusfera
+              </h1>
+              <h2 class="max-w-2xl mx-auto text-base sm:text-lg md:text-xl font-normal leading-relaxed text-gray-700 dark:text-gray-300">
+                El servidor técnico de Minecraft en español donde la comunidad, la creatividad y el conocimiento se unen para crear experiencias únicas.
+              </h2>
+            </div>
+            
+            <!-- Server Status Section -->
+            <div class="w-full flex justify-center mt-4 sm:mt-6">
+              <ServerStatus client:load />
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    
     <!-- Características Section -->
-    <section class="py-16 border-b border-gray-200 dark:border-[#264532]">
-      <div class="container px-4 mx-auto">
-        <div class="mb-12 text-center">
-          <h2 class="mb-4 text-3xl font-bold text-gray-900 dark:text-white md:text-4xl">
+    <section class="py-16 sm:py-20 md:py-24 border-b border-gray-200 dark:border-[#264532]">
+      <div class="container px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20 mx-auto max-w-7xl">
+        <div class="mb-12 sm:mb-16 text-center">
+          <h2 class="mb-4 text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
             Características
           </h2>
-          <p class="max-w-2xl mx-auto text-lg text-gray-600 dark:text-[#96c5a9]">
+          <p class="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-gray-600 dark:text-[#96c5a9]">
             Descubre lo que hace especial a nuestro servidor
           </p>
         </div>
 
-        <div class="grid gap-8 md:grid-cols-3">
+        <div class="grid gap-6 sm:gap-8 md:gap-10 md:grid-cols-3">
           <!-- Técnico -->
           <div
             class="p-6 transition-shadow border border-gray-200 dark:border-[#366348] rounded-lg shadow-sm bg-gray-50 dark:bg-[#1b3124] hover:shadow-md hover:border-green-400 dark:hover:border-[#38e07b]"
@@ -146,18 +146,18 @@ import FAQ from "../components/FAQ.astro";
     </section>
 
     <!-- Números que importan Section -->
-    <section class="py-16 border-b border-gray-200 dark:border-[#264532]">
-      <div class="container px-4 mx-auto">
-        <div class="mb-12 text-center">
-          <h2 class="mb-4 text-3xl font-bold text-gray-900 dark:text-white md:text-4xl">
+    <section class="py-16 sm:py-20 md:py-24 border-b border-gray-200 dark:border-[#264532]">
+      <div class="container px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20 mx-auto max-w-7xl">
+        <div class="mb-12 sm:mb-16 text-center">
+          <h2 class="mb-4 text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
             Números que importan
           </h2>
-          <p class="max-w-2xl mx-auto text-lg text-gray-600 dark:text-[#96c5a9]">
+          <p class="max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-gray-600 dark:text-[#96c5a9]">
             Estadísticas que demuestran la calidad de nuestro servidor
           </p>
         </div>
 
-        <div class="grid gap-8 md:grid-cols-3">
+        <div class="grid gap-10 sm:gap-12 md:gap-16 md:grid-cols-3">
           <!-- Miembros en Discord -->
           <div class="text-center">
             <div
