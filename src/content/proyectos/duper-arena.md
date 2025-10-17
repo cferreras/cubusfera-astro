@@ -9,7 +9,7 @@ coordenadas:
   y: -48
   z: -1457
 constructores:
-  - nombre: "Colab"
+  - nombre: "LucianoooB"
 granja:
   bots:
     - nombre: "bot_end"
