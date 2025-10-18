@@ -3,7 +3,7 @@ titulo: "Duper de Arena + Almacén"
 descripcion: "Fábrica de concreto 72k/hr con duper de bloques de gravedad que duplique arena, grava y polvo de concreto"
 imagen: "/almacen-duper.webp"
 etiquetas: ["Duper", "Arena", "Almacén"]
-dimension: "Overworld"
+dimension: "End"
 coordenadas:
   x: -741
   y: -48
