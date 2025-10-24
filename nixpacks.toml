@@ -1,11 +1,15 @@
 [phases.setup]
-nixPkgs = ['nodejs_20', 'pnpm']
+nixPkgs = ['nodejs_20', 'pnpm', 'git']
 
 [phases.install]
 cmds = ['pnpm install']
 
 [phases.build]
-cmds = ['pnpm run build']
+cmds = [
+  'export COMMIT_SHA=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")',
+  'export COMMIT_COUNT=$(git rev-list --count HEAD 2>/dev/null || echo "0")',
+  'pnpm run build'
+]
 
 [start]
 cmd = 'pnpm start'

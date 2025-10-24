@@ -8,14 +8,24 @@ import { execSync } from 'child_process';
 
 // Plugin para inyectar el hash del commit como variable de entorno
 function gitCommitPlugin() {
-  let commitHash = 'unknown';
-  let commitCount = '0';
+  let commitHash = process.env.COMMIT_SHA || process.env.VERCEL_GIT_COMMIT_SHA || 'unknown';
+  let commitCount = process.env.COMMIT_COUNT || '0';
   
-  try {
-    commitHash = execSync('git rev-parse --short HEAD').toString().trim();
-    commitCount = execSync('git rev-list --count HEAD').toString().trim();
-  } catch (error) {
-    console.warn('No se pudo obtener información del commit:', error);
+  // Intentar obtener desde Git si no hay variables de entorno
+  if (commitHash === 'unknown') {
+    try {
+      commitHash = execSync('git rev-parse --short HEAD', { encoding: 'utf-8' }).trim();
+    } catch (error) {
+      // Silencioso si falla
+    }
+  }
+  
+  if (commitCount === '0') {
+    try {
+      commitCount = execSync('git rev-list --count HEAD', { encoding: 'utf-8' }).trim();
+    } catch (error) {
+      // Silencioso si falla
+    }
   }
   
   return {
