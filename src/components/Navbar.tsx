@@ -13,8 +13,19 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(null);
+  const [emoji, setEmoji] = useState('😎');
+
+  const emojis = ['😎', '🤓', '😊', '🥳', '😁', '🤩', '😄', '🙂', '😆', '🤗', '😌', '🫡', '🤠', '😇', '🥰'];
+
+  const getRandomEmoji = () => {
+    const randomIndex = Math.floor(Math.random() * emojis.length);
+    setEmoji(emojis[randomIndex]);
+  };
 
   useEffect(() => {
+    // Set a random emoji on page load
+    getRandomEmoji();
+
     // Check for saved theme preference or default to light mode
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -271,10 +282,12 @@ const Navbar = () => {
               
               <button
                 onClick={() => handleNavigation('https://discord.gg/7uKEYACErc', false)}
+                onMouseEnter={getRandomEmoji}
                 className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-green-600 dark:bg-brand-green text-white dark:text-brand-green-fg text-sm font-bold leading-normal tracking-[0.015em]"
                 type="button"
               >
-                <span className="truncate">Unirse a Discord</span>
+                <span className="truncate">Únete a Discord</span>
+                <span className="ml-1 text-lg">{emoji}</span>
               </button>
             </div>
 
@@ -328,10 +341,11 @@ const Navbar = () => {
             
             <button
               onClick={() => handleNavigation('https://discord.gg/7uKEYACErc', false)}
+              onMouseEnter={getRandomEmoji}
               className="flex items-center justify-center w-full h-10 px-4 text-sm font-bold text-white bg-green-600 rounded-lg dark:bg-brand-green dark:text-brand-green-fg"
               type="button"
             >
-              Unirse a Discord
+              Unirse a Discord {emoji}
             </button>
           </div>
         </div>
