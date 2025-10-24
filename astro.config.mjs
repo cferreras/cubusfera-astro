@@ -4,6 +4,32 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
 import node from '@astrojs/node';
 import sitemap from '@astrojs/sitemap';
+import { execSync } from 'child_process';
+
+// Plugin para inyectar el hash del commit como variable de entorno
+function gitCommitPlugin() {
+  let commitHash = 'unknown';
+  let commitCount = '0';
+  
+  try {
+    commitHash = execSync('git rev-parse --short HEAD').toString().trim();
+    commitCount = execSync('git rev-list --count HEAD').toString().trim();
+  } catch (error) {
+    console.warn('No se pudo obtener información del commit:', error);
+  }
+  
+  return {
+    name: 'git-commit-hash',
+    config() {
+      return {
+        define: {
+          'import.meta.env.GIT_COMMIT_HASH': JSON.stringify(commitHash),
+          'import.meta.env.GIT_COMMIT_COUNT': JSON.stringify(commitCount),
+        }
+      };
+    }
+  };
+}
 
 // https://astro.build/config
 export default defineConfig({
@@ -17,7 +43,7 @@ export default defineConfig({
     mode: 'standalone'
   }),
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss(), gitCommitPlugin()]
   },
   integrations: [
      react(), 

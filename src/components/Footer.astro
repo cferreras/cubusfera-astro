@@ -1,11 +1,24 @@
 ---
 // Footer component
+const commitHash = import.meta.env.GIT_COMMIT_HASH || 'unknown';
+const commitCount = import.meta.env.GIT_COMMIT_COUNT || '0';
+const repoUrl = 'https://github.com/cferreras/cubusfera-astro';
 ---
 
 <footer class="bg-gray-100 dark:bg-brand-bg-1 border-t border-gray-200 dark:border-brand-border mt-auto">
     <div class="py-6 text-center">
   <p class="text-gray-600 dark:text-brand-muted text-sm">
         © {new Date().getFullYear()} Cubusfera. Servidor de Minecraft Técnico.
+      </p>
+      <p class="text-gray-500 dark:text-brand-muted text-xs mt-2">
+        <a 
+          href={`${repoUrl}/commit/${commitHash}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-green-600 dark:hover:text-brand-green transition-colors underline decoration-dotted"
+        >
+          Commit nº {commitCount} ({commitHash})
+        </a>
       </p>
     </div>
 </footer>
