@@ -1,0 +1,138 @@
+---
+// Componente de barra de notificación para avisos importantes
+interface Props {
+  message?: string;
+  type?: 'info' | 'warning' | 'error' | 'success';
+  dismissible?: boolean;
+}
+
+const {
+  message = "El servidor carece de actividad de jugadores, voy a dejar el servidor cerrado hasta el próximo año mientras reorganizo y reunimos nuevos miembros.",
+  type = 'warning',
+  dismissible = true
+} = Astro.props;
+
+const typeStyles = {
+  info: 'bg-blue-500/10 border-blue-500/20 text-blue-700 dark:text-blue-300',
+  warning: 'bg-yellow-500/10 border-yellow-500/20 text-yellow-800 dark:text-yellow-200',
+  error: 'bg-red-500/10 border-red-500/20 text-red-700 dark:text-red-300',
+  success: 'bg-green-500/10 border-green-500/20 text-green-700 dark:text-green-300'
+};
+
+const iconPaths = {
+  info: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+  warning: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z',
+  error: 'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z',
+  success: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+};
+---
+
+<div
+  id="notification-banner"
+  class={`notification-banner border-b ${typeStyles[type]} transition-all duration-300`}
+  role="alert"
+  aria-live="polite"
+>
+  <div class="max-w-screen-xl mx-auto px-4 py-3 sm:py-4">
+    <div class="flex items-center justify-between gap-3 sm:gap-4">
+      <div class="flex items-start sm:items-center gap-2 sm:gap-3 flex-1 min-w-0">
+        <!-- Icon -->
+        <div class="flex-shrink-0 mt-0.5 sm:mt-0">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 sm:h-6 sm:w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d={iconPaths[type]}
+            />
+          </svg>
+        </div>
+
+        <!-- Message -->
+        <p class="text-sm sm:text-base font-medium leading-snug sm:leading-normal">
+          {message}
+        </p>
+      </div>
+
+      <!-- Close Button -->
+      {dismissible && (
+        <button
+          id="close-banner"
+          class="flex-shrink-0 p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-current"
+          aria-label="Cerrar notificación"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 sm:h-6 sm:w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      )}
+    </div>
+  </div>
+</div>
+
+{dismissible && (
+  <script>
+    // Función para inicializar el banner
+    function initBanner() {
+      const banner = document.getElementById('notification-banner');
+      const closeButton = document.getElementById('close-banner');
+
+      if (!banner || !closeButton) return;
+
+      // Verificar si el banner fue cerrado anteriormente
+      const bannerDismissed = localStorage.getItem('notification-banner-dismissed');
+
+      if (bannerDismissed === 'true') {
+        banner.style.display = 'none';
+      }
+
+      // Manejar el cierre del banner
+      closeButton.addEventListener('click', () => {
+        banner.style.opacity = '0';
+        banner.style.transform = 'translateY(-100%)';
+
+        setTimeout(() => {
+          banner.style.display = 'none';
+          localStorage.setItem('notification-banner-dismissed', 'true');
+        }, 300);
+      });
+    }
+
+    // Inicializar cuando el DOM esté listo
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initBanner);
+    } else {
+      initBanner();
+    }
+
+    // Re-inicializar después de navegaciones (para SPAs con view transitions)
+    document.addEventListener('astro:page-load', initBanner);
+  </script>
+)}
+
+<style>
+  .notification-banner {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(8px);
+  }
+</style>
