@@ -1,5 +1,6 @@
 ---
 import { mapPlayerStats, getTopStats, type PlayerStats } from '../lib/statsMapper';
+import StatusMessage from './ui/StatusMessage.astro';
 
 interface Props {
   member: string;
@@ -28,29 +29,32 @@ try {
     topMined = getTopStats(rawPlayerData, 'mined', 5);
     topCrafted = getTopStats(rawPlayerData, 'crafted', 5);
     topUsed = getTopStats(rawPlayerData, 'used', 5);
-    
+
   // Llamada a análisis avanzado eliminada
   } else if (response.status === 404) {
     error = 'Jugador no encontrado';
+  } else if (response.status === 502 || response.status === 503 || response.status === 504) {
+    error = 'El servidor de Minecraft está temporalmente desconectado. Intenta de nuevo más tarde.';
   } else {
     error = `Error al obtener las estadísticas: ${response.status}`;
   }
 } catch (e) {
-  error = `Error de conexión: No se pudo conectar con la API`;
+  // Error de red o servidor no disponible
+  if (e instanceof TypeError && e.message.includes('fetch')) {
+    error = 'El servidor de Minecraft está temporalmente desconectado. Intenta de nuevo más tarde.';
+  } else {
+    error = `Error de conexión: No se pudo conectar con la API`;
+  }
 }
 ---
 
 {error ? (
   <div class="max-w-2xl mx-auto">
-    <div class="p-8 text-center border border-red-800 rounded-lg bg-red-900/20">
-      <div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-red-900/30">
-        <svg class="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-        </svg>
-      </div>
-      <h2 class="mb-2 text-xl font-semibold text-red-300">Error al cargar estadísticas</h2>
-      <p class="text-gray-600 dark:text-[#96c5a9]">{error}</p>
-    </div>
+    <StatusMessage
+      type={error.includes('servidor') || error.includes('desconectado') ? 'offline' : 'error'}
+      message={error}
+      title={error.includes('servidor') || error.includes('desconectado') ? undefined : 'Error al cargar estadísticas'}
+    />
   </div>
 ) : playerStats ? (
   <div class="max-w-6xl mx-auto space-y-8">
@@ -68,7 +72,7 @@ try {
           </div>
         </div>
       </div>
-      
+
       <div class="p-6 rounded-lg border bg-gray-50 dark:bg-[#1b3124] border-gray-200 dark:border-[#366348]">
         <div class="flex items-center space-x-3">
           <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-red-500/20">
@@ -82,7 +86,7 @@ try {
           </div>
         </div>
       </div>
-      
+
       <div class="p-6 rounded-lg border bg-gray-50 dark:bg-[#1b3124] border-gray-200 dark:border-[#366348]">
         <div class="flex items-center space-x-3">
           <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-500/20">

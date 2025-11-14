@@ -37,18 +37,28 @@ try {
     // Perfil no encontrado, esto es normal y no debe mostrar error
     console.log('Perfil no encontrado, esto es normal');
     profileData = null;
+  } else if (response.status === 502 || response.status === 503 || response.status === 504) {
+    // Servidor desconectado - no mostrar error ya que es normal
+    console.log('Servidor de Minecraft desconectado, esto es normal');
+    profileData = null;
   } else {
     profileError = `Error al obtener el perfil: ${response.status}`;
   }
 } catch (e) {
-  profileError = `Error de conexión al obtener el perfil`;
-  console.error('Profile fetch error:', e);
+  // Error de red o servidor no disponible - no mostrar error ya que es normal cuando el servidor está apagado
+  if (e instanceof TypeError && (e as TypeError).message.includes('fetch')) {
+    console.log('Servidor de Minecraft desconectado, esto es normal');
+    profileData = null;
+  } else {
+    profileError = `Error de conexión al obtener el perfil`;
+    console.error('Profile fetch error:', e);
+  }
 }
 
 // Función para validar si hay contenido social válido
 function hasSocialContent(social: any): boolean {
   if (!social || typeof social !== 'object') return false;
-  
+
   const { discord, twitter, youtube, instagram } = social;
   return !!(discord || twitter || youtube || instagram);
 }
@@ -114,11 +124,11 @@ function formatRelativeTime(lastPlayedISO: string): string {
   const now = new Date();
   const lastPlayed = new Date(lastPlayedISO);
   const diffMs = now.getTime() - lastPlayed.getTime();
-  
+
   const minutes = Math.floor(diffMs / (1000 * 60));
   const hours = Math.floor(diffMs / (1000 * 60 * 60));
   const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-  
+
   if (minutes < 1) {
     return 'hace un momento';
   } else if (minutes < 60) {
@@ -157,7 +167,7 @@ function formatRelativeTime(lastPlayedISO: string): string {
               <span>Biografía</span>
             </div>
             <div class="relative">
-              <button 
+              <button
                 class="text-gray-400 dark:text-gray-300 hover:text-blue-600 dark:hover:text-[#38e07b] transition-colors p-1 rounded-full hover:bg-blue-50 dark:hover:bg-[#38e07b]/10"
                 data-tooltip="bio-tooltip"
                 aria-label="Información sobre cómo añadir biografía"
@@ -207,7 +217,7 @@ function formatRelativeTime(lastPlayedISO: string): string {
               <span>Redes Sociales</span>
             </div>
             <div class="relative">
-              <button 
+              <button
                 class="text-gray-400 dark:text-gray-300 hover:text-purple-600 dark:hover:text-[#38e07b] transition-colors p-1 rounded-full hover:bg-purple-50 dark:hover:bg-[#38e07b]/10"
                 data-tooltip="social-tooltip"
                 aria-label="Información sobre cómo añadir redes sociales"
@@ -266,7 +276,7 @@ function formatRelativeTime(lastPlayedISO: string): string {
             )}
 
             {profileData.social?.twitter && (
-              <a 
+              <a
                 href={profileData.social.twitter}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -286,7 +296,7 @@ function formatRelativeTime(lastPlayedISO: string): string {
             )}
 
             {profileData.social?.youtube && (
-              <a 
+              <a
                 href={profileData.social.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -306,7 +316,7 @@ function formatRelativeTime(lastPlayedISO: string): string {
             )}
 
             {profileData.social?.instagram && (
-              <a 
+              <a
                 href={profileData.social.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -428,13 +438,13 @@ document.addEventListener('DOMContentLoaded', function() {
   document.addEventListener('click', function(event) {
     const tooltips = ['bio-tooltip', 'social-tooltip'];
     const target = event.target as HTMLElement;
-    
+
     if (!target) return;
-    
+
     tooltips.forEach(tooltipId => {
       const tooltip = document.getElementById(tooltipId);
       const button = target.closest(`[data-tooltip="${tooltipId}"]`);
-      
+
       if (tooltip && !tooltip.contains(target) && !button) {
         tooltip.classList.add('hidden');
       }

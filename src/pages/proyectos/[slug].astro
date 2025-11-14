@@ -3,288 +3,323 @@ export const prerender = true;
 import Layout from "../../layouts/main.astro";
 import Navbar from "../../components/Navbar.js";
 import Breadcrumb from "../../components/Breadcrumb.astro";
+import ProjectMapFrame from "../../components/ProjectMapFrame";
 import { getCollection, getEntry } from "astro:content";
 
 // Función requerida para rutas dinámicas
 export async function getStaticPaths() {
-  const proyectos = await getCollection("proyectos");
-  return proyectos.map((proyecto) => ({
-    params: { slug: proyecto.slug },
-  }));
+    const proyectos = await getCollection("proyectos");
+    return proyectos.map((proyecto) => ({
+        params: { slug: proyecto.slug },
+    }));
 }
 
 const { slug } = Astro.params;
 const proyecto = await getEntry("proyectos", slug);
 
 if (!proyecto) {
-  return Astro.redirect("/proyectos");
+    return Astro.redirect("/proyectos");
 }
 
 const { Content } = await proyecto.render();
 
 // Función para obtener cabeza de Minecraft basada en el nombre
 const getMinecraftHead = (nombre: string) =>
-  `https://minotar.net/avatar/${nombre}/64`;
+    `https://minotar.net/avatar/${nombre}/64`;
 ---
 
 <Layout
-  content={{
-    title: `${proyecto.data.titulo} - Proyectos - Cubusfera`,
-    description: proyecto.data.descripcion,
-  }}
+    content={{
+        title: `${proyecto.data.titulo} - Proyectos - Cubusfera`,
+        description: proyecto.data.descripcion,
+    }}
 >
-  <Navbar client:load />
-  <main class="flex-1 bg-white dark:bg-brand-bg-2">
-    <Breadcrumb
-      items={[
-        { label: "Inicio", href: "/" },
-        { label: "Servidor", nonClickable: true },
-        { label: "Proyectos", href: "/proyectos" },
-        { label: proyecto.data.titulo },
-      ]}
-    />
+    <Navbar client:load />
+    <main class="flex-1 bg-white dark:bg-brand-bg-2">
+        <Breadcrumb
+            items={[
+                { label: "Inicio", href: "/" },
+                { label: "Servidor", nonClickable: true },
+                { label: "Proyectos", href: "/proyectos" },
+                { label: proyecto.data.titulo },
+            ]}
+        />
 
-    <!-- Contenido Principal -->
-    <div class="container px-4 py-8 mx-auto">
-      <div class="grid gap-8 lg:grid-cols-3">
-        <!-- Columna Principal -->
-        <div class="space-y-8 lg:col-span-2">
-          <!-- Header del Proyecto -->
-          <div>
-            <div class="flex items-center gap-3 mb-4">
-              <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
-                {proyecto.data.titulo}
-              </h1>
-              <span
-                class={`px-3 py-1 text-sm font-medium rounded-full ${
-                  proyecto.data.dimension === "Overworld"
-                    ? "bg-green-500/20 text-green-600 dark:text-green-400"
-                    : proyecto.data.dimension === "Nether"
-                      ? "bg-red-500/20 text-red-600 dark:text-red-400"
-                      : "bg-purple-500/20 text-purple-600 dark:text-purple-400"
-                }`}
-              >
-                {proyecto.data.dimension}
-              </span>
-            </div>
-            <p class="mb-6 text-lg leading-relaxed text-gray-600 dark:text-brand-muted">
-              {proyecto.data.descripcion}
-            </p>
-          </div>
-
-          <!-- Contenido Markdown -->
-          <div class="p-6 rounded-lg border bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border">
-            <div class="space-y-4 markdown-content">
-              <Content />
-            </div>
-          </div>
-
-          <!-- Mapa -->
-          <div
-            class="overflow-hidden rounded-lg border bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border"
-          >
-            <div class="p-4 border-b border-gray-200 dark:border-brand-border">
-              <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
-                Ubicación en el Mapa
-              </h2>
-            </div>
-            {
-              proyecto.data.mapa ? (
-                <div class="aspect-video">
-                  <iframe
-                    src={proyecto.data.mapa}
-                    title="Mapa del proyecto"
-                    class="w-full h-full"
-                    frameborder="0"
-                    allowfullscreen
-                  />
-                </div>
-              ) : (
-                <div class="flex justify-center items-center aspect-video bg-gray-100 dark:bg-brand-accent-1">
-                  <div class="text-center text-gray-600 dark:text-brand-muted">
-                    <svg
-                      class="w-12 h-12 mx-auto mb-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 4m0 13V4m0 0L9 7"
-                      />
-                    </svg>
-                    <p>Mapa no configurado</p>
-                    <p class="text-sm">
-                      Coordenadas: {proyecto.data.coordenadas.x},{" "}
-                      {proyecto.data.coordenadas.y},{" "}
-                      {proyecto.data.coordenadas.z}
-                    </p>
-                  </div>
-                </div>
-              )
-            }
-          </div>
-
-          <!-- Video de YouTube (si existe) -->
-          {
-            proyecto.data.video && (
-              <div class="overflow-hidden rounded-lg border bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border">
-                <div class="p-4 border-b border-gray-200 dark:border-brand-border">
-                  <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    Video del Proyecto
-                  </h2>
-                </div>
-                <div class="aspect-video">
-                  <iframe
-                    src={`https://www.youtube.com/embed/${proyecto.data.video}`}
-                    title="Video del proyecto"
-                    class="w-full h-full"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                  />
-                </div>
-              </div>
-            )
-          }
-        </div>
-
-        <!-- Sidebar -->
-        <div class="space-y-6">
-          <!-- Coordenadas -->
-          <div class="p-4 rounded-lg border bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border">
-            <h3 class="mb-3 text-lg font-semibold text-gray-900 dark:text-white">Coordenadas</h3>
-            <div class="space-y-2">
-              <div
-                class="flex justify-between items-center p-3 rounded-md bg-gray-100 dark:bg-brand-accent-1"
-              >
-                <span class="font-mono text-sm text-gray-600 dark:text-brand-muted">
-                  {proyecto.data.coordenadas.x}, {proyecto.data.coordenadas.y}, {
-                    proyecto.data.coordenadas.z
-                  }
-                </span>
-                <button
-                  class="px-3 py-1 text-xs rounded transition-colors copy-coords bg-green-600 dark:bg-brand-green text-white dark:text-brand-green-fg hover:bg-green-700 dark:hover:bg-brand-accent-1 dark:hover:text-white"
-                  data-coords={`${proyecto.data.coordenadas.x} ${proyecto.data.coordenadas.y} ${proyecto.data.coordenadas.z}`}
-                >
-                  Copiar
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Constructores -->
-          <div class="p-4 rounded-lg border bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border">
-            <h3 class="mb-3 text-lg font-semibold text-gray-900 dark:text-white">Constructores</h3>
-            <div class="space-y-3">
-              {
-                proyecto.data.constructores.map(
-                  (constructor: { nombre: string }) => (
-                    <a
-                      href={`/miembros/${constructor.nombre}`}
-                      class="flex gap-3 items-center p-2 rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-[#264532] group"
-                    >
-                      <img
-                        src={getMinecraftHead(constructor.nombre)}
-                        alt={`Avatar de ${constructor.nombre}`}
-                        class="w-8 h-8 rounded"
-                      />
-                      <span class="text-sm font-medium transition-colors group-hover:text-green-600 dark:group-hover:text-brand-green text-gray-600 dark:text-brand-muted">
-                        {constructor.nombre}
-                      </span>
-                    </a>
-                  )
-                )
-              }
-            </div>
-          </div>
-
-          <!-- Información de Granja (si existe) -->
-          {
-            proyecto.data.granja && (
-              <div class="p-4 rounded-lg border bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border">
-                <h3 class="mb-3 text-lg font-semibold text-gray-900 dark:text-white">
-                  Uso de la Granja
-                </h3>
-
-                <div class="space-y-4">
-                  <p class="text-sm text-gray-600 dark:text-brand-muted">
-                    {proyecto.data.granja.instrucciones}
-                  </p>
-
-                  <div class="space-y-3">
-                    <h4 class="text-sm font-medium text-gray-900 dark:text-white">
-                      Bots necesarios:
-                    </h4>
-                    {proyecto.data.granja.bots.map(
-                      (bot: { nombre: string; comando: string }) => (
-                        <div class="p-3 space-y-2 rounded-md bg-gray-100 dark:bg-brand-accent-1">
-                          <div class="flex items-center gap-2">
-                            <img
-                              src={getMinecraftHead(bot.nombre)}
-                              alt={`Avatar de ${bot.nombre}`}
-                              class="w-6 h-6 rounded"
-                            />
-                            <span class="text-sm font-medium text-gray-600 dark:text-brand-muted">
-                              {bot.nombre}
-                            </span>
-                          </div>
-                          <div class="flex items-center gap-2">
-                            <code class="flex-1 p-2 font-mono text-xs rounded border bg-white dark:bg-brand-bg-2 border-gray-300 dark:border-brand-border text-gray-700 dark:text-brand-muted">
-                              {bot.comando}
-                            </code>
-                            <button
-                              class="px-2 py-1 text-xs rounded transition-colors copy-command bg-green-600 dark:bg-brand-green text-white dark:text-brand-green-fg hover:bg-green-700 dark:hover:bg-brand-accent-1 dark:hover:text-white"
-                              data-command={bot.comando}
+        <!-- Contenido Principal -->
+        <div class="container px-4 py-8 mx-auto">
+            <div class="grid gap-8 lg:grid-cols-3">
+                <!-- Columna Principal -->
+                <div class="space-y-8 lg:col-span-2">
+                    <!-- Header del Proyecto -->
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <h1
+                                class="text-3xl font-bold text-gray-900 dark:text-white"
                             >
-                              Copiar
-                            </button>
-                          </div>
+                                {proyecto.data.titulo}
+                            </h1>
+                            <span
+                                class={`px-3 py-1 text-sm font-medium rounded-full ${
+                                    proyecto.data.dimension === "Overworld"
+                                        ? "bg-green-500/20 text-green-600 dark:text-green-400"
+                                        : proyecto.data.dimension === "Nether"
+                                          ? "bg-red-500/20 text-red-600 dark:text-red-400"
+                                          : "bg-purple-500/20 text-purple-600 dark:text-purple-400"
+                                }`}
+                            >
+                                {proyecto.data.dimension}
+                            </span>
                         </div>
-                      )
-                    )}
-                  </div>
+                        <p
+                            class="mb-6 text-lg leading-relaxed text-gray-600 dark:text-brand-muted"
+                        >
+                            {proyecto.data.descripcion}
+                        </p>
+                    </div>
+
+                    <!-- Contenido Markdown -->
+                    <div
+                        class="p-6 rounded-lg border bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border"
+                    >
+                        <div class="space-y-4 markdown-content">
+                            <Content />
+                        </div>
+                    </div>
+
+                    <!-- Mapa -->
+                    <div
+                        class="overflow-hidden rounded-lg border bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border"
+                    >
+                        <div
+                            class="p-4 border-b border-gray-200 dark:border-brand-border"
+                        >
+                            <h2
+                                class="text-xl font-semibold text-gray-900 dark:text-white"
+                            >
+                                Ubicación en el Mapa
+                            </h2>
+                        </div>
+                        {
+                            proyecto.data.mapa ? (
+                                <ProjectMapFrame
+                                    mapUrl={proyecto.data.mapa}
+                                    title="Mapa del proyecto"
+                                    client:load
+                                />
+                            ) : (
+                                <div class="flex justify-center items-center aspect-video bg-gray-100 dark:bg-brand-accent-1">
+                                    <div class="text-center text-gray-600 dark:text-brand-muted">
+                                        <svg
+                                            class="w-12 h-12 mx-auto mb-2"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 4m0 13V4m0 0L9 7"
+                                            />
+                                        </svg>
+                                        <p>Mapa no configurado</p>
+                                        <p class="text-sm">
+                                            Coordenadas:{" "}
+                                            {proyecto.data.coordenadas.x},{" "}
+                                            {proyecto.data.coordenadas.y},{" "}
+                                            {proyecto.data.coordenadas.z}
+                                        </p>
+                                    </div>
+                                </div>
+                            )
+                        }
+                    </div>
+
+                    <!-- Video de YouTube (si existe) -->
+                    {
+                        proyecto.data.video && (
+                            <div class="overflow-hidden rounded-lg border bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border">
+                                <div class="p-4 border-b border-gray-200 dark:border-brand-border">
+                                    <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+                                        Video del Proyecto
+                                    </h2>
+                                </div>
+                                <div class="aspect-video">
+                                    <iframe
+                                        src={`https://www.youtube.com/embed/${proyecto.data.video}`}
+                                        title="Video del proyecto"
+                                        class="w-full h-full"
+                                        frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowfullscreen
+                                    />
+                                </div>
+                            </div>
+                        )
+                    }
                 </div>
-              </div>
-            )
-          }
+
+                <!-- Sidebar -->
+                <div class="space-y-6">
+                    <!-- Coordenadas -->
+                    <div
+                        class="p-4 rounded-lg border bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border"
+                    >
+                        <h3
+                            class="mb-3 text-lg font-semibold text-gray-900 dark:text-white"
+                        >
+                            Coordenadas
+                        </h3>
+                        <div class="space-y-2">
+                            <div
+                                class="flex justify-between items-center p-3 rounded-md bg-gray-100 dark:bg-brand-accent-1"
+                            >
+                                <span
+                                    class="font-mono text-sm text-gray-600 dark:text-brand-muted"
+                                >
+                                    {proyecto.data.coordenadas.x}, {
+                                        proyecto.data.coordenadas.y
+                                    }, {proyecto.data.coordenadas.z}
+                                </span>
+                                <button
+                                    class="px-3 py-1 text-xs rounded transition-colors copy-coords bg-green-600 dark:bg-brand-green text-white dark:text-brand-green-fg hover:bg-green-700 dark:hover:bg-brand-accent-1 dark:hover:text-white"
+                                    data-coords={`${proyecto.data.coordenadas.x} ${proyecto.data.coordenadas.y} ${proyecto.data.coordenadas.z}`}
+                                >
+                                    Copiar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Constructores -->
+                    <div
+                        class="p-4 rounded-lg border bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border"
+                    >
+                        <h3
+                            class="mb-3 text-lg font-semibold text-gray-900 dark:text-white"
+                        >
+                            Constructores
+                        </h3>
+                        <div class="space-y-3">
+                            {
+                                proyecto.data.constructores.map(
+                                    (constructor: { nombre: string }) => (
+                                        <a
+                                            href={`/miembros/${constructor.nombre}`}
+                                            class="flex gap-3 items-center p-2 rounded-md transition-colors hover:bg-gray-100 dark:hover:bg-[#264532] group"
+                                        >
+                                            <img
+                                                src={getMinecraftHead(
+                                                    constructor.nombre,
+                                                )}
+                                                alt={`Avatar de ${constructor.nombre}`}
+                                                class="w-8 h-8 rounded"
+                                            />
+                                            <span class="text-sm font-medium transition-colors group-hover:text-green-600 dark:group-hover:text-brand-green text-gray-600 dark:text-brand-muted">
+                                                {constructor.nombre}
+                                            </span>
+                                        </a>
+                                    ),
+                                )
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Información de Granja (si existe) -->
+                    {
+                        proyecto.data.granja && (
+                            <div class="p-4 rounded-lg border bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border">
+                                <h3 class="mb-3 text-lg font-semibold text-gray-900 dark:text-white">
+                                    Uso de la Granja
+                                </h3>
+
+                                <div class="space-y-4">
+                                    <p class="text-sm text-gray-600 dark:text-brand-muted">
+                                        {proyecto.data.granja.instrucciones}
+                                    </p>
+
+                                    <div class="space-y-3">
+                                        <h4 class="text-sm font-medium text-gray-900 dark:text-white">
+                                            Bots necesarios:
+                                        </h4>
+                                        {proyecto.data.granja.bots.map(
+                                            (bot: {
+                                                nombre: string;
+                                                comando: string;
+                                            }) => (
+                                                <div class="p-3 space-y-2 rounded-md bg-gray-100 dark:bg-brand-accent-1">
+                                                    <div class="flex items-center gap-2">
+                                                        <img
+                                                            src={getMinecraftHead(
+                                                                bot.nombre,
+                                                            )}
+                                                            alt={`Avatar de ${bot.nombre}`}
+                                                            class="w-6 h-6 rounded"
+                                                        />
+                                                        <span class="text-sm font-medium text-gray-600 dark:text-brand-muted">
+                                                            {bot.nombre}
+                                                        </span>
+                                                    </div>
+                                                    <div class="flex items-center gap-2">
+                                                        <code class="flex-1 p-2 font-mono text-xs rounded border bg-white dark:bg-brand-bg-2 border-gray-300 dark:border-brand-border text-gray-700 dark:text-brand-muted">
+                                                            {bot.comando}
+                                                        </code>
+                                                        <button
+                                                            class="px-2 py-1 text-xs rounded transition-colors copy-command bg-green-600 dark:bg-brand-green text-white dark:text-brand-green-fg hover:bg-green-700 dark:hover:bg-brand-accent-1 dark:hover:text-white"
+                                                            data-command={
+                                                                bot.comando
+                                                            }
+                                                        >
+                                                            Copiar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            ),
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    }
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </main>
+    </main>
 
-  <script>
-    // Funcionalidad para copiar coordenadas
-    document.addEventListener("DOMContentLoaded", function () {
-      // Copiar coordenadas
-      document.querySelectorAll(".copy-coords").forEach((button) => {
-        button.addEventListener("click", function () {
-          const coords = this.getAttribute("data-coords");
-          navigator.clipboard.writeText(coords).then(() => {
-            const originalText = this.textContent;
-            this.textContent = "¡Copiado!";
-            setTimeout(() => {
-              this.textContent = originalText;
-            }, 2000);
-          });
-        });
-      });
+    <script>
+        // Funcionalidad para copiar coordenadas
+        document.addEventListener("DOMContentLoaded", function () {
+            // Copiar coordenadas
+            document.querySelectorAll(".copy-coords").forEach((button) => {
+                button.addEventListener("click", function (this: HTMLElement) {
+                    const coords = this.getAttribute("data-coords");
+                    if (coords) {
+                        navigator.clipboard.writeText(coords).then(() => {
+                            const originalText = this.textContent;
+                            this.textContent = "¡Copiado!";
+                            setTimeout(() => {
+                                this.textContent = originalText;
+                            }, 2000);
+                        });
+                    }
+                });
+            });
 
-      // Copiar comandos
-      document.querySelectorAll(".copy-command").forEach((button) => {
-        button.addEventListener("click", function () {
-          const command = this.getAttribute("data-command");
-          navigator.clipboard.writeText(command).then(() => {
-            const originalText = this.textContent;
-            this.textContent = "¡Copiado!";
-            setTimeout(() => {
-              this.textContent = originalText;
-            }, 2000);
-          });
+            // Copiar comandos
+            document.querySelectorAll(".copy-command").forEach((button) => {
+                button.addEventListener("click", function (this: HTMLElement) {
+                    const command = this.getAttribute("data-command");
+                    if (command) {
+                        navigator.clipboard.writeText(command).then(() => {
+                            const originalText = this.textContent;
+                            this.textContent = "¡Copiado!";
+                            setTimeout(() => {
+                                this.textContent = originalText;
+                            }, 2000);
+                        });
+                    }
+                });
+            });
         });
-      });
-    });
-  </script>
+    </script>
 </Layout>
