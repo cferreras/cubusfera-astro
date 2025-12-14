@@ -1,102 +1,112 @@
----
+﻿---
 import "../styles/global.css";
 import Footer from "../components/Footer.astro";
 import NotificationBanner from "../components/NotificationBanner.astro";
+import Navbar from "../components/Navbar";
+
+interface Props {
+  content: {
+    title: string;
+    description?: string;
+  };
+}
+
 const { content } = Astro.props;
 ---
 
-<html lang="es">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="generator" content={Astro.generator} />
+<html lang="es" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
 
-        <!-- SEO Meta Tags -->
-        <title>{content.title}</title>
-        <meta
-            name="description"
-            content={content.description ||
-                "Explora Cubusfera, un servidor técnico de Minecraft en español dedicado a la redstone, las granjas automáticas y la optimización. Únete a una comunidad apasionada por la mecánica del juego."}
-        />
-        <meta
-            name="keywords"
-            content="minecraft, servidor, cubusfera, técnico, redstone, granjas automáticas, optimización, vanilla, comunidad, español, TPS"
-        />
-        <meta name="author" content="Cubusfera" />
-        <meta name="robots" content="index, follow" />
+    <!-- SEO Meta Tags -->
+    <title>{content.title}</title>
+    <meta
+      name="description"
+      content={content.description ||
+        "Explora Cubusfera, un servidor técnico de Minecraft en español dedicado a la redstone, las granjas automáticas y la optimización."}
+    />
+    <meta
+      name="keywords"
+      content="minecraft, servidor, cubusfera, técnico, redstone, granjas automáticas, optimización, vanilla, comunidad, español, TPS"
+    />
+    <meta name="author" content="Cubusfera" />
+    <meta name="robots" content="index, follow" />
 
-        <!-- Canonical URL -->
-        <link
-            rel="canonical"
-            href={new URL(Astro.url.pathname, "https://www.cubusfera.com").href}
-        />
+    <!-- Canonical URL -->
+    <link
+      rel="canonical"
+      href={new URL(Astro.url.pathname, "https://www.cubusfera.com").href}
+    />
 
-        <!-- Open Graph Meta Tags -->
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content={content.title} />
-        <meta
-            property="og:description"
-            content={content.description ||
-                "Explora Cubusfera, un servidor técnico de Minecraft en español dedicado a la redstone, las granjas automáticas y la optimización. Únete a una comunidad apasionada por la mecánica del juego."}
-        />
-        <meta
-            property="og:image"
-            content={new URL("/og-image.png", Astro.site || Astro.url).href}
-        />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:image:type" content="image/png" />
-        <meta property="og:url" content={Astro.url.href} />
-        <meta property="og:site_name" content="Cubusfera" />
-        <meta property="og:locale" content="es_ES" />
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={content.title} />
+    <meta
+      property="og:description"
+      content={content.description ||
+        "Explora Cubusfera, un servidor técnico de Minecraft en español dedicado a la redstone, las granjas automáticas y la optimización."}
+    />
+    <meta
+      property="og:image"
+      content={new URL("/og-image.png", Astro.site || Astro.url).href}
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:site_name" content="Cubusfera" />
+    <meta property="og:locale" content="es_ES" />
 
-        <!-- Twitter Card Meta Tags -->
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={content.title} />
-        <meta
-            name="twitter:description"
-            content={content.description ||
-                "Explora Cubusfera, un servidor técnico de Minecraft en español dedicado a la redstone, las granjas automáticas y la optimización. Únete a una comunidad apasionada por la mecánica del juego."}
-        />
-        <meta
-            name="twitter:image"
-            content={"https://www.cubusfera.com/og-image.png"}
-        />
-        <meta
-            name="twitter:image:alt"
-            content="Cubusfera - Servidor de Minecraft"
-        />
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={content.title} />
+    <meta
+        name="twitter:description"
+        content={content.description ||
+            "Explora Cubusfera, un servidor técnico de Minecraft en español dedicado a la redstone, las granjas automáticas y la optimización."}
+    />
+    <meta
+        name="twitter:image"
+        content={"https://www.cubusfera.com/og-image.png"}
+    />
 
-        <!-- Favicon and Icons -->
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="apple-touch-icon" href="/favicon.svg" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Sora:wght@100;200;300;400;500;600;700;800&display=swap"
-            rel="stylesheet"
-        />
-        <script is:inline>
-            // Aplicar tema inmediatamente para evitar parpadeo
-            (function () {
-                const savedTheme = localStorage.getItem("theme");
-                const prefersDark = window.matchMedia(
-                    "(prefers-color-scheme: dark)",
-                ).matches;
+    <script is:inline>
+      // Script para evitar el flash de tema claro
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+    
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
+  </head>
+  <body class="min-h-screen flex flex-col bg-background text-foreground selection:bg-brand-green/30 selection:text-brand-green-fg">
+    <NotificationBanner />
+    <Navbar client:load />
+    
+    <main class="flex-1 w-full flex flex-col">
+      <slot />
+    </main>
 
-                if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
-                    document.documentElement.classList.add("dark");
-                }
-            })();
-        </script>
-    </head>
-    <body
-        class="flex flex-col min-h-screen bg-white dark:bg-[#122118] text-gray-900 dark:text-white transition-colors duration-200"
-    >
-        <NotificationBanner dismissible={false} />
-        <slot />
-        <Footer />
-    </body>
+    <Footer />
+  </body>
 </html>

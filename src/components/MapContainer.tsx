@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import StatusMessage from "./ui/StatusMessage";
+import { Loader2 } from "lucide-react";
 
 const MAP_URL = "https://mapa.cubusfera.com";
 
 export default function MapContainer() {
   const [checking, setChecking] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [mapAvailable, setMapAvailable] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Verificar si el servidor del mapa está disponible
     const checkMapServer = async () => {
       try {
         const controller = new AbortController();
@@ -24,30 +24,14 @@ export default function MapContainer() {
         clearTimeout(timeoutId);
 
         if (!response.ok) {
-          if (
-            response.status === 502 ||
-            response.status === 503 ||
-            response.status === 504
-          ) {
-            setMapAvailable(false);
-            setError(
-              "El servidor del mapa está temporalmente desconectado. Intenta de nuevo más tarde.",
-            );
-          } else {
-            setMapAvailable(false);
-            setError(
-              `El servidor del mapa no está disponible (${response.status}).`,
-            );
-          }
+          setMapAvailable(false);
+          setError("El servidor del mapa está temporalmente desconectado.");
         } else {
           setMapAvailable(true);
         }
       } catch (e) {
-        // Error de red, timeout o servidor no disponible
         setMapAvailable(false);
-        setError(
-          "El servidor del mapa está temporalmente desconectado. Intenta de nuevo más tarde.",
-        );
+        setError("El servidor del mapa está temporalmente desconectado.");
       } finally {
         setChecking(false);
       }
@@ -58,92 +42,44 @@ export default function MapContainer() {
 
   const handleMapLoad = () => {
     setLoading(false);
-    // Ocultar el overlay de loading con fade-out
-    const overlay = document.getElementById("loading-overlay");
-    if (overlay) {
-      overlay.classList.add("fade-out");
-      setTimeout(() => {
-        overlay.style.display = "none";
-      }, 500);
-    }
   };
-
-  useEffect(() => {
-    // Fallback: ocultar loading después de 10 segundos si no se carga
-    if (mapAvailable && !checking) {
-      setLoading(true);
-      const timeout = setTimeout(() => {
-        handleMapLoad();
-      }, 10000);
-
-      return () => clearTimeout(timeout);
-    }
-  }, [mapAvailable, checking]);
 
   if (checking) {
     return (
-      <div
-        className="overflow-hidden relative mt-4 w-full rounded-lg border border-gray-200 dark:border-[#366348] bg-gray-50 dark:bg-[#1b3124]"
-        style={{ height: "70vh", minHeight: "600px" }}
-      >
-        <div className="flex absolute inset-0 flex-col justify-center items-center bg-gray-50 dark:bg-[#1b3124]">
-          <div className="mb-4 loading-spinner"></div>
-          <p className="font-medium text-gray-600 dark:text-[#96c5a9]">
-            Verificando servidor del mapa...
-          </p>
-          <p className="mt-2 text-sm text-gray-600 dark:text-[#96c5a9]">
-            Esto puede tomar unos segundos
-          </p>
-        </div>
+      <div className="w-full h-full min-h-[600px] flex flex-col items-center justify-center bg-muted/30">
+        <Loader2 className="w-10 h-10 animate-spin text-brand-green mb-4" />
+        <p className="text-muted-foreground">Conectando con el servidor...</p>
       </div>
     );
   }
 
   if (!mapAvailable) {
     return (
-      <div
-        className="overflow-hidden relative mt-4 w-full rounded-lg border border-gray-200 dark:border-[#366348] bg-gray-50 dark:bg-[#1b3124]"
-        style={{ height: "70vh", minHeight: "600px" }}
-      >
-        <div className="flex justify-center items-center h-full p-6">
-          <div className="w-full max-w-2xl">
-            <StatusMessage
-              type="offline"
-              message={
-                error ||
-                "El servidor del mapa está temporalmente desconectado. Intenta de nuevo más tarde."
-              }
-              title="Mapa no disponible"
-            />
-          </div>
+      <div className="w-full h-full min-h-[600px] flex items-center justify-center bg-muted/30 p-6">
+        <div className="w-full max-w-md">
+          <StatusMessage
+            type="offline"
+            message={error || "El servidor del mapa está temporalmente desconectado."}
+            title="Mapa no disponible"
+          />
         </div>
       </div>
     );
   }
 
   return (
-    <div
-      className="overflow-hidden relative mt-4 w-full rounded-lg border border-gray-200 dark:border-[#366348] bg-gray-50 dark:bg-[#1b3124]"
-      style={{ height: "70vh", minHeight: "600px" }}
-    >
-      <div
-        id="loading-overlay"
-        className="flex absolute inset-0 z-10 flex-col justify-center items-center bg-gray-50 dark:bg-[#1b3124] transition-opacity duration-500"
-      >
-        <div className="mb-4 loading-spinner"></div>
-        <p className="font-medium text-gray-600 dark:text-[#96c5a9]">
-          Cargando mapa...
-        </p>
-        <p className="mt-2 text-sm text-gray-600 dark:text-[#96c5a9]">
-          Esto puede tomar unos segundos
-        </p>
-      </div>
+    <div className="relative w-full h-full min-h-[600px] bg-muted/30">
+      {loading && (
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm transition-opacity duration-500">
+          <Loader2 className="w-10 h-10 animate-spin text-brand-green mb-4" />
+          <p className="font-medium text-foreground">Cargando mapa...</p>
+          <p className="mt-2 text-sm text-muted-foreground">Esto puede tomar unos segundos</p>
+        </div>
+      )}
 
       <iframe
-        id="map-iframe"
         src={`${MAP_URL}/#world:0:0:0:1500:0:0:0:0:perspective`}
-        className="border-0"
-        style={{ width: "100%", height: "100%" }}
+        className="w-full h-full border-0"
         title="Mapa de Cubusfera"
         loading="lazy"
         onLoad={handleMapLoad}

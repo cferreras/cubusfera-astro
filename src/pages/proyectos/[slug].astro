@@ -34,8 +34,7 @@ const getMinecraftHead = (nombre: string) =>
         description: proyecto.data.descripcion,
     }}
 >
-    <Navbar client:load />
-    <main class="flex-1 bg-white dark:bg-brand-bg-2">
+    <div class="flex-1 bg-white dark:bg-brand-bg-2">
         <Breadcrumb
             items={[
                 { label: "Inicio", href: "/" },
@@ -284,7 +283,7 @@ const getMinecraftHead = (nombre: string) =>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
     <script>
         // Funcionalidad para copiar coordenadas

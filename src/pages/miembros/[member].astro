@@ -1,48 +1,15 @@
 ---
+export const prerender = false;
 import Layout from "../../layouts/main.astro";
-import Navbar from "../../components/Navbar";
 import PlayerStats from "../../components/PlayerStats.astro";
 import PlayerProfile from "../../components/PlayerProfile.astro";
 import Breadcrumb from "../../components/Breadcrumb.astro";
+import { User } from "lucide-react";
 
-// Función requerida para rutas dinámicas en Astro
-export async function getStaticPaths() {
-    // En modo servidor con prerender, solo generar rutas si estamos en desarrollo
-    // o si la API está disponible
-    const WHITELIST_API_URL =
-        (
-            import.meta.env as ImportMetaEnv & {
-                WHITELIST_API_URL?: string;
-            }
-        ).WHITELIST_API_URL || "http://localhost:8080/whitelist";
-
-    // En producción, permitir que las rutas se generen dinámicamente
-    if (import.meta.env.PROD) {
-        return [];
-    }
-
-    try {
-        const response = await fetch(WHITELIST_API_URL);
-        if (response.ok) {
-            const members = await response.json();
-            return members.map(
-                (member: { name: string; online: boolean; group: string }) => ({
-                    params: { member: member.name },
-                }),
-            );
-        }
-    } catch (e) {
-        console.error("Error fetching members for static paths:", e);
-    }
-
-    // Fallback: retornar array vacío si no se pueden obtener los miembros
-    return [];
-}
-
-// Obtener el parámetro del miembro desde la URL
+// Obtener el par�metro del miembro desde la URL
 const { member } = Astro.params;
 
-// Validar que el parámetro existe
+// Validar que el par�metro existe
 if (!member) {
     return Astro.redirect("/miembros");
 }
@@ -73,13 +40,13 @@ try {
 }
 
 // Obtener datos del perfil para saber si tiene información personal
-const PROFILE_API_URL = `https://stats.cubusfera.com/profile/${member}`;
+const PROFILE_API_URL = "https://stats.cubusfera.com/profile/";
 let hasPersonalInfo = false;
 try {
     const profileResponse = await fetch(PROFILE_API_URL);
     if (profileResponse.ok) {
         const profileData = await profileResponse.json();
-        // Función para validar si hay contenido social válido
+        // Funci�n para validar si hay contenido social v�lido
         const hasSocialContent = (social: any) => {
             if (!social || typeof social !== "object") return false;
             const { discord, twitter, youtube, instagram } = social;
@@ -89,533 +56,60 @@ try {
         hasPersonalInfo = !!(
             profileData.bio || hasSocialContent(profileData.social)
         );
-    } else if (
-        profileResponse.status === 502 ||
-        profileResponse.status === 503 ||
-        profileResponse.status === 504
-    ) {
-        // Servidor desconectado - esto es normal
-        console.log("Servidor de Minecraft desconectado, esto es normal");
     }
 } catch (e) {
-    // Error de red o servidor no disponible - esto es normal cuando el servidor está apagado
-    if (e instanceof TypeError && (e as TypeError).message.includes("fetch")) {
-        console.log("Servidor de Minecraft desconectado, esto es normal");
-    } else {
-        console.error("Error fetching profile for header:", e);
-    }
+    // Ignorar errores de conexi�n
 }
-
-// Función para obtener el color del grupo
-function getGroupColor(group: string): string {
-    switch (group.toLowerCase()) {
-        case "owner":
-            return "bg-destructive/10 text-destructive border-destructive/20";
-        case "admin":
-            return "bg-orange-500/10 text-orange-600 border-orange-500/20 dark:text-orange-400";
-        case "moderator":
-        case "helper":
-        case "mod":
-            return "bg-blue-500/10 text-blue-600 border-blue-500/20 dark:text-blue-400";
-        case "builder":
-            return "bg-pink-500/10 text-pink-600 border-pink-500/20 dark:text-pink-400";
-        case "vip":
-            return "bg-yellow-500/10 text-yellow-600 border-yellow-500/20 dark:text-yellow-400";
-        case "premium":
-            return "bg-purple-500/10 text-purple-600 border-purple-500/20 dark:text-purple-400";
-        case "default":
-        default:
-            return "bg-white dark:bg-[#122118] text-gray-900 dark:text-white/90 border-gray-200 dark:border-[#38e07b]/20";
-    }
-}
-
-// Configuración del contenido para el layout
-const content = {
-    title: `Cubusfera - ${member}`,
-    description: `Perfil del jugador ${member} en el servidor Cubusfera de Minecraft.`,
-};
 ---
 
-<Layout content={content}>
-    <Navbar client:load />
-    <main class="min-h-screen bg-white dark:bg-[#122118]">
-        <Breadcrumb
-            items={[
-                { label: "Inicio", href: "/" },
-                { label: "Jugadores", nonClickable: true },
-                { label: "Miembros", href: "/miembros" },
-                { label: member },
-            ]}
-        />
+<Layout
+    content={{
+        title: `${member} - Perfil de Jugador`,
+        description: `Estadísticas y perfil de ${member} en Cubusfera.`,
+    }}
+>
+    <Breadcrumb
+        items={[
+            { label: "Inicio", href: "/" },
+            { label: "Miembros", href: "/miembros" },
+            { label: member },
+        ]}
+    />
 
-        <div class="container px-4 py-8 mx-auto">
-            <!-- Header del jugador mejorado -->
-            <div class="max-w-4xl mx-auto mb-8">
-                <div
-                    class="rounded-lg border bg-gradient-to-br from-gray-50 to-gray-100 dark:from-[#1b3124] dark:to-[#122118] border-gray-200 dark:border-[#366348] shadow-lg overflow-hidden"
-                >
-                    <div class="relative p-8">
-                        <div
-                            class="flex flex-col items-center space-y-6 md:flex-row md:items-start md:space-y-0 md:space-x-8"
-                        >
-                            <!-- Avatar Section -->
-                            <div class="flex-shrink-0">
-                                <div class="relative">
-                                    <img
-                                        src={`https://mc-heads.net/avatar/${member}/128`}
-                                        alt={`Avatar de ${member}`}
-                                        class="w-32 h-32 rounded-xl shadow-lg border-4 border-white dark:border-[#264532]"
-                                    />
-                                    <!-- Indicador de estado mejorado -->
-                                    <div
-                                        class={`absolute -bottom-2 -right-2 w-10 h-10 rounded-full border-4 border-white dark:border-[#264532] flex items-center justify-center shadow-lg ${
-                                            isOnline
-                                                ? "bg-green-500"
-                                                : "bg-gray-400"
-                                        }`}
-                                    >
-                                        {
-                                            isOnline ? (
-                                                <svg
-                                                    class="w-5 h-5 text-white"
-                                                    fill="currentColor"
-                                                    viewBox="0 0 20 20"
-                                                >
-                                                    <path
-                                                        fill-rule="evenodd"
-                                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                        clip-rule="evenodd"
-                                                    />
-                                                </svg>
-                                            ) : (
-                                                <svg
-                                                    class="w-5 h-5 text-white"
-                                                    fill="currentColor"
-                                                    viewBox="0 0 20 20"
-                                                >
-                                                    <path
-                                                        fill-rule="evenodd"
-                                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                                        clip-rule="evenodd"
-                                                    />
-                                                </svg>
-                                            )
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Info Section -->
-                            <div
-                                class="flex-1 space-y-4 text-center md:text-left"
-                            >
-                                <!-- Nombre y título -->
-                                <div class="space-y-2">
-                                    <h1
-                                        class="text-3xl font-bold text-gray-900 dark:text-white md:text-4xl"
-                                    >
-                                        {member}
-                                    </h1>
-                                    <p
-                                        class="text-lg text-gray-600 dark:text-[#96c5a9]"
-                                    >
-                                        Perfil del Jugador
-                                    </p>
-                                </div>
-
-                                <!-- Badges y estado -->
-                                <div
-                                    class="flex flex-col items-center justify-center space-y-2 sm:flex-row md:justify-start sm:space-y-0 sm:space-x-4"
-                                >
-                                    <!-- Badge del grupo mejorado -->
-                                    <div class="flex items-center space-x-2">
-                                        <span
-                                            class={`capitalize inline-flex items-center px-4 py-2 text-sm font-semibold rounded-full border-2 ${getGroupColor(playerGroup)}`}
-                                        >
-                                            {playerGroup}
-                                        </span>
-                                    </div>
-
-                                    <!-- Estado online mejorado -->
-                                    <div
-                                        class="flex items-center space-x-2 px-3 py-2 rounded-full bg-white dark:bg-[#264532] border border-gray-200 dark:border-[#366348]"
-                                    >
-                                        <div
-                                            class={`w-2 h-2 rounded-full ${
-                                                isOnline
-                                                    ? "bg-green-500"
-                                                    : "bg-gray-400"
-                                            }`}
-                                        >
-                                        </div>
-                                        <span
-                                            class={`text-sm font-medium ${
-                                                isOnline
-                                                    ? "text-green-600 dark:text-green-400"
-                                                    : "text-gray-600 dark:text-gray-400"
-                                            }`}
-                                        >
-                                            {
-                                                isOnline
-                                                    ? "En línea"
-                                                    : "Desconectado"
-                                            }
-                                        </span>
-                                        {
-                                            isOnline && (
-                                                <div
-                                                    class={`w-2 h-2 rounded-full bg-green-500 animate-pulse`}
-                                                />
-                                            )
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Actions Section -->
-                            <div class="flex-shrink-0">
-                                <div class="flex flex-col space-y-2">
-                                    <a
-                                        href="/miembros"
-                                        class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 bg-white dark:bg-[#264532] text-gray-700 dark:text-[#96c5a9] hover:bg-gray-50 dark:hover:bg-[#1b3124] border border-gray-300 dark:border-[#366348] shadow-sm hover:shadow-md group"
-                                    >
-                                        <svg
-                                            class="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                                            ></path>
-                                        </svg>
-                                        Volver a Miembros
-                                    </a>
-
-                                    {
-                                        /* Botón de personalización cuando no hay información personal */
-                                    }
-                                    {
-                                        !hasPersonalInfo && (
-                                            <button
-                                                class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 bg-green-50 dark:bg-[#38e07b]/10 text-green-700 dark:text-[#38e07b] hover:bg-green-100 dark:hover:bg-[#38e07b]/20 border border-green-200 dark:border-[#38e07b]/30 shadow-sm hover:shadow-md group"
-                                                data-expand="profile-help-header"
-                                                aria-label="Mostrar información sobre cómo personalizar perfil"
-                                            >
-                                                <svg
-                                                    class="w-4 h-4 mr-2 transition-transform group-hover:rotate-12"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    viewBox="0 0 24 24"
-                                                >
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"
-                                                    />
-                                                </svg>
-                                                Personalizar Perfil
-                                                <svg
-                                                    class="w-4 h-4 ml-2 transition-transform transform"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    viewBox="0 0 24 24"
-                                                >
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M19 9l-7 7-7-7"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        )
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="container mx-auto px-4 space-y-8 mt-8">
+        {/* Header del Perfil */}
+        <div class="flex flex-col md:flex-row gap-8 items-center md:items-start">
+            <div class="relative shrink-0">
+                <img
+                    src={`https://mc-heads.net/body/${member}/200`}
+                    alt={`Skin de ${member}`}
+                    class="h-64 w-auto drop-shadow-2xl"
+                />
+                <div class={`absolute bottom-4 right-4 w-6 h-6 rounded-full border-4 border-background ${isOnline ? 'bg-green-500' : 'bg-red-500'}`} title={isOnline ? "Online" : "Offline"}></div>
             </div>
 
-            <!-- Contenido expandible de ayuda para personalización -->
-            {
-                !hasPersonalInfo && (
-                    <div
-                        id="profile-help-header"
-                        class="hidden max-w-4xl mx-auto mb-8"
-                    >
-                        <div class="border border-yellow-200 rounded-lg shadow-sm bg-yellow-50 dark:bg-yellow-900/10 dark:border-yellow-800/30">
-                            <div class="p-6">
-                                <div class="flex items-start mb-4 space-x-3">
-                                    <svg
-                                        class="w-6 h-6 text-yellow-600 dark:text-yellow-400 mt-0.5 flex-shrink-0"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                                        />
-                                    </svg>
-                                    <div>
-                                        <h3 class="mb-2 text-lg font-semibold text-yellow-800 dark:text-yellow-200">
-                                            ¿Cómo personalizar tu perfil?
-                                        </h3>
-                                        <p class="text-yellow-700 dark:text-yellow-300">
-                                            Usa estos comandos en el servidor
-                                            para hacer tu perfil más personal y
-                                            único:
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                    <div class="bg-white dark:bg-[#264532] rounded-lg p-4 border border-yellow-200 dark:border-yellow-800/30">
-                                        <h4 class="flex items-center mb-3 font-semibold text-gray-900 dark:text-white">
-                                            <svg
-                                                class="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                                />
-                                            </svg>
-                                            Biografía Personal
-                                        </h4>
-                                        <p class="text-sm text-gray-600 dark:text-[#96c5a9] mb-3">
-                                            Comparte algo sobre ti:
-                                        </p>
-                                        <code class="block text-xs bg-gray-100 dark:bg-[#1b3124] text-gray-800 dark:text-[#96c5a9] p-3 rounded-md border border-gray-200 dark:border-[#366348] font-mono">
-                                            /bio &lt;tu biografía&gt;
-                                        </code>
-                                        <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                                            Ejemplo: /bio Hola, soy Carlos y me
-                                            encanta construir en Minecraft
-                                        </p>
-                                    </div>
-
-                                    <div class="bg-white dark:bg-[#264532] rounded-lg p-4 border border-yellow-200 dark:border-yellow-800/30">
-                                        <h4 class="flex items-center mb-3 font-semibold text-gray-900 dark:text-white">
-                                            <svg
-                                                class="w-5 h-5 mr-2 text-purple-600 dark:text-purple-400"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                            >
-                                                <path
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    stroke-width="2"
-                                                    d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-                                                />
-                                            </svg>
-                                            Redes Sociales
-                                        </h4>
-                                        <p class="text-sm text-gray-600 dark:text-[#96c5a9] mb-3">
-                                            Conecta tus redes:
-                                        </p>
-                                        <div class="space-y-2 font-mono text-xs">
-                                            <code class="block bg-gray-100 dark:bg-[#1b3124] text-gray-800 dark:text-[#96c5a9] p-2 rounded border border-gray-200 dark:border-[#366348]">
-                                                /social discord tu_usuario
-                                            </code>
-                                            <code class="block bg-gray-100 dark:bg-[#1b3124] text-gray-800 dark:text-[#96c5a9] p-2 rounded border border-gray-200 dark:border-[#366348]">
-                                                /social twitter
-                                                https://twitter.com/tu_usuario
-                                            </code>
-                                            <code class="block bg-gray-100 dark:bg-[#1b3124] text-gray-800 dark:text-[#96c5a9] p-2 rounded border border-gray-200 dark:border-[#366348]">
-                                                /social youtube
-                                                https://youtube.com/@tu_canal
-                                            </code>
-                                            <code class="block bg-gray-100 dark:bg-[#1b3124] text-gray-800 dark:text-[#96c5a9] p-2 rounded border border-gray-200 dark:border-[#366348]">
-                                                /social instagram
-                                                https://instagram.com/tu_usuario
-                                            </code>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <div class="flex-1 text-center md:text-left space-y-4">
+                <div class="space-y-2">
+                    <div class="inline-flex items-center rounded-md border border-border bg-muted px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground capitalize">
+                        {playerGroup}
                     </div>
-                )
-            }
-
-            <!-- Divider sutil -->
-            <div class="max-w-6xl mx-auto mb-8">
-                <div class="relative">
-                    <div class="absolute inset-0 flex items-center">
-                        <div
-                            class="w-full border-t border-gray-200 dark:border-[#366348] opacity-50"
-                        >
-                        </div>
-                    </div>
-                    <div class="relative flex justify-center">
-                        <div class="px-4 bg-white dark:bg-[#122118]">
-                            <div class="flex items-center space-x-2">
-                                <div
-                                    class="w-2 h-2 bg-gray-400 rounded-full dark:bg-gray-600"
-                                >
-                                </div>
-                                <div
-                                    class="w-2 h-2 bg-gray-400 rounded-full dark:bg-gray-600"
-                                >
-                                </div>
-                                <div
-                                    class="w-2 h-2 bg-gray-400 rounded-full dark:bg-gray-600"
-                                >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <h1 class="text-4xl font-bold tracking-tight lg:text-5xl text-foreground">
+                        {member}
+                    </h1>
                 </div>
+
+                {/* Perfil Personal (Bio y Redes) */}
+                <PlayerProfile playerName={member} />
             </div>
-
-            <!-- Perfil del jugador (biografía y redes sociales) -->
-            <PlayerProfile member={member} />
-
-            <!-- Divider decorativo -->
-            <div class="max-w-6xl mx-auto my-12">
-                <div class="relative">
-                    <div class="absolute inset-0 flex items-center">
-                        <div
-                            class="w-full border-t border-gray-300 dark:border-[#366348]"
-                        >
-                        </div>
-                    </div>
-                    <div class="relative flex justify-center">
-                        <div class="px-6 bg-white dark:bg-[#122118]">
-                            <div class="flex items-center space-x-3">
-                                <div
-                                    class="w-3 h-3 rounded-full bg-green-600 dark:bg-[#38e07b] opacity-60"
-                                >
-                                </div>
-                                <svg
-                                    class="w-6 h-6 text-green-600 dark:text-[#38e07b] opacity-80"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                                    ></path>
-                                </svg>
-                                <span
-                                    class="text-sm font-medium text-gray-600 dark:text-[#96c5a9] select-none"
-                                    >Estadísticas del Servidor</span
-                                >
-                                <svg
-                                    class="w-6 h-6 text-green-600 dark:text-[#38e07b] opacity-80"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                                    ></path>
-                                </svg>
-                                <div
-                                    class="w-3 h-3 rounded-full bg-green-600 dark:bg-[#38e07b] opacity-60"
-                                >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Server Islands aquí -->
-            <PlayerStats server:defer member={member}>
-                <div slot="fallback" class="max-w-2xl mx-auto">
-                    <div
-                        class="p-8 text-center rounded-lg bg-gray-50 dark:bg-[#1b3124] border border-gray-200 dark:border-[#366348]"
-                    >
-                        <div
-                            class="flex justify-center items-center mx-auto mb-4 w-16 h-16 rounded-full animate-pulse bg-gray-200 dark:bg-[#264532]"
-                        >
-                            <svg
-                                class="w-8 h-8 text-green-600 dark:text-[#38e07b]"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                                ></path>
-                            </svg>
-                        </div>
-                        <h2
-                            class="mb-2 text-xl font-semibold text-gray-900 dark:text-white"
-                        >
-                            Cargando datos de {member}...
-                        </h2>
-                        <p class="text-gray-600 dark:text-[#96c5a9]">
-                            Obteniendo información del servidor de forma
-                            asíncrona
-                        </p>
-                    </div>
-                </div>
-            </PlayerStats>
         </div>
-    </main>
 
-    <script>
-        // Script para mejorar la experiencia de los desplegables
-        document.addEventListener("DOMContentLoaded", function () {
-            const details = document.querySelectorAll("details");
-            details.forEach((detail) => {
-                detail.addEventListener("toggle", function () {
-                    if (this.open) {
-                        // Scroll suave al contenido cuando se abre
-                        setTimeout(() => {
-                            this.scrollIntoView({
-                                behavior: "smooth",
-                                block: "nearest",
-                            });
-                        }, 100);
-                    }
-                });
-            });
-
-            // Manejar el botón de personalización en el header
-            const profileHelpButton = document.querySelector(
-                '[data-expand="profile-help-header"]',
-            );
-            if (profileHelpButton) {
-                profileHelpButton.addEventListener(
-                    "click",
-                    function (this: HTMLElement) {
-                        const content = document.getElementById(
-                            "profile-help-header",
-                        );
-                        const arrow = this.querySelector("svg:last-child");
-                        if (content && arrow) {
-                            content.classList.toggle("hidden");
-                            arrow.classList.toggle("rotate-180");
-                        }
-                    },
-                );
-            }
-        });
-    </script>
+        {/* Estad�sticas */}
+        <div class="space-y-6">
+            <div class="flex items-center gap-2 pb-2 border-b border-border">
+                <User className="h-5 w-5 text-brand-green" />
+                <h2 class="text-2xl font-semibold tracking-tight text-foreground">Estad�sticas</h2>
+            </div>
+            <PlayerStats playerName={member} />
+        </div>
+    </div>
 </Layout>

@@ -1,14 +1,14 @@
----
+﻿---
 export const prerender = true;
 import Layout from "../layouts/main.astro";
-import Navbar from "../components/Navbar.js";
 import Breadcrumb from "../components/Breadcrumb.astro";
+import Card from "../components/ui/Card.astro";
+import Button from "../components/Button.astro";
 import { getCollection } from 'astro:content';
+import { MapPin, Tag, ArrowRight } from 'lucide-react';
 
-// Obtener todos los proyectos desde los archivos Markdown
 const proyectos = await getCollection('proyectos');
 
-// Transformar los datos para mantener compatibilidad con el frontend
 const proyectosData = proyectos.map(proyecto => ({
   id: proyecto.slug,
   titulo: proyecto.data.titulo,
@@ -28,171 +28,165 @@ const todasLasEtiquetas = [...new Set(proyectosData.flatMap(p => p.etiquetas))];
     description: "Explora los increíbles proyectos construidos por la comunidad de Cubusfera. Desde granjas técnicas hasta ciudades impresionantes.",
   }}
 >
-  <Navbar client:load />
-  <main class="min-h-screen bg-white dark:bg-brand-bg-2">
-    <Breadcrumb items={[
-      { label: 'Inicio', href: '/' },
-      { label: 'Servidor', nonClickable: true },
-      { label: 'Proyectos' }
-    ]} />
-    
-    <!-- Hero Section -->
-  <div class="relative bg-gradient-to-br border-b from-gray-100 via-gray-50 to-gray-100 dark:from-brand-accent-1 dark:via-brand-bg-2 dark:to-brand-bg-1 border-gray-200 dark:border-brand-border">
-      <div class="absolute inset-0 opacity-5 bg-grid-pattern"></div>
-      <div class="container relative px-4 py-16 mx-auto">
-        <div class="space-y-6 text-center">
-          <h1 class="text-4xl font-bold md:text-5xl text-gray-900 dark:text-white">
-            Proyectos de <span class="text-green-600 dark:text-brand-green">Cubusfera</span>
-          </h1>
-          <p class="mx-auto max-w-2xl text-lg text-gray-600 dark:text-brand-muted">
-            Descubre las increíbles construcciones y granjas técnicas creadas por nuestra comunidad
-          </p>
-        </div>
-      </div>
+  <Breadcrumb items={[
+    { label: 'Inicio', href: '/' },
+    { label: 'Proyectos' }
+  ]} />
+  
+  <div class="container mx-auto px-4 space-y-12 mt-8 mb-20">
+    {/* Header */}
+    <div class="text-center space-y-4">
+      <h1 class="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+        Proyectos de <span class="text-brand-green">Cubusfera</span>
+      </h1>
+      <p class="mx-auto max-w-2xl text-lg text-muted-foreground">
+        Descubre las increíbles construcciones y granjas técnicas creadas por nuestra comunidad.
+      </p>
     </div>
 
-    <!-- Filtros y Lista de Proyectos -->
-    <section class="py-12">
-      <div class="container px-4 mx-auto">
-        <!-- Filtros -->
-        <div class="mb-8">
-          <h2 class="mb-4 text-xl font-semibold text-gray-900 dark:text-white">Filtrar por etiqueta</h2>
-          <div class="flex flex-wrap gap-2" id="filtros">
-            <button 
-              class="px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 filter-btn bg-green-600 dark:bg-brand-green text-white dark:text-brand-green-fg" 
-              data-filter="all"
-            >
-              Todos
-            </button>
-            {todasLasEtiquetas.map(etiqueta => (
-              <button 
-                class="px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 filter-btn bg-gray-100 dark:bg-brand-bg-1 text-gray-600 dark:text-brand-muted hover:bg-gray-200 dark:hover:bg-brand-accent-1 hover:text-gray-900 dark:hover:text-white border border-gray-300 dark:border-brand-border" 
-                data-filter={etiqueta}
-              >
-                {etiqueta}
-              </button>
-            ))}
-          </div>
-        </div>
+    {/* Filters */}
+    <div class="flex flex-wrap justify-center gap-2" id="filters-container">
+      <button 
+        class="filter-btn px-4 py-2 rounded-full bg-brand-green text-brand-green-fg text-sm font-medium shadow-sm transition-colors"
+        data-filter="all"
+      >
+        Todos
+      </button>
+      {todasLasEtiquetas.map(tag => (
+        <button 
+          class="filter-btn px-4 py-2 rounded-full bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground text-sm font-medium transition-colors"
+          data-filter={tag}
+        >
+          {tag}
+        </button>
+      ))}
+    </div>
 
-        <!-- Grid de Proyectos -->
-        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="proyectos-grid">
-          {proyectosData.map(proyecto => (
-            <div 
-              class="overflow-hidden rounded-lg border shadow-sm transition-all duration-200 proyecto-card group bg-gray-50 dark:bg-brand-bg-1 border-gray-200 dark:border-brand-border hover:shadow-md hover:border-green-400 dark:hover:border-brand-green"
-              data-etiquetas={proyecto.etiquetas.join(',')}
-            >
-              <div class="overflow-hidden relative aspect-video bg-gray-200 dark:bg-brand-accent-1">
-                <img 
-                  src={proyecto.imagen} 
-                  alt={proyecto.titulo}
-                  class="object-cover w-full h-full transition-transform duration-200 group-hover:scale-105"
-                />
-                <div class="absolute top-2 right-2">
-                  <span class={`px-2 py-1 text-xs font-medium rounded-full border ${
-                    proyecto.dimension === 'Overworld' ? 'bg-green-600 text-white border-green-500' :
-                    proyecto.dimension === 'Nether' ? 'bg-red-600 text-white border-red-500' :
-                    'bg-purple-600 text-white border-purple-500'
-                  }`}>
-                    {proyecto.dimension}
+    {/* Grid */}
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3" id="projects-grid">
+      {proyectosData.map((proyecto) => (
+        <Card 
+          class="project-card group flex flex-col overflow-hidden p-0 border-border/50 hover:border-brand-green/30 transition-all duration-300 hover:shadow-lg"
+          data-tags={proyecto.etiquetas.join(',')}
+        >
+          <div class="relative aspect-video overflow-hidden bg-muted">
+            <a href={`/proyectos/${proyecto.id}`} class="block w-full h-full">
+              <img
+                src={proyecto.imagen || '/placeholder-project.jpg'}
+                alt={proyecto.titulo}
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                <span class="text-white font-medium flex items-center gap-2">
+                  Ver detalles <ArrowRight className="h-4 w-4" />
+                </span>
+              </div>
+            </a>
+          </div>
+          
+          <div class="flex flex-col flex-1 p-6">
+            <div class="flex items-start justify-between gap-4 mb-4">
+              <h3 class="text-xl font-bold text-foreground group-hover:text-brand-green transition-colors">
+                {proyecto.titulo}
+              </h3>
+              {proyecto.dimension && (
+                <span class="shrink-0 inline-flex items-center rounded-md bg-muted px-2 py-1 text-xs font-medium text-muted-foreground ring-1 ring-inset ring-border">
+                  {proyecto.dimension}
+                </span>
+              )}
+            </div>
+            
+            <p class="text-muted-foreground line-clamp-3 mb-6 flex-1">
+              {proyecto.descripcion}
+            </p>
+            
+            <div class="space-y-4">
+              <div class="flex flex-wrap gap-2">
+                {proyecto.etiquetas.slice(0, 3).map((tag) => (
+                  <span class="inline-flex items-center gap-1 rounded-full bg-brand-green/10 px-2.5 py-0.5 text-xs font-medium text-brand-green">
+                    <Tag className="h-3 w-3" />
+                    {tag}
                   </span>
-                </div>
+                ))}
+                {proyecto.etiquetas.length > 3 && (
+                  <span class="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                    +{proyecto.etiquetas.length - 3}
+                  </span>
+                )}
               </div>
               
-              <div class="p-4">
-                <h3 class="mb-2 text-lg font-semibold transition-colors text-gray-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-brand-green">
-                  {proyecto.titulo}
-                </h3>
-                <p class="mb-3 text-sm text-gray-600 dark:text-brand-muted line-clamp-2">
-                  {proyecto.descripcion}
-                </p>
-                
-                <div class="flex flex-wrap gap-1 mb-3">
-                  {proyecto.etiquetas.map(etiqueta => (
-                    <span class="px-2 py-1 text-xs rounded bg-gray-200 dark:bg-brand-accent-1 text-gray-600 dark:text-brand-muted">
-                      {etiqueta}
-                    </span>
-                  ))}
+              {proyecto.coordenadas && (
+                <div class="flex items-center text-xs text-muted-foreground font-mono bg-muted/50 p-2 rounded">
+                  <MapPin className="mr-2 h-3 w-3 text-brand-green" />
+                  X: {proyecto.coordenadas.x} Y: {proyecto.coordenadas.y} Z: {proyecto.coordenadas.z}
                 </div>
-                
-                <div class="flex justify-between items-center">
-                  <span class="text-xs text-gray-500 dark:text-brand-muted">
-                    {proyecto.coordenadas.x}, {proyecto.coordenadas.y}, {proyecto.coordenadas.z}
-                  </span>
-                  <a 
-                    href={`/proyectos/${proyecto.id}`}
-                    class="inline-flex gap-1 items-center px-3 py-1.5 text-sm font-medium rounded-md transition-colors bg-green-600 dark:bg-brand-green text-white dark:text-brand-green-fg hover:bg-green-700 dark:hover:bg-brand-accent-1 dark:hover:text-white"
-                  >
-                    Ver detalles
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                  </a>
-                </div>
-              </div>
+              )}
+              
+              <Button href={`/proyectos/${proyecto.id}`} variant="outline" className="w-full group-hover:border-brand-green/50 group-hover:text-brand-green">
+                Ver Proyecto
+              </Button>
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  </main>
+          </div>
+        </Card>
+      ))}
+    </div>
+  </div>
 
   <script>
-    // Funcionalidad de filtrado
-    document.addEventListener('DOMContentLoaded', function() {
+    function initFilters() {
       const filterButtons = document.querySelectorAll('.filter-btn');
-      const projectCards = document.querySelectorAll('.proyecto-card');
+      const projectCards = document.querySelectorAll('.project-card');
+
+      if (filterButtons.length === 0) return;
+
+      function setActiveButton(activeBtn) {
+        // Query buttons again to ensure we are targeting the ones currently in the DOM
+        const currentButtons = document.querySelectorAll('.filter-btn');
+        currentButtons.forEach(btn => {
+          // Reset styles
+          btn.classList.remove('bg-brand-green', 'text-brand-green-fg');
+          btn.classList.add('bg-muted', 'text-muted-foreground');
+        });
+        
+        // Set active styles
+        activeBtn.classList.remove('bg-muted', 'text-muted-foreground');
+        activeBtn.classList.add('bg-brand-green', 'text-brand-green-fg');
+      }
 
       filterButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const filter = this.getAttribute('data-filter');
-          
-          // Actualizar botones activos
-      filterButtons.forEach(btn => {
-        btn.classList.remove('bg-green-600', 'dark:bg-brand-green', 'text-white', 'dark:text-brand-green-fg');
-        btn.classList.add('bg-gray-100', 'dark:bg-brand-bg-1', 'text-gray-600', 'dark:text-brand-muted', 'hover:bg-gray-200', 'dark:hover:bg-brand-accent-1', 'hover:text-gray-900', 'dark:hover:text-white', 'border', 'border-gray-300', 'dark:border-brand-border');
-          });
-          
-          this.classList.remove('bg-gray-100', 'dark:bg-brand-bg-1', 'text-gray-600', 'dark:text-brand-muted', 'hover:bg-gray-200', 'dark:hover:bg-brand-accent-1', 'hover:text-gray-900', 'dark:hover:text-white', 'border', 'border-gray-300', 'dark:border-brand-border');
-          this.classList.add('bg-green-600', 'dark:bg-brand-green', 'text-white', 'dark:text-brand-green-fg');
-          
-          // Filtrar proyectos
+        // Remove existing listeners to avoid duplicates if re-initialized
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        newButton.addEventListener('click', () => {
+          const filter = newButton.getAttribute('data-filter');
+          setActiveButton(newButton);
+
           projectCards.forEach(card => {
-            const etiquetas = card.getAttribute('data-etiquetas').split(',');
+            const tags = card.getAttribute('data-tags')?.split(',') || [];
+            const htmlCard = card;
             
-            if (filter === 'all' || etiquetas.includes(filter)) {
-              card.style.display = 'block';
-              card.classList.add('animate-fade-in');
+            if (filter === 'all' || tags.includes(filter)) {
+              htmlCard.style.display = 'flex';
+              // Optional: Add fade-in animation
+              htmlCard.style.opacity = '0';
+              requestAnimationFrame(() => {
+                htmlCard.style.transition = 'opacity 0.3s ease';
+                htmlCard.style.opacity = '1';
+              });
             } else {
-              card.style.display = 'none';
-              card.classList.remove('animate-fade-in');
+              htmlCard.style.display = 'none';
             }
           });
         });
       });
-    });
-  </script>
+    }
 
-  <style>
-    .line-clamp-2 {
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
+    // Run on initial load
+    document.addEventListener('DOMContentLoaded', initFilters);
     
-    .animate-fade-in {
-      animation: fadeIn 0.3s ease-in-out;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .bg-grid-pattern {
-      background-image: radial-gradient(circle, rgba(0,0,0,0.1) 1px, transparent 1px);
-      background-size: 20px 20px;
-    }
-  </style>
+    // Run on view transitions navigation (if enabled)
+    document.addEventListener('astro:page-load', initFilters);
+  </script>
 </Layout>

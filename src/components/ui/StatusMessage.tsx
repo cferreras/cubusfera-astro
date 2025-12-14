@@ -1,4 +1,5 @@
-import React from "react";
+﻿import React from "react";
+import { AlertCircle, Info, AlertTriangle, WifiOff } from "lucide-react";
 
 interface StatusMessageProps {
   type?: "error" | "offline" | "info" | "warning";
@@ -17,64 +18,54 @@ export const StatusMessage: React.FC<StatusMessageProps> = ({
   helpText,
   className = "",
 }) => {
-  // Determinar si es servidor offline basado en el mensaje o tipo
   const isServerOffline =
     type === "offline" ||
     message.includes("servidor") ||
     message.includes("desconectado");
 
-  // Configuración de colores según el tipo
-  const getColorClasses = () => {
+  const getStyles = () => {
     if (isServerOffline) {
       return {
-        container:
-          "bg-green-50 dark:bg-[#1b3124] border-green-200 dark:border-[#366348]",
-        iconWrapper: "bg-green-100 dark:bg-[#264532]",
-        icon: "text-green-600 dark:text-[#38e07b]",
-        title: "text-green-700 dark:text-[#38e07b]",
-        message: "text-green-600 dark:text-[#96c5a9]",
-        help: "text-green-600 dark:text-[#96c5a9]",
+        container: "bg-muted/50 border-border",
+        iconWrapper: "bg-muted text-muted-foreground",
+        icon: WifiOff,
+        title: "text-foreground",
+        message: "text-muted-foreground",
       };
     }
 
     switch (type) {
       case "warning":
         return {
-          container:
-            "bg-yellow-50 dark:bg-yellow-950/30 border-yellow-200 dark:border-yellow-800",
-          iconWrapper: "bg-yellow-100 dark:bg-yellow-900/30",
-          icon: "text-yellow-500 dark:text-yellow-400",
+          container: "bg-yellow-500/10 border-yellow-500/20",
+          iconWrapper: "bg-yellow-500/20 text-yellow-600 dark:text-yellow-400",
+          icon: AlertTriangle,
           title: "text-yellow-700 dark:text-yellow-300",
           message: "text-yellow-600 dark:text-yellow-400",
-          help: "text-yellow-600 dark:text-yellow-400",
         };
       case "info":
         return {
-          container:
-            "bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800",
-          iconWrapper: "bg-blue-100 dark:bg-blue-900/30",
-          icon: "text-blue-500 dark:text-blue-400",
+          container: "bg-blue-500/10 border-blue-500/20",
+          iconWrapper: "bg-blue-500/20 text-blue-600 dark:text-blue-400",
+          icon: Info,
           title: "text-blue-700 dark:text-blue-300",
           message: "text-blue-600 dark:text-blue-400",
-          help: "text-blue-600 dark:text-blue-400",
         };
       case "error":
       default:
         return {
-          container:
-            "bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800",
-          iconWrapper: "bg-red-100 dark:bg-red-900/30",
-          icon: "text-red-500 dark:text-red-400",
+          container: "bg-red-500/10 border-red-500/20",
+          iconWrapper: "bg-red-500/20 text-red-600 dark:text-red-400",
+          icon: AlertCircle,
           title: "text-red-700 dark:text-red-300",
           message: "text-red-600 dark:text-red-400",
-          help: "text-red-600 dark:text-red-400",
         };
     }
   };
 
-  const colors = getColorClasses();
+  const styles = getStyles();
+  const Icon = styles.icon;
 
-  // Determinar el título por defecto según el tipo
   const defaultTitle = isServerOffline
     ? "Servidor desconectado"
     : type === "warning"
@@ -85,90 +76,31 @@ export const StatusMessage: React.FC<StatusMessageProps> = ({
 
   const displayTitle = title || defaultTitle;
 
-  // Texto de ayuda por defecto para servidor offline
   const defaultHelpText = isServerOffline
-    ? "💡 Esto es normal cuando el servidor está apagado. La web funciona correctamente."
+    ? " Esto es normal cuando el servidor está apagado. La web funciona correctamente."
     : helpText;
 
   const shouldShowHelp =
     showHelpText || (isServerOffline && !helpText) || helpText;
 
-  // Icono según el tipo
-  const renderIcon = () => {
-    if (isServerOffline) {
-      return (
-        <>
-          <circle cx="12" cy="12" r="10" strokeWidth="2" fill="none" />
-          <line
-            x1="4.93"
-            y1="4.93"
-            x2="19.07"
-            y2="19.07"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        </>
-      );
-    }
-
-    if (type === "warning") {
-      return (
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-        />
-      );
-    }
-
-    if (type === "info") {
-      return (
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-        />
-      );
-    }
-
-    // Error por defecto
-    return (
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-      />
-    );
-  };
-
   return (
-    <div
-      className={`p-6 text-center border rounded-lg ${colors.container} ${className}`}
-    >
-      <div
-        className={`flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full ${colors.iconWrapper}`}
-      >
-        <svg
-          className={`w-8 h-8 ${colors.icon}`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          {renderIcon()}
-        </svg>
+    <div className={`p-6 text-center border rounded-xl ${styles.container} ${className}`}>
+      <div className={`flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-full ${styles.iconWrapper}`}>
+        <Icon className="w-6 h-6" />
       </div>
 
-      <h3 className={`mb-2 text-lg font-semibold ${colors.title}`}>
+      <h3 className={`mb-2 text-lg font-semibold ${styles.title}`}>
         {displayTitle}
       </h3>
 
-      <p className={`${colors.message}`}>{message}</p>
+      <p className={`text-sm ${styles.message}`}>
+        {message}
+      </p>
 
       {shouldShowHelp && (
-        <p className={`mt-3 text-xs ${colors.help}`}>{defaultHelpText}</p>
+        <p className="mt-4 text-xs text-muted-foreground bg-background/50 py-2 px-3 rounded-lg inline-block">
+          {defaultHelpText}
+        </p>
       )}
     </div>
   );

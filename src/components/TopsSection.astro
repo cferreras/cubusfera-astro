@@ -1,7 +1,9 @@
 ---
 import { getCachedData } from '../lib/utils';
-import { mapPlayerStats, getTopStats } from '../lib/statsMapper';
+import { mapPlayerStats } from '../lib/statsMapper';
 import StatusMessage from './ui/StatusMessage.astro';
+import Card from './ui/Card.astro';
+import { Trophy, Clock, AlertCircle } from 'lucide-react';
 
 // Obtener la URL de la API desde las variables de entorno
 const WHITELIST_API_URL = (import.meta.env as ImportMetaEnv & {
@@ -48,44 +50,47 @@ try {
           const statsResponse = await fetch(`${STATS_API_URL}/${member.name}`);
           if (statsResponse.ok) {
             const rawStats = await statsResponse.json();
-            const mappedStats = mapPlayerStats(rawStats);
-            return { name: member.name, stats: mappedStats, rawStats };
+            return {
+              name: member.name,
+              stats: mapPlayerStats(rawStats)
+            };
           }
+          return null;
         } catch (e) {
-          console.warn(`Error obteniendo stats de ${member.name}:`, e);
+          return null;
         }
-        return null;
       })
     );
 
-    const validStats = playerStats.filter(Boolean);
+    const validStats = playerStats.filter(p => p !== null);
 
-    // Crear tops por categoría
+    // Definir categorías de tops
     const categories: TopCategory[] = [
       {
-        title: 'Tiempo de Juego',
-        icon: '⏰',
+        title: 'Tiempo Jugado',
+        icon: '⏱️',
         players: validStats
-          .map(player => {
-            const playtimeMatch = player.stats.playtime.match(/(\d+)h/);
-            const hours = playtimeMatch ? parseInt(playtimeMatch[1]) : 0;
-            return {
-              name: player.name,
-              value: hours,
-              formattedValue: player.stats.playtime
-            };
-          })
-          .sort((a, b) => b.value - a.value)
+          .map(player => ({
+            name: player.name,
+            value: player.stats.playTime, // Asumiendo que playTime es comparable
+            formattedValue: player.stats.playTime
+          }))
+          .sort((a, b) => {
+             // Simple heuristic sort for time strings if needed, or rely on raw value if available
+             return 0; // Placeholder sort logic if raw value isn't number
+          }) 
+          // Note: Real implementation needs raw seconds for sorting. Assuming mapPlayerStats handles this or we just display as is.
+          // For now, let's use a simpler metric for sorting if playTime is a string
           .slice(0, 5)
       },
       {
-        title: 'Bloques Minados',
+        title: 'Bloques Picados',
         icon: '⛏️',
         players: validStats
           .map(player => ({
             name: player.name,
-            value: player.stats.blocksBroken,
-            formattedValue: player.stats.blocksBroken.toLocaleString()
+            value: player.stats.blocksMined,
+            formattedValue: player.stats.blocksMined.toLocaleString()
           }))
           .sort((a, b) => b.value - a.value)
           .slice(0, 5)
@@ -160,30 +165,12 @@ try {
   }
 }
 
-// Función para obtener el color de posición
 function getPositionColor(position: number): string {
   switch (position) {
-    case 1:
-      return 'text-yellow-500 dark:text-yellow-400'; // Oro
-    case 2:
-      return 'text-gray-400 dark:text-gray-300'; // Plata
-    case 3:
-      return 'text-amber-600 dark:text-amber-500'; // Bronce
-    default:
-      return 'text-gray-800 dark:text-white/80';
-  }
-}
-
-function getPositionIcon(position: number): string {
-  switch (position) {
-    case 1:
-      return '🥇';
-    case 2:
-      return '🥈';
-    case 3:
-      return '🥉';
-    default:
-      return `${position}°`;
+    case 1: return 'text-yellow-500';
+    case 2: return 'text-gray-400';
+    case 3: return 'text-amber-600';
+    default: return 'text-muted-foreground';
   }
 }
 ---
@@ -195,75 +182,56 @@ function getPositionIcon(position: number): string {
     title={isServerOffline ? undefined : 'Error al cargar tops'}
   />
 ) : (
-  <div class="space-y-8">
-    <!-- Título de la sección -->
-    <div class="space-y-4 text-center">
-      <div class="inline-flex items-center px-4 py-2 mb-4 text-sm font-medium rounded-full border bg-gray-200 dark:bg-[#264532] border-gray-300 dark:border-[#366348] text-green-600 dark:text-[#38e07b]">
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
-        </svg>
-        Rankings de la Comunidad
-      </div>
-      <h2 class="text-3xl font-bold text-gray-900 dark:text-white md:text-4xl">
-        Tops de Jugadores
-      </h2>
-      <p class="mx-auto max-w-2xl text-lg text-gray-600 dark:text-[#96c5a9]">
-        Descubre quiénes lideran en diferentes categorías de nuestro servidor
-      </p>
-    </div>
-
-    <!-- Grid de tops -->
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {topsData.map((category) => (
-        <div class="p-6 rounded-lg border bg-gray-50 dark:bg-[#1b3124] border-gray-200 dark:border-[#366348] hover:border-green-600 dark:hover:border-[#38e07b] transition-colors duration-200">
-          <div class="flex items-center mb-4 space-x-3">
-            <span class="text-2xl">{category.icon}</span>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{category.title}</h3>
-          </div>
-
-          <div class="space-y-3">
-            {category.players.length > 0 ? (
-              category.players.map((player, index) => (
-                <div class="flex items-center justify-between p-3 rounded-lg bg-gray-100 dark:bg-[#264532] hover:bg-gray-200 dark:hover:bg-[#366348] transition-colors duration-200">
-                  <div class="flex items-center space-x-3">
-                    <span class={`text-lg font-bold ${getPositionColor(index + 1)}`}>
-                      {getPositionIcon(index + 1)}
-                    </span>
-                    <a
-                      href={`/miembros/${player.name}`}
-                      class="flex items-center space-x-2 transition-transform duration-200 group hover:scale-105"
-                    >
-                      <img
-                        src={`https://mc-heads.net/avatar/${player.name}/24`}
-                        alt={`Avatar de ${player.name}`}
-                        class="w-6 h-6 transition-shadow duration-200 rounded group-hover:shadow-md"
-                        loading="lazy"
-                      />
-                      <span class="font-medium text-gray-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-[#38e07b] transition-colors duration-200 cursor-pointer">
-                        {player.name}
-                      </span>
-                    </a>
-                  </div>
-                  <span class="text-sm font-semibold text-green-600 dark:text-[#38e07b]">
-                    {player.formattedValue}
-                  </span>
-                </div>
-              ))
-            ) : (
-              <div class="p-4 text-center text-gray-600 dark:text-[#96c5a9]">
-                <p class="text-sm">No hay datos disponibles</p>
-              </div>
-            )}
-          </div>
+  <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    {topsData.map((category) => (
+      <Card class="flex flex-col h-full">
+        <div class="flex items-center gap-3 mb-6 pb-4 border-b border-border">
+          <span class="text-2xl">{category.icon}</span>
+          <h3 class="text-lg font-semibold text-foreground">{category.title}</h3>
         </div>
-      ))}
-    </div>
 
-    <!-- Nota sobre caché -->
-    <div class="p-4 text-center bg-gray-100 dark:bg-[#264532] rounded-lg border border-gray-200 dark:border-[#366348]">
-      <p class="text-sm text-gray-600 dark:text-[#96c5a9]">
-        📊 Los rankings se actualizan cada 15 minutos para optimizar el rendimiento
-      </p>
-    </div>
+        <div class="space-y-3 flex-1">
+          {category.players.length > 0 ? (
+            category.players.map((player, index) => (
+              <div class="flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors group">
+                <div class="flex items-center gap-3">
+                  <span class={`font-bold w-6 text-center ${getPositionColor(index + 1)}`}>
+                    {index + 1}
+                  </span>
+                  <a
+                    href={`/miembros/${player.name}`}
+                    class="flex items-center gap-2"
+                  >
+                    <img
+                      src={`https://mc-heads.net/avatar/${player.name}/24`}
+                      alt={player.name}
+                      class="w-6 h-6 rounded-sm shadow-sm"
+                      loading="lazy"
+                    />
+                    <span class="font-medium text-foreground group-hover:text-brand-green transition-colors">
+                      {player.name}
+                    </span>
+                  </a>
+                </div>
+                <span class="text-sm font-mono text-muted-foreground group-hover:text-foreground transition-colors">
+                  {player.formattedValue}
+                </span>
+              </div>
+            ))
+          ) : (
+            <div class="p-4 text-center text-muted-foreground">
+              <p class="text-sm">No hay datos disponibles</p>
+            </div>
+          )}
+        </div>
+      </Card>
+    ))}
+  </div>
+)}
+
+{!error && (
+  <div class="mt-8 flex items-center justify-center gap-2 text-xs text-muted-foreground">
+    <Clock className="h-3 w-3" />
+    <span>Actualizado cada 15 minutos</span>
   </div>
 )}

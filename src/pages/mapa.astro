@@ -1,9 +1,8 @@
----
+﻿---
 export const prerender = true;
 import Layout from "../layouts/main.astro";
-import Navbar from "../components/Navbar";
-import Breadcrumb from "../components/Breadcrumb.astro";
 import MapContainer from "../components/MapContainer";
+import { Map as MapIcon } from "lucide-react";
 ---
 
 <Layout
@@ -13,88 +12,21 @@ import MapContainer from "../components/MapContainer";
             "Explora el mundo de Cubusfera con nuestro mapa interactivo en tiempo real. Descubre ubicaciones, estructuras y puntos de interés en nuestro servidor de Minecraft.",
     }}
 >
-    <style>
-        .loading-spinner {
-            border: 3px solid rgba(107, 114, 128, 0.3);
-            border-radius: 50%;
-            border-top: 3px solid #6b7280;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-
-        .dark .loading-spinner {
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top: 3px solid #ffffff;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        .fade-out {
-            opacity: 0;
-            transition: opacity 0.5s ease-out;
-        }
-    </style>
-
-    <Navbar client:load />
-    <main class="min-h-screen bg-white dark:bg-[#122118]">
-        <Breadcrumb
-            items={[
-                { label: "Inicio", href: "/" },
-                { label: "Servidor", nonClickable: true },
-                { label: "Mapa" },
-            ]}
-        />
-
-        <div class="container px-4 py-8 mx-auto">
-            <div class="mb-8 space-y-6 text-center">
-                <h1
-                    class="text-3xl font-bold md:text-4xl text-gray-900 dark:text-white"
-                >
-                    <span class="text-green-600 dark:text-[#38e07b]">Mapa</span>
-                    de Cubusfera
-                </h1>
-                <p
-                    class="mx-auto max-w-2xl text-lg text-gray-600 dark:text-[#96c5a9]"
-                >
-                    Explora nuestro mundo de Minecraft en tiempo real
-                </p>
-            </div>
-
-            <!-- Contenedor del mapa -->
-            <MapContainer client:load />
-
-            <!-- Enlace para ver en pantalla completa -->
-            <div class="mt-6 text-center">
-                <a
-                    href="https://mapa.cubusfera.com/#world:0:0:0:1500:0:0:0:0:perspective"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="inline-flex gap-2 items-center px-6 py-3 font-medium rounded-lg transition-colors duration-200 bg-green-600 dark:bg-[#38e07b] text-white dark:text-black hover:bg-green-700 dark:hover:bg-[#264532] dark:hover:text-white"
-                >
-                    <svg
-                        class="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        ></path>
-                    </svg>
-                    Ver en pantalla completa
-                </a>
+    <section class="py-20 h-[calc(100vh-4rem)] flex flex-col">
+        <div class="container mx-auto px-4 mb-8 flex-shrink-0">
+            <div class="text-center space-y-4">
+                <div class="inline-flex items-center px-3 py-1 rounded-full bg-brand-green/10 text-brand-green text-sm font-medium border border-brand-green/20">
+                    <MapIcon className="w-4 h-4 mr-2" />
+                    Mapa en Tiempo Real
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold text-foreground">Mapa del Mundo</h1>
             </div>
         </div>
-    </main>
+        
+        <div class="flex-1 container mx-auto px-4 min-h-0">
+            <div class="h-full w-full rounded-2xl overflow-hidden border border-border shadow-2xl">
+                <MapContainer client:only="react" />
+            </div>
+        </div>
+    </section>
 </Layout>

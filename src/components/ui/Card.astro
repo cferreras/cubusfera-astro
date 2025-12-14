@@ -1,0 +1,14 @@
+---
+import { cn } from "@/lib/utils";
+
+interface Props {
+  class?: string;
+  as?: "div" | "section" | "article" | "li";
+}
+
+const { class: className, as: Tag = "div", ...props } = Astro.props;
+---
+
+<Tag class={cn("card-pro p-6", className)} {...props}>
+  <slot />
+</Tag>

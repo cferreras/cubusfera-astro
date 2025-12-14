@@ -1,5 +1,7 @@
----
+﻿---
 import StatusMessage from './ui/StatusMessage.astro';
+import Card from './ui/Card.astro';
+import { User, Shield, Crown, Hammer } from 'lucide-react';
 
 // Obtener la URL de la API desde las variables de entorno
 const WHITELIST_API_URL = (import.meta.env as ImportMetaEnv & {
@@ -17,7 +19,6 @@ let error = null;
 let isServerOffline = false;
 
 try {
-  // Obtener lista de miembros de la whitelist
   const whitelistResponse = await fetch(WHITELIST_API_URL, {
     headers: {
       'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -31,38 +32,32 @@ try {
     isServerOffline = true;
     error = 'El servidor de Minecraft está temporalmente desconectado. Intenta de nuevo más tarde.';
   } else {
-    error = `Error al obtener la lista de miembros: ${whitelistResponse.status}`;
+    error = 'Error al obtener la lista de miembros.';
   }
 } catch (e) {
-  // Error de red o servidor no disponible
   if (e instanceof TypeError && (e as TypeError).message.includes('fetch')) {
     isServerOffline = true;
     error = 'El servidor de Minecraft está temporalmente desconectado. Intenta de nuevo más tarde.';
   } else {
-    error = `Error de conexión: ${(e as Error).message}`;
+    error = 'Error de conexión.';
   }
 }
 
-// Función para obtener el color del grupo
+function getGroupIcon(group: string) {
+  switch (group.toLowerCase()) {
+    case 'owner': return Crown;
+    case 'admin': return Shield;
+    case 'mod': return Hammer;
+    default: return User;
+  }
+}
+
 function getGroupColor(group: string): string {
   switch (group.toLowerCase()) {
-    case 'owner':
-      return 'bg-destructive/10 text-destructive border-destructive/20';
-    case 'admin':
-      return 'bg-orange-500/10 text-orange-600 border-orange-500/20 dark:text-orange-400';
-    case 'moderator':
-    case 'helper':
-    case 'mod':
-      return 'bg-blue-500/10 text-blue-600 border-blue-500/20 dark:text-blue-400';
-    case 'builder':
-      return 'bg-pink-500/10 text-pink-600 border-pink-500/20 dark:text-pink-400';
-    case 'vip':
-      return 'bg-yellow-500/10 text-yellow-600 border-yellow-500/20 dark:text-yellow-400';
-    case 'premium':
-      return 'bg-purple-500/10 text-purple-600 border-purple-500/20 dark:text-purple-400';
-    case 'default':
-    default:
-      return 'bg-white dark:bg-[#122118] text-gray-900 dark:text-white/90 border-gray-200 dark:border-[#38e07b]/20';
+    case 'owner': return 'text-red-600 bg-red-500/10 border-red-500/20';
+    case 'admin': return 'text-orange-600 bg-orange-500/10 border-orange-500/20';
+    case 'mod': return 'text-blue-600 bg-blue-500/10 border-blue-500/20';
+    default: return 'text-brand-green bg-brand-green/10 border-brand-green/20';
   }
 }
 ---
@@ -74,66 +69,36 @@ function getGroupColor(group: string): string {
     title={isServerOffline ? undefined : 'Error al cargar miembros'}
   />
 ) : (
-  <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8">
-    {members.map((member) => (
-      <a
-        href={`/miembros/${member.name}`}
-        class="group relative overflow-hidden rounded-lg border bg-gray-50 dark:bg-[#1b3124] text-gray-900 dark:text-white shadow-sm transition-all duration-300 hover:shadow-lg hover:scale-[1.02] border-gray-200 dark:border-[#366348] hover:border-green-600 dark:hover:border-[#38e07b]"
-      >
-        <!-- Fondo decorativo -->
-        <div class="absolute inset-0 bg-gradient-to-br via-transparent opacity-0 transition-opacity duration-300 from-gray-100 dark:from-[#264532] to-green-600/5 dark:to-[#38e07b]/5 group-hover:opacity-100"></div>
-
-        <div class="relative p-4">
-           <!-- Avatar y estado -->
-           <div class="flex flex-col items-center space-y-3">
-            <div class="relative">
-              <div class="overflow-hidden relative p-1 rounded-xl bg-gray-100 dark:bg-[#264532]">
-                <img
-                   src={`https://mc-heads.net/avatar/${member.name}/64`}
-                   alt={`Avatar de ${member.name}`}
-                   class="w-12 h-12 transition-transform duration-300 rounded-lg group-hover:scale-110"
-                   loading="lazy"
-                 />
-              </div>
-              <!-- Indicador de estado online -->
-               <div class={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-gray-50 dark:border-[#1b3124] shadow-sm ${
-                 member.online
-                   ? 'bg-green-500'
-                   : 'bg-gray-400 dark:bg-[#96c5a9]'
-               }`}>
-                 <div class={`absolute inset-0.5 rounded-full ${
-                   member.online
-                     ? 'bg-green-400 animate-pulse'
-                     : 'bg-gray-300 dark:bg-[#264532]'
-                 }`}></div>
-               </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    {members.map((member) => {
+      const Icon = getGroupIcon(member.group);
+      const groupColorClass = getGroupColor(member.group);
+      
+      return (
+        <Card class="group hover:border-brand-green/30 transition-all duration-300">
+          <a href={`/miembros/${member.name}`} class="flex items-center gap-4">
+            <div class="relative shrink-0">
+              <img
+                src={`https://mc-heads.net/avatar/${member.name}/48`}
+                alt={member.name}
+                class="w-12 h-12 rounded-lg shadow-sm group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+              <div class={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-card ${member.online ? 'bg-green-500' : 'bg-gray-500'}`}></div>
             </div>
-
-            <!-- Información del jugador -->
-            <div class="w-full space-y-3 text-center">
-              <div class="space-y-1">
-                <h3 class="font-semibold transition-colors duration-300 text-gray-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-[#38e07b]">
-                  {member.name}
-                </h3>
-                <p class={`text-sm ${
-                  member.online
-                    ? 'text-green-600 dark:text-green-400'
-                    : 'text-gray-600 dark:text-[#96c5a9]'
-                }`}>
-                  {member.online ? 'En línea' : 'Desconectado'}
-                </p>
-              </div>
-
-              <!-- Badge del grupo -->
-              <div class="flex justify-center">
-                <span class={`capitalize inline-flex items-center px-3 py-1 text-xs font-medium rounded-full border ${getGroupColor(member.group)}`}>
-                  {member.group}
-                </span>
+            
+            <div class="flex-1 min-w-0">
+              <h3 class="text-base font-semibold text-foreground truncate group-hover:text-brand-green transition-colors">
+                {member.name}
+              </h3>
+              <div class={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium border mt-1 ${groupColorClass}`}>
+                <Icon className="w-3 h-3" />
+                <span class="capitalize">{member.group}</span>
               </div>
             </div>
-          </div>
-         </div>
-      </a>
-    ))}
+          </a>
+        </Card>
+      );
+    })}
   </div>
 )}

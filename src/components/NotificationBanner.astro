@@ -1,4 +1,6 @@
----
+﻿---
+import { Info, AlertTriangle, AlertCircle, CheckCircle, X } from 'lucide-react';
+
 // Componente de barra de notificación para avisos importantes
 interface Props {
   message?: string;
@@ -14,17 +16,19 @@ const {
 
 const typeStyles = {
   info: 'bg-blue-500/10 border-blue-500/20 text-blue-700 dark:text-blue-300',
-  warning: 'bg-yellow-500/10 border-yellow-500/20 text-yellow-800 dark:text-yellow-200',
+  warning: 'bg-yellow-500/10 border-yellow-500/20 text-yellow-700 dark:text-yellow-300',
   error: 'bg-red-500/10 border-red-500/20 text-red-700 dark:text-red-300',
   success: 'bg-green-500/10 border-green-500/20 text-green-700 dark:text-green-300'
 };
 
-const iconPaths = {
-  info: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
-  warning: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z',
-  error: 'M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z',
-  success: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+const icons = {
+  info: Info,
+  warning: AlertTriangle,
+  error: AlertCircle,
+  success: CheckCircle
 };
+
+const Icon = icons[type];
 ---
 
 <div
@@ -33,55 +37,22 @@ const iconPaths = {
   role="alert"
   aria-live="polite"
 >
-  <div class="max-w-screen-xl mx-auto px-4 py-3 sm:py-4">
-    <div class="flex items-center justify-between gap-3 sm:gap-4">
-      <div class="flex items-start sm:items-center gap-2 sm:gap-3 flex-1 min-w-0">
-        <!-- Icon -->
-        <div class="flex-shrink-0 mt-0.5 sm:mt-0">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 sm:h-6 sm:w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d={iconPaths[type]}
-            />
-          </svg>
-        </div>
-
-        <!-- Message -->
-        <p class="text-sm sm:text-base font-medium leading-snug sm:leading-normal">
+  <div class="container mx-auto px-4 py-3">
+    <div class="flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3 flex-1">
+        <Icon className="w-5 h-5 shrink-0" />
+        <p class="text-sm font-medium">
           {message}
         </p>
       </div>
 
-      <!-- Close Button -->
       {dismissible && (
         <button
           id="close-banner"
-          class="flex-shrink-0 p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-current"
+          class="shrink-0 p-1 hover:bg-black/5 dark:hover:bg-white/5 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-current"
           aria-label="Cerrar notificación"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 sm:h-6 sm:w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
+          <X className="w-5 h-5" />
         </button>
       )}
     </div>
@@ -97,8 +68,8 @@ const iconPaths = {
 
       if (!banner || !closeButton) return;
 
-      // Verificar si el banner fue cerrado anteriormente
-      const bannerDismissed = localStorage.getItem('notification-banner-dismissed');
+      // Verificar si el banner fue cerrado anteriormente (usando una nueva clave para resetear el estado)
+      const bannerDismissed = localStorage.getItem('notification-banner-dismissed-v2');
 
       if (bannerDismissed === 'true') {
         banner.style.display = 'none';
@@ -111,7 +82,7 @@ const iconPaths = {
 
         setTimeout(() => {
           banner.style.display = 'none';
-          localStorage.setItem('notification-banner-dismissed', 'true');
+          localStorage.setItem('notification-banner-dismissed-v2', 'true');
         }, 300);
       });
     }
