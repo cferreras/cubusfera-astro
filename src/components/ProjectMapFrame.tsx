@@ -26,32 +26,14 @@ export default function ProjectMapFrame({
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-        const response = await fetch(baseUrl, {
+        await fetch(baseUrl, {
           method: "HEAD",
+          mode: "no-cors",
           signal: controller.signal,
         });
 
         clearTimeout(timeoutId);
-
-        if (!response.ok) {
-          if (
-            response.status === 502 ||
-            response.status === 503 ||
-            response.status === 504
-          ) {
-            setMapAvailable(false);
-            setError(
-              "El servidor del mapa está temporalmente desconectado. Intenta de nuevo más tarde.",
-            );
-          } else {
-            setMapAvailable(false);
-            setError(
-              `El servidor del mapa no está disponible (${response.status}).`,
-            );
-          }
-        } else {
-          setMapAvailable(true);
-        }
+        setMapAvailable(true);
       } catch (e) {
         // Error de red, timeout o servidor no disponible
         setMapAvailable(false);

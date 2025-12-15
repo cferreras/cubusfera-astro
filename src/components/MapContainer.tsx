@@ -18,17 +18,13 @@ export default function MapContainer() {
 
         const response = await fetch(MAP_URL, {
           method: "HEAD",
+          mode: "no-cors",
           signal: controller.signal,
         });
 
         clearTimeout(timeoutId);
 
-        if (!response.ok) {
-          setMapAvailable(false);
-          setError("El servidor del mapa está temporalmente desconectado.");
-        } else {
-          setMapAvailable(true);
-        }
+        setMapAvailable(true);
       } catch (e) {
         setMapAvailable(false);
         setError("El servidor del mapa está temporalmente desconectado.");
