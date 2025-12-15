@@ -4,9 +4,7 @@ import Card from './ui/Card.astro';
 import { User, Shield, Crown, Hammer } from 'lucide-react';
 
 // Obtener la URL de la API desde las variables de entorno
-const WHITELIST_API_URL = (import.meta.env as ImportMetaEnv & {
-  WHITELIST_API_URL?: string
-}).WHITELIST_API_URL || 'http://localhost:8080/whitelist';
+const WHITELIST_API_URL = import.meta.env.WHITELIST_API_URL || 'https://stats.cubusfera.com/whitelist';
 
 interface Member {
   name: string;
@@ -19,6 +17,7 @@ let error = null;
 let isServerOffline = false;
 
 try {
+  console.log('Fetching members from:', WHITELIST_API_URL);
   const whitelistResponse = await fetch(WHITELIST_API_URL, {
     headers: {
       'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -27,7 +26,13 @@ try {
     }
   });
   if (whitelistResponse.ok) {
-    members = await whitelistResponse.json();
+    const data = await whitelistResponse.json();
+    if (Array.isArray(data)) {
+      members = data;
+    } else {
+      console.error('Invalid API response format:', data);
+      error = 'Error en el formato de datos.';
+    }
   } else if (whitelistResponse.status === 502 || whitelistResponse.status === 503 || whitelistResponse.status === 504) {
     isServerOffline = true;
     error = 'El servidor de Minecraft está temporalmente desconectado. Intenta de nuevo más tarde.';
@@ -79,7 +84,7 @@ function getGroupColor(group: string): string {
           <a href={`/miembros/${member.name}`} class="flex items-center gap-4">
             <div class="relative shrink-0">
               <img
-                src={`https://mc-heads.net/avatar/${member.name}/48`}
+                src={`https://minotar.net/helm/${member.name}/48.png`}
                 alt={member.name}
                 class="w-12 h-12 rounded-lg shadow-sm group-hover:scale-105 transition-transform duration-300"
                 loading="lazy"

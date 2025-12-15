@@ -15,12 +15,7 @@ if (!member) {
 }
 
 // Obtener estado online y grupo del jugador
-const WHITELIST_API_URL =
-    (
-        import.meta.env as ImportMetaEnv & {
-            WHITELIST_API_URL?: string;
-        }
-    ).WHITELIST_API_URL || "http://localhost:8080/whitelist";
+const WHITELIST_API_URL = import.meta.env.WHITELIST_API_URL || "https://stats.cubusfera.com/whitelist";
 
 let isOnline = false;
 let playerGroup = "default";
@@ -28,12 +23,14 @@ try {
     const whitelistResponse = await fetch(WHITELIST_API_URL);
     if (whitelistResponse.ok) {
         const members = await whitelistResponse.json();
-        const memberData = members.find(
-            (m: { name: string; online: boolean; group: string }) =>
-                m.name === member,
-        );
-        isOnline = memberData?.online || false;
-        playerGroup = memberData?.group || "default";
+        if (Array.isArray(members)) {
+            const memberData = members.find(
+                (m: { name: string; online: boolean; group: string }) =>
+                    m.name === member,
+            );
+            isOnline = memberData?.online || false;
+            playerGroup = memberData?.group || "default";
+        }
     }
 } catch (e) {
     console.error("Error fetching online status:", e);
@@ -76,40 +73,43 @@ try {
         ]}
     />
 
-    <div class="container mx-auto px-4 space-y-8 mt-8">
-        {/* Header del Perfil */}
-        <div class="flex flex-col md:flex-row gap-8 items-center md:items-start">
-            <div class="relative shrink-0">
+    <div class="container mx-auto px-4 mt-8">
+        <div class="flex flex-col md:flex-row gap-8 items-start">
+            {/* Columna Izquierda: Avatar Sticky */}
+            <div class="relative shrink-0 md:sticky md:top-24">
                 <img
-                    src={`https://mc-heads.net/body/${member}/200`}
+                    src={`https://minotar.net/armor/body/${member}/200.png`}
                     alt={`Skin de ${member}`}
                     class="h-64 w-auto drop-shadow-2xl"
                 />
                 <div class={`absolute bottom-4 right-4 w-6 h-6 rounded-full border-4 border-background ${isOnline ? 'bg-green-500' : 'bg-red-500'}`} title={isOnline ? "Online" : "Offline"}></div>
             </div>
 
-            <div class="flex-1 text-center md:text-left space-y-4">
-                <div class="space-y-2">
-                    <div class="inline-flex items-center rounded-md border border-border bg-muted px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground capitalize">
-                        {playerGroup}
+            {/* Columna Derecha: Información y Estadísticas */}
+            <div class="flex-1 w-full space-y-8">
+                <div class="space-y-4">
+                    <div class="space-y-2 text-center md:text-left">
+                        <div class="inline-flex items-center rounded-md border border-border bg-muted px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground capitalize">
+                            {playerGroup}
+                        </div>
+                        <h1 class="text-4xl font-bold tracking-tight lg:text-5xl text-foreground">
+                            {member}
+                        </h1>
                     </div>
-                    <h1 class="text-4xl font-bold tracking-tight lg:text-5xl text-foreground">
-                        {member}
-                    </h1>
+
+                    {/* Perfil Personal (Bio y Redes) */}
+                    <PlayerProfile member={member} />
                 </div>
 
-                {/* Perfil Personal (Bio y Redes) */}
-                <PlayerProfile playerName={member} />
+                {/* Estadísticas */}
+                <div class="space-y-6 pt-4 border-t border-border">
+                    <div class="flex items-center gap-2 pb-2">
+                        <User className="h-5 w-5 text-brand-green" />
+                        <h2 class="text-2xl font-semibold tracking-tight text-foreground">Estadísticas</h2>
+                    </div>
+                    <PlayerStats member={member} />
+                </div>
             </div>
-        </div>
-
-        {/* Estad�sticas */}
-        <div class="space-y-6">
-            <div class="flex items-center gap-2 pb-2 border-b border-border">
-                <User className="h-5 w-5 text-brand-green" />
-                <h2 class="text-2xl font-semibold tracking-tight text-foreground">Estad�sticas</h2>
-            </div>
-            <PlayerStats playerName={member} />
         </div>
     </div>
 </Layout>
