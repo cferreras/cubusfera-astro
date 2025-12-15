@@ -1,6 +1,7 @@
 // Función para mapear los datos de la API de Minecraft a un formato más legible
 export interface PlayerStats {
   playtime: string;
+  playTimeTicks: number;
   deaths: number;
   distance: string;
   mobKills: number;
@@ -168,6 +169,7 @@ export function mapPlayerStats(apiData: any): PlayerStats {
   
   return {
     playtime: ticksToTime(playTimeTicks),
+    playTimeTicks: playTimeTicks || 0,
     deaths: deaths || 0,
     distance: cmToKm(totalDistance),
     mobKills: mobKills || 0,
@@ -187,6 +189,7 @@ export function mapPlayerStats(apiData: any): PlayerStats {
 function createEmptyStats(): PlayerStats {
   return {
     playtime: '0h',
+    playTimeTicks: 0,
     deaths: 0,
     distance: '0km',
     mobKills: 0,

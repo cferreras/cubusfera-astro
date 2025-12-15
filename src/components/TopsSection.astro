@@ -72,15 +72,10 @@ try {
         players: validStats
           .map(player => ({
             name: player.name,
-            value: player.stats.playTime, // Asumiendo que playTime es comparable
-            formattedValue: player.stats.playTime
+            value: player.stats.playTimeTicks,
+            formattedValue: player.stats.playtime
           }))
-          .sort((a, b) => {
-             // Simple heuristic sort for time strings if needed, or rely on raw value if available
-             return 0; // Placeholder sort logic if raw value isn't number
-          }) 
-          // Note: Real implementation needs raw seconds for sorting. Assuming mapPlayerStats handles this or we just display as is.
-          // For now, let's use a simpler metric for sorting if playTime is a string
+          .sort((a, b) => b.value - a.value)
           .slice(0, 5)
       },
       {
@@ -89,8 +84,8 @@ try {
         players: validStats
           .map(player => ({
             name: player.name,
-            value: player.stats.blocksMined,
-            formattedValue: player.stats.blocksMined.toLocaleString()
+            value: player.stats.blocksBroken,
+            formattedValue: player.stats.blocksBroken.toLocaleString()
           }))
           .sort((a, b) => b.value - a.value)
           .slice(0, 5)
@@ -203,7 +198,7 @@ function getPositionColor(position: number): string {
                     class="flex items-center gap-2"
                   >
                     <img
-                      src={`https://mc-heads.net/avatar/${player.name}/24`}
+                      src={`https://minotar.net/helm/${player.name}/24.png`}
                       alt={player.name}
                       class="w-6 h-6 rounded-sm shadow-sm"
                       loading="lazy"
