@@ -5,12 +5,14 @@ import ServerStatus from "../components/ServerStatus";
 import TopsSection from "../components/TopsSection.astro";
 import Card from "../components/ui/Card.astro";
 import Button from "../components/Button.astro";
+import { DiscordIcon } from "../components/DiscordIcon";
 import { ArrowRight, Cpu, Users, Zap, GiftIcon } from "lucide-react";
 
 const features = [
   {
     title: "Técnico Avanzado",
-    description: "Optimizado para granjas masivas y mecanismos complejos sin lag.",
+    description:
+      "Optimizado para granjas masivas y mecanismos complejos sin lag.",
     icon: Cpu,
   },
   {
@@ -20,7 +22,8 @@ const features = [
   },
   {
     title: "Rendimiento Puro",
-    description: "Servidor vanilla optimizado manteniendo las mecánicas originales.",
+    description:
+      "Servidor vanilla optimizado manteniendo las mecánicas originales.",
     icon: Zap,
   },
 ];
@@ -36,40 +39,67 @@ const features = [
   {/* Hero Section */}
   <section class="relative py-20 lg:py-32 overflow-hidden">
     <div class="absolute inset-0 -z-10">
-      <div class="absolute inset-0 bg-gradient-to-b from-background/5 to-background dark:from-background/20 dark:to-background"></div>
-      <div class="absolute inset-0 bg-[url('/panorama.webp')] bg-cover bg-center opacity-10 dark:opacity-20 mix-blend-overlay"></div>
+      <div
+        class="absolute inset-0 bg-gradient-to-b from-background/5 to-background dark:from-background/20 dark:to-background"
+      >
+      </div>
+      <div
+        class="absolute inset-0 bg-[url('/panorama.webp')] bg-cover bg-center opacity-10 dark:opacity-20 mix-blend-overlay"
+      >
+      </div>
     </div>
     <div class="container mx-auto px-4">
       <div class="grid lg:grid-cols-2 gap-12 items-center">
         <div class="space-y-8">
-          <div class="inline-flex items-center rounded-full border border-brand-green/30 bg-brand-green/10 px-3 py-1 text-sm font-medium text-brand-green">
+          <div
+            class="inline-flex items-center rounded-full border border-brand-green/30 bg-brand-green/10 px-3 py-1 text-sm font-medium text-brand-green"
+          >
             <!-- <span class="flex h-2 w-2 rounded-full bg-brand-green mr-2 animate-pulse"></span> -->
-             <GiftIcon className="w-4 h-4 mr-2" />
+            <GiftIcon className="w-4 h-4 mr-2" />
             ¡Felices fiestas de parte del equipo de Cubusfera!
           </div>
-          
-          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground">
-            Ingeniería <span class="text-brand-green">Cúbica</span> <br />
+
+          <h1
+            class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-foreground"
+          >
+            Ingeniería <span class="text-brand-green">Cúbica</span>
+            <br />
             al Límite.
           </h1>
-          
+
           <p class="text-lg text-muted-foreground max-w-xl leading-relaxed">
-            El servidor técnico de Minecraft en español donde la creatividad mecánica y la optimización se encuentran. Únete a la revolución industrial de Minecraft.
+            El servidor técnico de Minecraft en español donde la creatividad
+            mecánica y la optimización se encuentran. Únete a la revolución
+            industrial de Minecraft.
           </p>
-          
+
           <div class="flex flex-wrap gap-4">
-            <Button href="/normas" size="lg" className="shadow-lg shadow-brand-green/20">
-              Leer Normas
-              <ArrowRight className="ml-2 h-4 w-4" />
+            <Button
+              href="https://discord.gg/7uKEYACErc"
+              variant="outline"
+              size="lg"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <DiscordIcon className="mr-2 h-5 w-5" />
+              Discord
             </Button>
-            <Button href="/mapa" variant="outline" size="lg">
-              Ver Mapa
+            <Button
+              href="/normas"
+              size="lg"
+              className="shadow-lg shadow-brand-green/20"
+            >
+              Leer Normas
+              <ArrowRight className="mr-2 h-4 w-4" />
             </Button>
           </div>
         </div>
 
         <div class="relative lg:ml-auto w-full max-w-md">
-          <div class="absolute -inset-1 bg-gradient-to-r from-brand-green to-emerald-600 rounded-2xl blur-2xl opacity-20"></div>
+          <div
+            class="absolute -inset-1 bg-gradient-to-r from-brand-green to-emerald-600 rounded-2xl blur-2xl opacity-20"
+          >
+          </div>
           <ServerStatus client:load />
         </div>
       </div>
@@ -80,17 +110,21 @@ const features = [
   <section class="py-20 border-t border-border/50">
     <div class="container mx-auto px-4">
       <div class="grid md:grid-cols-3 gap-8">
-        {features.map((feature) => (
-          <Card class="group hover:border-brand-green/30 transition-colors">
-            <div class="h-12 w-12 rounded-lg bg-brand-green/10 flex items-center justify-center mb-6 group-hover:bg-brand-green/20 transition-colors">
-              <feature.icon className="h-6 w-6 text-brand-green" />
-            </div>
-            <h3 class="text-xl font-semibold mb-3 text-foreground">{feature.title}</h3>
-            <p class="text-muted-foreground leading-relaxed">
-              {feature.description}
-            </p>
-          </Card>
-        ))}
+        {
+          features.map((feature) => (
+            <Card class="group hover:border-brand-green/30 transition-colors">
+              <div class="h-12 w-12 rounded-lg bg-brand-green/10 flex items-center justify-center mb-6 group-hover:bg-brand-green/20 transition-colors">
+                <feature.icon className="h-6 w-6 text-brand-green" />
+              </div>
+              <h3 class="text-xl font-semibold mb-3 text-foreground">
+                {feature.title}
+              </h3>
+              <p class="text-muted-foreground leading-relaxed">
+                {feature.description}
+              </p>
+            </Card>
+          ))
+        }
       </div>
     </div>
   </section>
@@ -98,7 +132,9 @@ const features = [
   {/* Stats Section */}
   <section class="py-20">
     <div class="container mx-auto px-4">
-      <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+      <div
+        class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4"
+      >
         <div>
           <h2 class="text-3xl font-bold text-foreground mb-4">Top Jugadores</h2>
           <p class="text-muted-foreground max-w-2xl">
@@ -106,10 +142,12 @@ const features = [
           </p>
         </div>
         <Button href="/miembros" variant="ghost" className="group">
-          Ver todos <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+          Ver todos <ArrowRight
+            className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform"
+          />
         </Button>
       </div>
-      
+
       <TopsSection />
     </div>
   </section>

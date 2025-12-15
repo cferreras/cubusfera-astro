@@ -1,5 +1,7 @@
 ---
-import { Github, Twitter, MessageCircle } from "lucide-react";
+import { Github } from "lucide-react";
+import { DiscordIcon } from "./DiscordIcon";
+import { XIcon } from "./XIcon";
 
 const commitHash = import.meta.env.GIT_COMMIT_HASH || 'dev';
 const repoUrl = 'https://github.com/cferreras/cubusfera-astro';
@@ -12,9 +14,9 @@ const links = [
 ];
 
 const social = [
-  { name: "Discord", href: "#", icon: MessageCircle },
+  { name: "Discord", href: "https://discord.gg/7uKEYACErc", icon: DiscordIcon },
   { name: "GitHub", href: repoUrl, icon: Github },
-  { name: "Twitter", href: "#", icon: Twitter },
+  { name: "X", href: "https://x.com/cubusfera", icon: XIcon },
 ];
 ---
 
