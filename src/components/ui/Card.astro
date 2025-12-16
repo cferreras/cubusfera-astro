@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 interface Props {
   class?: string;
-  as?: "div" | "section" | "article" | "li";
+  as?: "div" | "section" | "article" | "li" | "a";
 }
 
 const { class: className, as: Tag = "div", ...props } = Astro.props;

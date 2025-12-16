@@ -35,9 +35,7 @@ let topUsed: { item: string; count: number; }[] = [];
 let error = null;
 
 try {
-  console.log(`Fetching stats for ${member} from ${STATS_API_URL}/${member}`);
   const response = await fetch(`${STATS_API_URL}/${member}`);
-  console.log(`Stats response status: ${response.status}`);
   if (response.ok) {
     rawPlayerData = await response.json();
     playerStats = mapPlayerStats(rawPlayerData);
