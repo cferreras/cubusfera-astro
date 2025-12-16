@@ -1,7 +1,6 @@
 ﻿---
 import "../styles/global.css";
 import Footer from "../components/Footer.astro";
-import NotificationBanner from "../components/NotificationBanner.astro";
 import Navbar from "../components/Navbar";
 
 declare global {
@@ -110,7 +109,6 @@ const { content } = Astro.props;
     <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
   </head>
   <body class="min-h-screen flex flex-col bg-background text-foreground selection:bg-brand-green/30 selection:text-brand-green-fg">
-    <NotificationBanner />
     <Navbar client:load />
     
     <main class="flex-1 w-full flex flex-col">
